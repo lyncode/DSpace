@@ -13,6 +13,7 @@ import org.dspace.content.*;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.handle.HandleManager;
+import org.dspace.utils.DSpace;
 
 import java.util.ArrayList;
 import java.sql.SQLException;
@@ -201,7 +202,7 @@ public class MetadataExport
         String filename = line.getOptionValue('f');
 
         // Create a context
-        Context c = new Context();
+        Context c = new DSpace().getContextService().getContext();
         c.turnOffAuthorisationSystem();
 
         // The things we'll export

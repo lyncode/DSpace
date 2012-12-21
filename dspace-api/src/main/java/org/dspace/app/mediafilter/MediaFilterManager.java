@@ -42,6 +42,7 @@ import org.dspace.core.PluginManager;
 import org.dspace.core.SelfNamedPlugin;
 import org.dspace.handle.HandleManager;
 import org.dspace.search.DSIndexer;
+import org.dspace.utils.DSpace;
 
 /**
  * MediaFilterManager is the class that invokes the media/format filters over the
@@ -322,7 +323,7 @@ public class MediaFilterManager
 
         try
         {
-            c = new Context();
+            c = new DSpace().getContextService().getContext();
 
             // have to be super-user to do the filtering
             c.turnOffAuthorisationSystem();

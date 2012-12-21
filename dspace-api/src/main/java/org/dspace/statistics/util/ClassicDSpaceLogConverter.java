@@ -317,7 +317,7 @@ public class ClassicDSpaceLogConverter {
         Context context = null;
         try
         {
-            context = new Context();
+            context = new DSpace().getContextService().getContext();
             context.turnOffAuthorisationSystem();
         }
         catch (SQLException sqle)

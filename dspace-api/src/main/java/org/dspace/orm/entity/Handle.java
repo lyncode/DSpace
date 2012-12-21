@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.dspace.content.DSpaceObject;
 import org.springframework.beans.factory.annotation.Configurable;
 
 @Entity
@@ -61,4 +62,14 @@ public class Handle {
     public void setResourceId(int resourceId) {
         this.resourceId = resourceId;
     }
+
+	public String toUrl() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public DSpaceObject toObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

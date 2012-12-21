@@ -52,7 +52,7 @@ public class ItemCounter
 	public static void main(String[] args)
 		throws ItemCountException, SQLException
 	{
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
         ItemCounter ic = new ItemCounter(context);
 		ic.buildItemCounts();
         context.complete();

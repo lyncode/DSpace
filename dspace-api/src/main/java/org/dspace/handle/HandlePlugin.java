@@ -7,7 +7,6 @@
  */
 package org.dspace.handle;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -23,8 +22,10 @@ import net.handle.hdllib.Util;
 import net.handle.util.StreamTable;
 
 import org.apache.log4j.Logger;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.Context;
+import org.dspace.orm.dao.api.IHandleDao;
+import org.dspace.orm.entity.Handle;
+import org.dspace.services.ConfigurationService;
+import org.dspace.utils.DSpace;
 
 /**
  * Extension to the CNRI Handle Server that translates requests to resolve
@@ -45,6 +46,7 @@ import org.dspace.core.Context;
  */
 public class HandlePlugin implements HandleStorage
 {
+	static final String EXAMPLE_PREFIX = "123456789";
     /** log4j category */
     private static Logger log = Logger.getLogger(HandlePlugin.class);
 
@@ -211,8 +213,6 @@ public class HandlePlugin implements HandleStorage
             log.info("Called getRawHandleValues");
         }
 
-        Context context = null;
-
         try
         {
             if (theHandle == null)
@@ -222,14 +222,13 @@ public class HandlePlugin implements HandleStorage
 
             String handle = Util.decodeString(theHandle);
 
-            context = new Context();
-
-            String url = HandleManager.resolveToURL(context, handle);
-
-            if (url == null)
-            {
+            IHandleDao dao = new DSpace().getSingletonService(IHandleDao.class);
+            Handle hdl = dao.selectByHandle(handle);
+            
+            if (hdl == null)
                 throw new HandleException(HandleException.HANDLE_DOES_NOT_EXIST);
-            }
+            
+            String url = hdl.toUrl();
 
             HandleValue value = new HandleValue();
 
@@ -275,19 +274,6 @@ public class HandlePlugin implements HandleStorage
             // Stack loss as exception does not support cause
             throw new HandleException(HandleException.INTERNAL_ERROR);
         }
-        finally
-        {
-            if (context != null)
-            {
-                try
-                {
-                    context.complete();
-                }
-                catch (SQLException sqle)
-                {
-                }
-            }
-        }
     }
 
     /**
@@ -325,12 +311,13 @@ public class HandlePlugin implements HandleStorage
         // with their own prefixes and have the one instance handle both prefixes. In this case
         // all new handle would be given a unified prefix but all old handles would still be 
         // resolvable.
-        if (ConfigurationManager.getBooleanProperty("handle.plugin.checknameauthority",true))
+        ConfigurationService configService = new DSpace().getConfigurationService();
+        if (configService.getPropertyAsType("handle.plugin.checknameauthority", true))
         {
 	        // First, construct a string representing the naming authority Handle
 	        // we'd expect.
-	        String expected = "0.NA/" + HandleManager.getPrefix();
-	
+	        String expected = "0.NA/" + configService.getPropertyAsType("handle.prefix", EXAMPLE_PREFIX);
+	        
 	        // Which authority does the request pertain to?
 	        String received = Util.decodeString(theHandle);
 	
@@ -354,7 +341,8 @@ public class HandlePlugin implements HandleStorage
      * @exception HandleException
      *                If an error occurs while calling the Handle API.
      */
-    public Enumeration getHandlesForNA(byte[] theNAHandle)
+    @SuppressWarnings("rawtypes")
+	public Enumeration getHandlesForNA(byte[] theNAHandle)
             throws HandleException
     {
         String naHandle = Util.decodeString(theNAHandle);
@@ -364,47 +352,18 @@ public class HandlePlugin implements HandleStorage
             log.info("Called getHandlesForNA for NA " + naHandle);
         }
 
-        Context context = null;
+        IHandleDao handleDao = new DSpace().getSingletonService(IHandleDao.class);
 
-        try
-        {
-            context = new Context();
+		List<Handle> handles = handleDao.selectByPrefix(naHandle);
+		List<byte[]> results = new LinkedList<byte[]>();
 
-            List<String> handles = HandleManager.getHandlesForPrefix(context, naHandle);
-            List<byte[]> results = new LinkedList<byte[]>();
+		for (Iterator<Handle> iterator = handles.iterator(); iterator.hasNext();)
+		{
+		    Handle handle = iterator.next();
+		    // Transforms to byte array
+		    results.add(Util.encodeString(handle.getHandle()));
+		}
 
-            for (Iterator<String> iterator = handles.iterator(); iterator.hasNext();)
-            {
-                String handle = iterator.next();
-
-                // Transforms to byte array
-                results.add(Util.encodeString(handle));
-            }
-
-            return Collections.enumeration(results);
-        }
-        catch (SQLException sqle)
-        {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Exception in getHandlesForNA", sqle);
-            }
-
-            // Stack loss as exception does not support cause
-            throw new HandleException(HandleException.INTERNAL_ERROR);
-        }
-        finally
-        {
-            if (context != null)
-            {
-                try
-                {
-                    context.complete();
-                }
-                catch (SQLException sqle)
-                {
-                }
-            }
-        }
+		return Collections.enumeration(results);
     }
 }

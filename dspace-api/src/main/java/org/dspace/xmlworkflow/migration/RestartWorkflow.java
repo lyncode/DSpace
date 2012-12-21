@@ -53,7 +53,7 @@ public class RestartWorkflow {
     public static void main(String[] args) {
         try {
             System.out.println("All workflowitems will be sent back to the first workflow step.");
-            Context context = new Context();
+            Context context = new DSpace().getContextService().getContext();
             context.turnOffAuthorisationSystem();
             // create an options object and populate it
             CommandLineParser parser = new PosixParser();

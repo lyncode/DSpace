@@ -198,7 +198,7 @@ public class RoleCrosswalk
             }
 
             //actually disseminate to our temp file.
-            Context context = new Context();
+            Context context = new DSpace().getContextService().getContext();
             dip.disseminate(context, dso, pparams, tempFile);
             context.complete();
             

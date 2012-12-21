@@ -7,28 +7,30 @@
  */
 package org.dspace.orm;
 
-import org.dspace.core.ConfigurationManager;
+import org.dspace.services.ConfigurationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class DSpaceDataSource extends DriverManagerDataSource {
-
+	@Autowired ConfigurationService config;
+	
     public DSpaceDataSource() {
-        super.setDriverClassName(ConfigurationManager.getProperty("db.driver"));
+        super.setDriverClassName(config.getProperty("db.driver"));
     }
 
     @Override
     public String getPassword() {
-        return ConfigurationManager.getProperty("db.password");
+        return config.getProperty("db.password");
     }
 
     @Override
     public String getUrl() {
-        return ConfigurationManager.getProperty("db.url");
+        return config.getProperty("db.url");
     }
 
     @Override
     public String getUsername() {
-        return ConfigurationManager.getProperty("db.username");
+        return config.getProperty("db.username");
     }
 
 }

@@ -80,7 +80,7 @@ public class MockBrowseCreateDAOOracle
         {
             if(internalContext == null || !internalContext.isValid())
             {
-                 internalContext = new Context();
+                 internalContext = new DSpace().getContextService().getContext();
             }            
             // obtain the relevant Utils for this class
             utils = BrowseDAOFactory.getUtils(internalContext);
@@ -1077,7 +1077,7 @@ public class MockBrowseCreateDAOOracle
 
         try
         {
-            c = new Context();
+            c = new DSpace().getContextService().getContext();
             String testQuery = "SELECT * FROM " + table + " WHERE ROWNUM=1";
             DatabaseManager.query(c, testQuery);
             return true;

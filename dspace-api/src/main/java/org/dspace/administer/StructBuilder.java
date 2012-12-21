@@ -30,6 +30,8 @@ import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
+import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.utils.DSpace;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 import org.w3c.dom.Document;
@@ -124,10 +126,11 @@ public class StructBuilder
     	}
     	
         // create a context
-        Context context = new Context();
+    	IEPersonDao personDao = new DSpace().getSingletonService(IEPersonDao.class);
+        Context context = new DSpace().getContextService().getContext();
         
         // set the context
-        context.setCurrentUser(EPerson.findByEmail(context, eperson));
+        context.setCurrentUser(personDao.findByEmail(eperson));
  
         // load the XML
         Document document = loadXML(file);

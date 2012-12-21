@@ -380,7 +380,7 @@ public class Curator
         if(curCtx==null || !curCtx.isValid())
         {
             //Create a new context (represents an Anonymous User)
-            curCtx = new Context();
+            curCtx = new DSpace().getContextService().getContext();
             //Save it to current execution thread
             curationCtx.set(curCtx);
         }    

@@ -258,7 +258,7 @@ public class BitstreamStorageManager
 
         try
         {
-            tempContext = new Context();
+            tempContext = new DSpace().getContextService().getContext();
 
             bitstream = DatabaseManager.row("Bitstream");
             bitstream.setColumn("deleted", true);
@@ -366,7 +366,7 @@ public class BitstreamStorageManager
 		Context tempContext = null;
 
 		try {
-			tempContext = new Context();
+			tempContext = new DSpace().getContextService().getContext();
 
 			bitstream = DatabaseManager.row("Bitstream");
 			bitstream.setColumn("deleted", true);
@@ -575,7 +575,7 @@ public class BitstreamStorageManager
 
         try
         {
-            context = new Context();
+            context = new DSpace().getContextService().getContext();
 
             String myQuery = "select * from Bitstream where deleted = '1'";
 

@@ -18,9 +18,11 @@ import org.dspace.core.Constants;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.core.LogManager;
 import org.dspace.handle.HandleManager;
-import org.dspace.eperson.EPerson;
 import org.dspace.workflow.WorkflowManager;
 import org.dspace.xmlworkflow.XmlWorkflowManager;
+import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.entity.EPerson;
+import org.dspace.utils.DSpace;
 
 import java.util.ArrayList;
 import java.io.File;
@@ -1228,7 +1230,7 @@ public class MetadataImport
         Context c;
         try
         {
-            c = new Context();
+            c = new DSpace().getContextService().getContext();
             c.turnOffAuthorisationSystem();
         }
         catch (Exception e)
@@ -1243,15 +1245,16 @@ public class MetadataImport
         {
             if (line.hasOption('e'))
             {
+            	IEPersonDao personDao = new DSpace().getSingletonService(IEPersonDao.class);
                 EPerson eperson;
                 String e = line.getOptionValue('e');
                 if (e.indexOf('@') != -1)
                 {
-                    eperson = EPerson.findByEmail(c, e);
+                    eperson = personDao.findByEmail(e);
                 }
                 else
                 {
-                    eperson = EPerson.find(c, Integer.parseInt(e));
+                    eperson = personDao.findById(Integer.parseInt(e));
                 }
 
                 if (eperson == null)

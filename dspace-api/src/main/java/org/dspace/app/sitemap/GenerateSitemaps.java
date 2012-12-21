@@ -33,6 +33,7 @@ import org.dspace.content.ItemIterator;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
+import org.dspace.utils.DSpace;
 
 /**
  * Command-line utility for generating HTML and Sitemaps.org protocol Sitemaps.
@@ -175,7 +176,7 @@ public class GenerateSitemaps
                     + "?map=", null);
         }
 
-        Context c = new Context();
+        Context c = new DSpace().getContextService().getContext();
 
         Community[] comms = Community.findAll(c);
 

@@ -102,7 +102,7 @@ public class IndexBrowse
     public IndexBrowse()
     	throws SQLException, BrowseException
     {
-    	this(new Context());
+    	this(new DSpace().getContextService().getContext());
     }
     
     /**
@@ -641,7 +641,7 @@ public class IndexBrowse
         Date startTime = new Date();
         try
         {
-            Context context = new Context();
+            Context context = new DSpace().getContextService().getContext();
             context.turnOffAuthorisationSystem();
             IndexBrowse indexer = new IndexBrowse(context);
 

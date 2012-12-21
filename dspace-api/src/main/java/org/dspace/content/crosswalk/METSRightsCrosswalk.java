@@ -152,7 +152,7 @@ public class METSRightsCrosswalk
         // what those rights are -- too many types of content can be stored in DSpace
 
         //Get all policies on this DSpace Object
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
         List<ResourcePolicy> policies = AuthorizeManager.getPolicies(context, dso);
 
         //For each DSpace policy

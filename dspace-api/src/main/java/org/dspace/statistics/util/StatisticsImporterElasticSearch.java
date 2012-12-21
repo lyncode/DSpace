@@ -379,7 +379,7 @@ public class StatisticsImporterElasticSearch {
         bulkRequest = client.prepareBulk();
 
         // We got all our parameters now get the rest
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
 
         // Verbose option
         boolean verbose = line.hasOption('v');

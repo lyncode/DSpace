@@ -7,10 +7,10 @@
  */
 package org.dspace.core;
 
-import org.dspace.eperson.EPerson;
+import org.dspace.orm.entity.EPerson;
 
 /**
- * Class for generating standard log header
+ * Class for generating standard log header.
  * 
  * @author David Stuve
  * @author Robert Tansley

@@ -81,7 +81,7 @@ public class HandleDispatcher implements BitstreamDispatcher
             int id = -1;
             try
             {
-                context = new Context();
+                context = new DSpace().getContextService().getContext();
                 DSpaceObject dso = HandleManager.resolveToObject(context, handle);
                 id = dso.getID();
                 dsoType = dso.getType();

@@ -54,8 +54,9 @@ import org.dspace.core.I18nUtil;
 import org.dspace.core.LogManager;
 import org.dspace.core.Utils;
 import org.dspace.core.Email;
-import org.dspace.eperson.EPerson;
 import org.dspace.handle.HandleManager;
+import org.dspace.orm.entity.EPerson;
+import org.dspace.utils.DSpace;
 
 /**
  * Item exporter to create simple AIPs for DSpace content. Currently exports
@@ -205,7 +206,7 @@ public class ItemExport
             System.exit(1);
         }
 
-        Context c = new Context();
+        Context c = new DSpace().getContextService().getContext();
         c.setIgnoreAuthorization(true);
 
         if (myType == Constants.ITEM)
@@ -953,7 +954,7 @@ public class ItemExport
                     try
                     {
                         // create a new dspace context
-                        context = new Context();
+                        context = new DSpace().getContextService().getContext();
                         // ignore auths
                         context.setIgnoreAuthorization(true);
                         iitems = new ItemIterator(context, items);
@@ -1008,13 +1009,7 @@ public class ItemExport
                         {
                             iitems.close();
                         }
-                        
-                        // Make sure the database connection gets closed in all conditions.
-                    	try {
-							context.complete();
-						} catch (SQLException sqle) {
-							context.abort();
-						}
+                        context.complete();
                     }
                 }
 

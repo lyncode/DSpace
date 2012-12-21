@@ -1270,7 +1270,7 @@ public class SolrLogger
 
 
     public static void reindexBitstreamHits(boolean removeDeletedBitstreams) throws Exception {
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
 
         try {
             //First of all retrieve the total number of records to be updated

@@ -21,6 +21,7 @@ import org.apache.commons.cli.PosixParser;
 
 import org.dspace.core.Context;
 import org.dspace.core.ConfigurationManager;
+import org.dspace.utils.DSpace;
 
 /**
  * This class allows the running of the DSpace statistic tools
@@ -91,7 +92,7 @@ public class CreateStatReport {
         calendar = new GregorianCalendar();
         
         // create context as super user
-        context = new Context();
+        context = new DSpace().getContextService().getContext();
         context.setIgnoreAuthorization(true);
         
         //get paths to directories

@@ -30,8 +30,10 @@ import org.dspace.content.packager.PackageIngester;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.PluginManager;
-import org.dspace.eperson.EPerson;
 import org.dspace.handle.HandleManager;
+import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.entity.EPerson;
+import org.dspace.utils.DSpace;
 
 /**
  * Command-line interface to the Packager plugin.
@@ -314,9 +316,11 @@ public class Packager
         }
 
         // find the EPerson, assign to context
-        Context context = new Context();
+        DSpace ds = new DSpace();
+        Context context = ds.getContextService().getContext();
+        IEPersonDao dao = ds.getSingletonService(IEPersonDao.class);
         EPerson myEPerson = null;
-        myEPerson = EPerson.findByEmail(context, eperson);
+        myEPerson = dao.findByEmail(eperson);
         if (myEPerson == null)
         {
             usageError("Error, eperson cannot be found: " + eperson);

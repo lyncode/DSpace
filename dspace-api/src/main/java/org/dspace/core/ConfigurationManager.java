@@ -29,6 +29,8 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.helpers.OptionConverter;
 
 /**
+ * User ConfigurationService instead
+ * 
  * Class for reading the DSpace system configuration. The main configuration is
  * read in as properties from a standard properties file. Email templates and
  * configuration files for other tools are also be accessed via this class.
@@ -49,6 +51,7 @@ import org.apache.log4j.helpers.OptionConverter;
  * @author Mark Diggory - General Improvements to detection, logging and loading.
  * @version $Revision$
  */
+@Deprecated
 public class ConfigurationManager
 {
     /** log4j category */

@@ -691,7 +691,7 @@ public class EPersonTest
     {
         System.out.println("checkPassword");
         final String attempt = "secret";
-        Context ctx = new Context();
+        Context ctx = new DSpace().getContextService().getContext();
         EPerson instance = new EPerson(ctx, row1);
 
         // Test old unsalted MD5 hash
@@ -733,7 +733,7 @@ public class EPersonTest
             throws SQLException
     {
         System.out.println("getType");
-        EPerson instance = new EPerson(new Context(), row1);
+        EPerson instance = new EPerson(new DSpace().getContextService().getContext(), row1);
         int expResult = Constants.EPERSON;
         int result = instance.getType();
         assertEquals("Should return Constants.EPERSON", expResult, result);

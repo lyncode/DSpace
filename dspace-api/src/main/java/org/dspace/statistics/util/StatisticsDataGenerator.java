@@ -189,7 +189,7 @@ public class StatisticsDataGenerator {
 		epersonEndId *= 4;
 
 		// We got all our parameters now get the rest
-		Context context = new Context();
+		Context context = new DSpace().getContextService().getContext();
 		// Find our solr server
 		CommonsHttpSolrServer solr = new CommonsHttpSolrServer(
 				ConfigurationManager.getProperty("solr-statistics", "server"));

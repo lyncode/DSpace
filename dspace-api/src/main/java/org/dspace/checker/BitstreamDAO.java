@@ -56,7 +56,7 @@ public class BitstreamDAO
         InputStream is = null;
         try
         {
-            context = new Context();
+            context = new DSpace().getContextService().getContext();
             is = BitstreamStorageManager.retrieve(context, id);
         }
         finally

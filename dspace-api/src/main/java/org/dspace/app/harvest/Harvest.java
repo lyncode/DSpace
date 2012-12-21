@@ -27,8 +27,10 @@ import org.dspace.harvest.OAIHarvester;
 import org.dspace.harvest.OAIHarvester.HarvestingException;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
-import org.dspace.eperson.EPerson;
-import org.dspace.handle.HandleManager;
+import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.dao.api.IHandleDao;
+import org.dspace.orm.entity.EPerson;
+import org.dspace.utils.DSpace;
 
 /**
  *  Test class for harvested collections.
@@ -151,7 +153,7 @@ public class Harvest
 
         // Instantiate our class
         Harvest harvester = new Harvest();
-        harvester.context = new Context();
+        harvester.context = new DSpace().getContextService().getContext();
         
         
         // Check our options
@@ -270,7 +272,8 @@ public class Harvest
                 if (collectionID.indexOf('/') != -1)
                 {
                     // string has a / so it must be a handle - try and resolve it
-                    dso = HandleManager.resolveToObject(context, collectionID);
+                	IHandleDao handleDao = new DSpace().getSingletonService(IHandleDao.class);
+                    dso = handleDao.selectByHandle(collectionID).toObject();
 
                     // resolved, now make sure it's a collection
                     if (dso == null || dso.getType() != Constants.COLLECTION)
@@ -350,7 +353,10 @@ public class Harvest
    	
     	try 
     	{
-    		EPerson eperson = EPerson.findByEmail(context, email);
+    		DSpace ds = new DSpace();
+    		Context context = ds.getContextService().getContext();
+    		IEPersonDao personDao = ds.getSingletonService(IEPersonDao.class);
+    		EPerson eperson = personDao.findByEmail(email);
         	context.setCurrentUser(eperson);
     		context.turnOffAuthorisationSystem();
     		
@@ -417,7 +423,8 @@ public class Harvest
     	    	
     	try {
     		// Harvest will not work for an anonymous user
-        	EPerson eperson = EPerson.findByEmail(context, email);
+    		IEPersonDao personDao = new DSpace().getSingletonService(IEPersonDao.class);
+        	EPerson eperson = personDao.findByEmail(email);
         	System.out.println("Harvest started... ");
         	context.setCurrentUser(eperson);
     		harvester.runHarvest();

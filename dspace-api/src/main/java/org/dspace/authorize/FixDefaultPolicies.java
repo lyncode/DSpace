@@ -33,7 +33,7 @@ public class FixDefaultPolicies
      */
     public static void main(String[] argv) throws Exception
     {
-        Context c = new Context();
+        Context c = new DSpace().getContextService().getContext();
 
         // turn off authorization
         c.setIgnoreAuthorization(true);

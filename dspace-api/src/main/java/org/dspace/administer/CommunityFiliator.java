@@ -21,6 +21,7 @@ import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.handle.HandleManager;
 import org.dspace.storage.rdbms.DatabaseManager;
+import org.dspace.utils.DSpace;
 
 /**
  * A command-line tool for setting/removing community/sub-community
@@ -111,7 +112,7 @@ public class CommunityFiliator
         }
 
         CommunityFiliator filiator = new CommunityFiliator();
-        Context c = new Context();
+        Context c = new DSpace().getContextService().getContext();
 
         // ve are superuser!
         c.setIgnoreAuthorization(true);

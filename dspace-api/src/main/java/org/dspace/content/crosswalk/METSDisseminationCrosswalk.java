@@ -119,7 +119,7 @@ public class METSDisseminationCrosswalk
             tempFile.deleteOnExit();
 
             // Disseminate METS to temp file
-            Context context = new Context();
+            Context context = new DSpace().getContextService().getContext();
             dip.disseminate(context, dso, pparams, tempFile);
             context.complete();
 

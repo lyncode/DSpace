@@ -48,7 +48,7 @@ An example use of the Browse API is shown below:
 </p>
 <pre>
     // Create or obtain a context object
-    Context context = new Context();
+    Context context = new DSpace().getContextService().getContext();
 
     // Create a BrowseScope object within the context
     BrowserScope scope = new BrowserScope(context);

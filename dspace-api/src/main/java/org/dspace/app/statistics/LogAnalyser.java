@@ -12,6 +12,7 @@ import org.dspace.core.Context;
 import org.dspace.core.LogManager;
 import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRow;
+import org.dspace.utils.DSpace;
 
 import java.sql.SQLException;
 
@@ -220,7 +221,7 @@ public class LogAnalyser
         startTime = new GregorianCalendar();
         
         // create context as super user
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
         context.setIgnoreAuthorization(true);
         
         // set up our command line variables
