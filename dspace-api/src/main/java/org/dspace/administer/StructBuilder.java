@@ -29,7 +29,6 @@ import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.core.Context;
-import org.dspace.eperson.EPerson;
 import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.utils.DSpace;
 import org.jdom.Element;

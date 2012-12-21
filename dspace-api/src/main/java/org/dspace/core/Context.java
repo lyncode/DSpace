@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import org.dspace.event.Dispatcher;
 import org.dspace.event.Event;
 import org.dspace.event.EventManager;
-import org.dspace.orm.entity.EPerson;
+import org.dspace.orm.entity.Eperson;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -49,7 +49,7 @@ public class Context
     /** Current hibernate session **/
     private Session session;
     /** Current user - null means anonymous access */
-    private EPerson currentUser;
+    private Eperson currentUser;
 
     /** Current Locale */
     private Locale currentLocale;
@@ -114,7 +114,7 @@ public class Context
      *            the new current user, or <code>null</code> if no user is
      *            authenticated
      */
-    public void setCurrentUser(EPerson user)
+    public void setCurrentUser(Eperson user)
     {
         currentUser = user;
     }
@@ -125,7 +125,7 @@ public class Context
      * @return the current user, or <code>null</code> if no user is
      *         authenticated
      */
-    public EPerson getCurrentUser()
+    public Eperson getCurrentUser()
     {
         return currentUser;
     }

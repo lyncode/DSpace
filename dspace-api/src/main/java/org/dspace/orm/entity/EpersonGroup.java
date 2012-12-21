@@ -20,9 +20,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.dspace.core.Constants;
+
 @Entity
 @Table(name = "epersongroup")
-public class EpersonGroup {
+public class EpersonGroup implements IDSpaceObject {
     private int id;
     private String name;
     private List<Eperson> epersons;
@@ -31,11 +33,11 @@ public class EpersonGroup {
     @Id
     @Column(name = "eperson_group_id")
     @GeneratedValue
-    public int getId() {
+    public int getID() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setID(int id) {
         this.id = id;
     }
     
@@ -66,5 +68,10 @@ public class EpersonGroup {
 
 	public void setWorkSpaceItems(List<WorkSpaceItem> workSpaceItems) {
 		this.workSpaceItems = workSpaceItems;
+	}
+
+	@Override
+	public int getType() {
+		return Constants.EPERSONGROUP;
 	}
 }

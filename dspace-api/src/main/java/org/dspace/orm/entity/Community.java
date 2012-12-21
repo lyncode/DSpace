@@ -8,7 +8,6 @@
 package org.dspace.orm.entity;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,10 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.DSpaceObject;
 import org.dspace.core.Constants;
-import org.dspace.orm.dao.api.ICommunityDao;
 import org.dspace.orm.dao.api.IHandleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -37,7 +33,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 @Entity
 @Table(name = "community")
 @Configurable
-public class Community extends DSpaceObject implements Serializable {
+public class Community implements IDSpaceObject, Serializable {
     private static final long serialVersionUID = 6681512980782299861L;
     private int id;
     private String name;
@@ -204,19 +200,5 @@ public class Community extends DSpaceObject implements Serializable {
     @Transient
     public int getType() {
         return Constants.COMMUNITY;
-    }
-
-    @Autowired
-    ICommunityDao communityDao;
-
-    @Override
-    public void update() throws SQLException, AuthorizeException {
-        // TODO Events & Permissions
-        communityDao.save(this);
-    }
-
-    @Override
-    public void updateLastModified() {
-        // TODO Events
     }
 }

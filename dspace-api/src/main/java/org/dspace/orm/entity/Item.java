@@ -22,9 +22,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.dspace.core.Constants;
+
 @Entity
 @Table(name = "item")
-public class Item {
+public class Item implements IDSpaceObject {
     private int id;
     private Eperson submitter;
     private boolean inArchive;
@@ -37,11 +39,11 @@ public class Item {
     @Id
     @Column(name = "item_id")
     @GeneratedValue
-    public int getId() {
+    public int getID() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setID(int id) {
         this.id = id;
     }
     
@@ -110,4 +112,9 @@ public class Item {
     public void setBundles(List<Bundle> bundls) {
         this.bundles = bundls;
     }
+
+	@Override
+	public int getType() {
+		return Constants.ITEM;
+	}
 }

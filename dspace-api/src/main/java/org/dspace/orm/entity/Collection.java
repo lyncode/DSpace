@@ -7,7 +7,6 @@
  */
 package org.dspace.orm.entity;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,10 +24,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.DSpaceObject;
 import org.dspace.core.Constants;
-import org.dspace.orm.dao.api.ICollectionDao;
 import org.dspace.orm.dao.api.IHandleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -36,7 +32,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 @Entity
 @Table(name = "collection")
 @Configurable
-public class Collection extends DSpaceObject {
+public class Collection implements IDSpaceObject {
     private int id;
     private String name;
     private String shortDescription;
@@ -248,20 +244,6 @@ public class Collection extends DSpaceObject {
     @Transient
     public int getType() {
         return Constants.COLLECTION;
-    }
-
-    @Autowired
-    ICollectionDao collectionDao;
-
-    @Override
-    public void update() throws SQLException, AuthorizeException {
-        // TODO Events, Authorization checks
-        collectionDao.save(this);
-    }
-
-    @Override
-    public void updateLastModified() {
-        // TODO Events
     }
     
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)

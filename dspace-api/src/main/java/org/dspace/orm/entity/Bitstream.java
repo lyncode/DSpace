@@ -21,13 +21,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.dspace.core.Constants;
 import org.springframework.beans.factory.annotation.Configurable;
 
 @Entity
 @Table(name = "bitstream")
 @Configurable
-public class Bitstream {
+public class Bitstream implements IDSpaceObject {
     private int id;
     private BitstreamFormat format;
     private String name;
@@ -46,7 +48,7 @@ public class Bitstream {
     @Id
     @Column(name = "bitstream_id")
     @GeneratedValue
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -121,7 +123,7 @@ public class Bitstream {
         this.bundles = bundles;
     }
 
-    public void setId(int id) {
+    public void setID(int id) {
         this.id = id;
     }
 
@@ -172,5 +174,11 @@ public class Bitstream {
     public void setSequenceId(Integer sequenceId) {
         this.sequenceId = sequenceId;
     }
+
+	@Override
+	@Transient
+	public int getType() {
+		return Constants.BITSTREAM;
+	}
 
 }

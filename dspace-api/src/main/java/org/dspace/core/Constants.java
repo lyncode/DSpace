@@ -39,10 +39,25 @@ public class Constants
 
     /** Type of individual eperson objects */
     public static final int EPERSON = 7;
-    
+
     /** Type of individual workspaceitem objects */
     public static final int WORKSPACEITEM = 8;
+    
+    /** Type of individual bitstream format objects */
+    public static final int BITSTREAM_FORMAT = 9;
+    
+    /** Type of individual workflow item objects */
+    public static final int WORKFLOWITEM = 10;
 
+    /** Type of individual version item objects */
+    public static final int VERSIONITEM = 11;
+
+    /** Type of individual eperson group objects */
+    public static final int EPERSONGROUP = 12;
+    
+    /** Type of individual handle objects */
+    public static final int HANDLE = 12;
+    
     /**
      * lets you look up type names from the type IDs
      */

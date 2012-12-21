@@ -10,5 +10,7 @@ package org.dspace.orm.dao.api;
 import org.dspace.orm.entity.Eperson;
 
 public interface IEpersonDao extends IDSpaceDao<Eperson>{
+
+	Eperson findByEmail(String eperson);
     
-   }
+}

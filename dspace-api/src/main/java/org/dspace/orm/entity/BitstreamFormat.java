@@ -12,13 +12,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.dspace.core.Constants;
 import org.springframework.beans.factory.annotation.Configurable;
 
 @Entity
 @Table(name = "bitstreamformatregistry")
 @Configurable
-public class BitstreamFormat {
+public class BitstreamFormat implements IDSpaceObject {
     private int id;
     private String mimetype;
     private String shortDescription;
@@ -29,7 +31,7 @@ public class BitstreamFormat {
     @Id
     @Column(name = "bitstream_format_id")
     @GeneratedValue
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -58,7 +60,7 @@ public class BitstreamFormat {
         return internal;
     }
 
-    public void setId(int id) {
+    public void setID(int id) {
         this.id = id;
     }
 
@@ -81,5 +83,11 @@ public class BitstreamFormat {
     public void setInternal(boolean internal) {
         this.internal = internal;
     }
+
+	@Override
+	@Transient
+	public int getType() {
+		return Constants.BITSTREAM_FORMAT;
+	}
 
 }

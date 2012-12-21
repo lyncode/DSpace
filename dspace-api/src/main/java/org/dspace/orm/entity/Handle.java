@@ -14,12 +14,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.dspace.content.DSpaceObject;
+import org.dspace.core.Constants;
 import org.springframework.beans.factory.annotation.Configurable;
 
 @Entity
 @Table(name = "handle")
 @Configurable
-public class Handle {
+public class Handle implements IDSpaceObject {
     private int id;
     private String handle;
     private int resourceType;
@@ -28,7 +29,7 @@ public class Handle {
     @Id
     @Column(name = "handle_id")
     @GeneratedValue
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -47,7 +48,7 @@ public class Handle {
         return resourceId;
     }
 
-    public void setId(int id) {
+    public void setID(int id) {
         this.id = id;
     }
 
@@ -63,13 +64,8 @@ public class Handle {
         this.resourceId = resourceId;
     }
 
-	public String toUrl() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public DSpaceObject toObject() {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public int getType() {
+		return Constants.HANDLE;
 	}
 }

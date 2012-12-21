@@ -20,10 +20,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.dspace.core.Constants;
 
 @Entity
 @Table(name = "eperson")
-public class Eperson {
+public class Eperson implements IDSpaceObject {
     private int id;
     private String email;
     private String password;
@@ -46,11 +49,11 @@ public class Eperson {
     @Id
     @Column(name = "eperson_id")
     @GeneratedValue
-    public int getId() {
+    public int getID() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setID(int id) {
         this.id = id;
     }
 
@@ -265,5 +268,11 @@ public class Eperson {
 
 	public void setLanguage(String language) {
 		this.language = language;
+	}
+
+	@Override
+	@Transient
+	public int getType() {
+		return Constants.EPERSON;
 	}
 }

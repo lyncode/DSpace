@@ -19,10 +19,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.dspace.core.Constants;
 
 @Entity
 @Table(name = "bundle")
-public class Bundle {
+public class Bundle implements IDSpaceObject {
     private int id;
     private String name;
     private Integer primary;
@@ -31,7 +34,7 @@ public class Bundle {
     @Id
     @Column(name = "bundle_id")
     @GeneratedValue
-    public int getId() {
+    public int getID() {
         return id;
     }
 
@@ -45,7 +48,7 @@ public class Bundle {
         return primary;
     }
 
-    public void setId(int id) {
+    public void setID(int id) {
         this.id = id;
     }
 
@@ -66,5 +69,11 @@ public class Bundle {
     public void setItems(List<Item> items) {
         this.items = items;
     }
+
+	@Override
+	@Transient
+	public int getType() {
+		return Constants.BUNDLE;
+	}
     
 }
