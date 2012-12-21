@@ -17,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository("IItemDao")
 public class ItemDao extends DSpaceDao<Item> implements IItemDao {
     
-	public ItemDao(Class<Item> clazz) {
-		super(clazz);
-		// TODO Auto-generated constructor stub
+	public ItemDao() {
+		super(Item.class);
 	}
 }

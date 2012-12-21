@@ -8,7 +8,7 @@
 package org.dspace.services.context;
 
 import org.dspace.core.Context;
-import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.services.ContextService;
 import org.dspace.services.RequestService;
 import org.dspace.services.model.Request;
@@ -25,7 +25,7 @@ public class DSpaceContextService implements ContextService {
 	
 	@Autowired SessionFactory sessionFactory;
 	@Autowired RequestService requestService;
-	@Autowired IEPersonDao epersonDao;
+	@Autowired IEpersonDao epersonDao;
 
 	private Context newContext() {
 		Context ctx = new Context(sessionFactory.openSession());

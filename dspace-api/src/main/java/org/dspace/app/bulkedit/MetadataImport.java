@@ -20,7 +20,7 @@ import org.dspace.core.LogManager;
 import org.dspace.handle.HandleManager;
 import org.dspace.workflow.WorkflowManager;
 import org.dspace.xmlworkflow.XmlWorkflowManager;
-import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.orm.entity.EPerson;
 import org.dspace.utils.DSpace;
 
@@ -1245,7 +1245,7 @@ public class MetadataImport
         {
             if (line.hasOption('e'))
             {
-            	IEPersonDao personDao = new DSpace().getSingletonService(IEPersonDao.class);
+            	IEpersonDao personDao = new DSpace().getSingletonService(IEpersonDao.class);
                 EPerson eperson;
                 String e = line.getOptionValue('e');
                 if (e.indexOf('@') != -1)

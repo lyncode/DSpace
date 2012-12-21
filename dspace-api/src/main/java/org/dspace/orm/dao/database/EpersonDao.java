@@ -17,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository("IItemDao")
 public class EpersonDao extends DSpaceDao<Eperson> implements IEpersonDao {
     
-	public EpersonDao(Class<Eperson> clazz) {
-		super(clazz);
-		// TODO Auto-generated constructor stub
+	public EpersonDao() {
+		super(Eperson.class);
 	}
 }

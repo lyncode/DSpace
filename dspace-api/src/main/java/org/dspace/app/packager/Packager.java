@@ -31,7 +31,7 @@ import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.PluginManager;
 import org.dspace.handle.HandleManager;
-import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.orm.entity.EPerson;
 import org.dspace.utils.DSpace;
 
@@ -318,7 +318,7 @@ public class Packager
         // find the EPerson, assign to context
         DSpace ds = new DSpace();
         Context context = ds.getContextService().getContext();
-        IEPersonDao dao = ds.getSingletonService(IEPersonDao.class);
+        IEpersonDao dao = ds.getSingletonService(IEpersonDao.class);
         EPerson myEPerson = null;
         myEPerson = dao.findByEmail(eperson);
         if (myEPerson == null)

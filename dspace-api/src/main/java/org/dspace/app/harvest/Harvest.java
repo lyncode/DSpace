@@ -27,7 +27,7 @@ import org.dspace.harvest.OAIHarvester;
 import org.dspace.harvest.OAIHarvester.HarvestingException;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
-import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.orm.dao.api.IHandleDao;
 import org.dspace.orm.entity.EPerson;
 import org.dspace.utils.DSpace;
@@ -355,7 +355,7 @@ public class Harvest
     	{
     		DSpace ds = new DSpace();
     		Context context = ds.getContextService().getContext();
-    		IEPersonDao personDao = ds.getSingletonService(IEPersonDao.class);
+    		IEpersonDao personDao = ds.getSingletonService(IEpersonDao.class);
     		EPerson eperson = personDao.findByEmail(email);
         	context.setCurrentUser(eperson);
     		context.turnOffAuthorisationSystem();
@@ -423,7 +423,7 @@ public class Harvest
     	    	
     	try {
     		// Harvest will not work for an anonymous user
-    		IEPersonDao personDao = new DSpace().getSingletonService(IEPersonDao.class);
+    		IEpersonDao personDao = new DSpace().getSingletonService(IEpersonDao.class);
         	EPerson eperson = personDao.findByEmail(email);
         	System.out.println("Harvest started... ");
         	context.setCurrentUser(eperson);

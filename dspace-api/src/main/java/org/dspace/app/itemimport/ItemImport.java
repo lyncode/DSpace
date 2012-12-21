@@ -52,7 +52,7 @@ import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.eperson.Group;
 import org.dspace.handle.HandleManager;
-import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.orm.entity.EPerson;
 import org.dspace.search.DSIndexer;
 import org.dspace.workflow.WorkflowManager;
@@ -430,7 +430,7 @@ public class ItemImport
             // create a context
             Context c = new DSpace().getContextService().getContext();
 
-            IEPersonDao personDao = new DSpace().getSingletonService(IEPersonDao.class);
+            IEpersonDao personDao = new DSpace().getSingletonService(IEpersonDao.class);
             // find the EPerson, assign to context
             EPerson myEPerson = null;
 

@@ -30,7 +30,7 @@ import org.apache.commons.cli.PosixParser;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
-import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.orm.entity.EPerson;
 import org.dspace.utils.DSpace;
 
@@ -564,7 +564,7 @@ public class ItemUpdate {
             pr(" (run with -h flag for details)");
             throw new Exception("EPerson not specified.");        }
 
-        IEPersonDao persondao = new DSpace().getSingletonService(IEPersonDao.class);
+        IEpersonDao persondao = new DSpace().getSingletonService(IEpersonDao.class);
         EPerson myEPerson = null;
 
         if (eperson.indexOf('@') != -1)

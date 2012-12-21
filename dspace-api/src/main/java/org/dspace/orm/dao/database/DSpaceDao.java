@@ -11,14 +11,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class DSpaceDao<T> implements IDSpaceDao<T>{
+public abstract class DSpaceDao<T> implements IDSpaceDao<T> {
 	private static Logger log = LogManager.getLogger(DSpaceDao.class);
 	
 	private Class<T> clazz;
 	@Autowired
     SessionFactory sessionFactory;
 	
-	private Session getSession() {
+	protected Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 	
