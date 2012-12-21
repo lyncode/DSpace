@@ -92,15 +92,16 @@ public class Context implements org.dspace.services.model.Context
     
     @Deprecated
     /**
-     * This constructor has been deprecated. DSpace database model is being replaced by a DAO approach using Hibernate.
+     * This constructor has been deprecated. 
+     * The reason is that DSpace database model is being replaced by a DAO approach using Hibernate.
      * There are now two options:
-     * 1. For state calls, autowire the ContextService property (using Spring autowiring)
+     * 1. Using Spring DI
      * <code>
      * @Autowired ContextService contextService;
      * ...
      * contextService.getContext()
      * </code>
-     * 2. For stateless calls:
+     * 2. Using DSpace util class:
      * <code>new DSpace().getContextService().getContext()</code>
      * 
      * @throws SQLException 
