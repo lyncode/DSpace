@@ -1008,9 +1008,7 @@ public class ItemExport
                         {
                             iitems.close();
                         }
-                        
-                        // Make sure the database connection gets closed in all conditions.
-                    	try {
+                        try {
 							context.complete();
 						} catch (SQLException sqle) {
 							context.abort();

@@ -9,7 +9,14 @@ package org.dspace.core;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Stack;
 
 import org.apache.log4j.Logger;
 import org.dspace.eperson.EPerson;
@@ -18,6 +25,9 @@ import org.dspace.event.Dispatcher;
 import org.dspace.event.Event;
 import org.dspace.event.EventManager;
 import org.dspace.storage.rdbms.DatabaseManager;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -37,13 +47,16 @@ import org.springframework.util.CollectionUtils;
  * 
  * @version $Revision$
  */
-public class Context
+public class Context implements org.dspace.services.model.Context
 {
     private static final Logger log = Logger.getLogger(Context.class);
-
-    /** Database connection */
+    
+    // TODO: I want you! To remove this deprecated code.
+    private boolean isDatabase = false;
+    /** Current database connection **/
     private Connection connection;
-
+    /** Current hibernate session **/
+    private Session session;
     /** Current user - null means anonymous access */
     private EPerson currentUser;
 
@@ -76,20 +89,27 @@ public class Context
 
     /** Event dispatcher name */
     private String dispName = null;
-
+    
+    @Deprecated
     /**
-     * Construct a new context object. A database connection is opened. No user
-     * is authenticated.
+     * This constructor has been deprecated. DSpace database model is being replaced by a DAO approach using Hibernate.
+     * There are now two options:
+     * 1. For state calls, autowire the ContextService property (using Spring autowiring)
+     * <code>
+     * @Autowired ContextService contextService;
+     * ...
+     * contextService.getContext()
+     * </code>
+     * 2. For stateless calls:
+     * <code>new DSpace().getContextService().getContext()</code>
      * 
-     * @exception SQLException
-     *                if there was an error obtaining a database connection
+     * @throws SQLException 
      */
-    public Context() throws SQLException
-    {
-        // Obtain a non-auto-committing connection
-        connection = DatabaseManager.getConnection();
-        connection.setAutoCommit(false);
-
+    public Context () throws SQLException {
+    	this.isDatabase = true;
+    	connection = DatabaseManager.getConnection();
+    	connection.setAutoCommit(false);
+    	
         currentUser = null;
         currentLocale = I18nUtil.DEFAULTLOCALE;
         extraLogInfo = "";
@@ -103,15 +123,34 @@ public class Context
     }
 
     /**
-     * Get the database connection associated with the context
-     * 
-     * @return the database connection
+     * Construct a new context object. No user
+     * is authenticated.
      */
-    public Connection getDBConnection()
+    public Context(Session session)
     {
-        return connection;
+    	this.session = session;
+    	
+        currentUser = null;
+        currentLocale = I18nUtil.DEFAULTLOCALE;
+        extraLogInfo = "";
+        ignoreAuth = false;
+
+        objectCache = new HashMap<String, Object>();
+        specialGroups = new ArrayList<Integer>();
+
+        authStateChangeHistory = new Stack<Boolean>();
+        authStateClassCallHistory = new Stack<String>();
     }
 
+    /**
+     * Opens the session if it isn't opened yet.
+     * 
+     * @return Hibernate session
+     */
+    private Session getSession () {
+    	return session;
+    }
+    
     /**
      * Set the current user. Authentication must have been performed by the
      * caller - this call does not attempt any authentication.
@@ -287,20 +326,26 @@ public class Context
      */
     public void complete() throws SQLException
     {
-        // FIXME: Might be good not to do a commit() if nothing has actually
-        // been written using this connection
-        try
-        {
-            // Commit any changes made as part of the transaction
-            commit();
-        }
-        finally
-        {
-            // Free the connection
-            DatabaseManager.freeConnection(connection);
-            connection = null;
-            clearCache();
-        }
+    	// TODO: Remove this code, please!
+    	if (this.isDatabase) {
+    		try
+            {
+                // Commit any changes made as part of the transaction
+                commit();
+            }
+            finally
+            {
+                // Free the connection
+                DatabaseManager.freeConnection(connection);
+                connection = null;
+            }
+    	} else {
+    		Session session = this.getSession();
+        	Transaction transaction = session.getTransaction();
+        	transaction.commit();
+        	session.close();
+    	}
+    	clearCache();
     }
 
     /**
@@ -327,12 +372,23 @@ public class Context
                 }
 
                 dispatcher = EventManager.getDispatcher(dispName);
-                connection.commit();
+                if (isDatabase) {
+                	connection.commit();
+                } else {
+                	Session session = this.getSession();
+                	Transaction transaction = session.getTransaction();
+                	transaction.commit();
+                }
                 dispatcher.dispatch(this);
             }
             else
             {
-                connection.commit();
+            	if (isDatabase) connection.commit();
+            	else {
+            		Session session = this.getSession();
+                	Transaction transaction = session.getTransaction();
+                	transaction.commit();
+            	}
             }
 
         }
@@ -415,34 +471,43 @@ public class Context
      */
     public void abort()
     {
-        try
-        {
-            if (!connection.isClosed())
-            {
-                connection.rollback();
-            }
-        }
-        catch (SQLException se)
-        {
-            log.error(se.getMessage(), se);
-        }
-        finally
-        {
-            try
+    	if (isDatabase) {
+    		try
             {
                 if (!connection.isClosed())
                 {
-                    DatabaseManager.freeConnection(connection);
+                    connection.rollback();
                 }
             }
-            catch (Exception ex)
+            catch (SQLException se)
             {
-                log.error("Exception aborting context", ex);
+                log.error(se.getMessage(), se);
             }
-            connection = null;
-            events = null;
-            clearCache();
-        }
+            finally
+            {
+                try
+                {
+                    if (!connection.isClosed())
+                    {
+                        DatabaseManager.freeConnection(connection);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.error("Exception aborting context", ex);
+                }
+                connection = null;
+                events = null;
+                clearCache();
+            }
+    	} else {
+	    	Session session = this.getSession();
+	        Transaction transaction = session.getTransaction();
+	    	if (!transaction.isActive())
+	            transaction.rollback();
+	        events = null;
+	        clearCache();
+    	}
     }
 
     /**
@@ -455,8 +520,12 @@ public class Context
      */
     public boolean isValid()
     {
-        // Only return true if our DB connection is live
-        return (connection != null);
+    	if (isDatabase)
+    		// Only return true if our DB connection is live
+    		return connection != null;
+    	else 
+    		return (session.getTransaction() != null &&
+        		session.getTransaction().isActive());
     }
 
     /**
@@ -582,11 +651,23 @@ public class Context
          * If a context is garbage-collected, we roll back and free up the
          * database connection if there is one.
          */
-        if (connection != null)
-        {
-            abort();
-        }
+    	abort();
 
         super.finalize();
     }
+
+    /**
+     * This method has been made deprecated. Instead you should use the Hibernate
+     * engine to query the database.
+     * 
+     * @return Database connection
+     */
+    @Deprecated
+	public Connection getDBConnection() {
+    	// TODO: Remove this deprecated code! Please!
+    	if (connection != null) return connection;
+    	
+		SessionImplementor session = (SessionImplementor) this.getSession();
+		return session.connection();
+	}
 }
