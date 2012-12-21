@@ -25,6 +25,7 @@ import org.dspace.content.MetadataSchema;
 import org.dspace.content.NonUniqueMetadataException;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
+import org.dspace.utils.DSpace;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -63,7 +64,7 @@ public class RegistryLoader
 
         try
         {
-            context = new Context();
+            context = new DSpace().getContextService().getContext();
 
             // Can't update registries anonymously, so we need to turn off
             // authorisation

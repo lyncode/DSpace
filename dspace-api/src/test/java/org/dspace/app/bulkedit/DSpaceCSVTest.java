@@ -86,7 +86,7 @@ public class DSpaceCSVTest extends AbstractUnitTest
             out.flush();
             out.close();
             // Test the CSV parsing was OK
-            Context c = new Context();
+            Context c = new DSpace().getContextService().getContext();
             DSpaceCSV dcsv = new DSpaceCSV(new File(filename), c);
             String[] lines = dcsv.getCSVLinesAsStringArray();
             assertThat("testDSpaceCSV Good CSV", lines.length, equalTo(7));

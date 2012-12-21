@@ -38,7 +38,7 @@ public class IndexClient {
      */
     public static void main(String[] args) throws SQLException, IOException, SearchServiceException {
 
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
         context.setIgnoreAuthorization(true);
 
         String usage = "org.dspace.discovery.IndexClient [-cbhf[r <item handle>]] or nothing to update/clean an existing index.";

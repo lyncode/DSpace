@@ -25,6 +25,7 @@ import org.apache.xml.serialize.XMLSerializer;
 import org.dspace.content.MetadataField;
 import org.dspace.content.MetadataSchema;
 import org.dspace.core.Context;
+import org.dspace.utils.DSpace;
 import org.xml.sax.SAXException;
 
 
@@ -87,7 +88,7 @@ public class MetadataExporter
     public static void saveRegistry(String file, String schema) throws SQLException, IOException, SAXException, RegistryExportException
     {
         // create a context
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
         context.setIgnoreAuthorization(true);
 
         OutputFormat xmlFormat = new OutputFormat(Method.XML, "UTF-8", true);

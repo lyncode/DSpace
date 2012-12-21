@@ -374,7 +374,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
     public void cleanIndex(boolean force) throws IOException,
             SQLException, SearchServiceException {
 
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
         context.turnOffAuthorisationSystem();
 
         try

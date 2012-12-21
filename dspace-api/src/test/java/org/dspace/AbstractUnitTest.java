@@ -120,7 +120,7 @@ public class AbstractUnitTest
 
             // Load the default registries. This assumes the temporary
             // filesystem is working and the in-memory DB in place.
-            Context ctx = new Context();
+            Context ctx = new DSpace().getContextService().getContext();
             ctx.turnOffAuthorisationSystem();
 
             // We can't check via a boolean value (even static) as the class is
@@ -325,7 +325,7 @@ public class AbstractUnitTest
         try
         {
             //we start the context
-            context = new Context();
+            context = new DSpace().getContextService().getContext();
             context.setCurrentUser(eperson);
             context.commit();
         }

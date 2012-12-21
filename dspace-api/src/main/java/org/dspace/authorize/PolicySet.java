@@ -60,7 +60,7 @@ public class PolicySet
             isReplace = true;
         }
 
-        Context c = new Context();
+        Context c = new DSpace().getContextService().getContext();
 
         // turn off authorization
         c.setIgnoreAuthorization(true);

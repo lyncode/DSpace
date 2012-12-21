@@ -992,7 +992,7 @@ public class OAIHarvester {
 	 * Start harvest scheduler.   
 	 */
 	public static synchronized void startNewScheduler() throws SQLException, AuthorizeException {
-		Context c = new Context();
+		Context c = new DSpace().getContextService().getContext();
 		HarvestedCollection.exists(c);
 		c.complete();
 		
@@ -1035,7 +1035,7 @@ public class OAIHarvester {
     }
 	
 	public static void resetScheduler() throws SQLException, AuthorizeException, IOException {
-		Context context = new Context();
+		Context context = new DSpace().getContextService().getContext();
 		List<Integer> cids = HarvestedCollection.findAll(context);
     	for (Integer cid : cids) 
     	{
@@ -1134,7 +1134,7 @@ public class OAIHarvester {
 		}
 		
 		public HarvestScheduler() throws SQLException, AuthorizeException {
-			mainContext = new Context();
+			mainContext = new DSpace().getContextService().getContext();
 			String harvestAdminParam = ConfigurationManager.getProperty("harvester.eperson");
 			harvestAdmin = null;
 			if (harvestAdminParam != null && harvestAdminParam.length() > 0)
@@ -1204,7 +1204,7 @@ public class OAIHarvester {
 					status = HARVESTER_STATUS_RUNNING;
 										
 					// Stage #1: if something is ready for harvest, push it onto the ready stack, mark it as "queued"
-					mainContext = new Context();
+					mainContext = new DSpace().getContextService().getContext();
 					List<Integer> cids = HarvestedCollection.findReady(mainContext);
 					log.info("Collections ready for immediate harvest: " + cids.toString());
 										
@@ -1256,7 +1256,7 @@ public class OAIHarvester {
 				
 				// Stage #3: figure out how long until the next iteration and wait 
 				try {
-					Context tempContext = new Context();
+					Context tempContext = new DSpace().getContextService().getContext();
 					int nextCollectionId = HarvestedCollection.findOldestHarvest(tempContext);
 					HarvestedCollection hc = HarvestedCollection.find(tempContext, nextCollectionId);
 
@@ -1307,7 +1307,7 @@ public class OAIHarvester {
 		 */
 		public static void addThread(int collecionID) throws SQLException, IOException, AuthorizeException {
 			log.debug("****** Entered the addThread method. Active threads: " + harvestThreads.toString());
-			Context subContext = new Context();
+			Context subContext = new DSpace().getContextService().getContext();
 			//subContext.setCurrentUser(harvestAdmin);
 			
 			HarvestedCollection hc = HarvestedCollection.find(subContext, collecionID);

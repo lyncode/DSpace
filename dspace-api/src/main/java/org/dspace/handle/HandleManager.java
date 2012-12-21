@@ -25,6 +25,8 @@ import org.dspace.storage.rdbms.TableRow;
 import org.dspace.storage.rdbms.TableRowIterator;
 
 /**
+ * Use IHandleDao & Handle Entity instead
+ * 
  * Interface to the <a href="http://www.handle.net" target=_new>CNRI Handle
  * System </a>.
  *
@@ -37,6 +39,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * @author Peter Breton
  * @version $Revision$
  */
+@Deprecated
 public class HandleManager
 {
     /** log4j category */

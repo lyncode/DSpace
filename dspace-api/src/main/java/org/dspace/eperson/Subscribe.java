@@ -539,7 +539,7 @@ public class Subscribe
 
         try
         {
-            context = new Context();
+            context = new DSpace().getContextService().getContext();
             processDaily(context, test);
             context.complete();
         }

@@ -8,23 +8,18 @@
 package org.dspace.core;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
-import org.dspace.eperson.EPerson;
-import org.dspace.eperson.Group;
 import org.dspace.event.Dispatcher;
 import org.dspace.event.Event;
 import org.dspace.event.EventManager;
-import org.dspace.storage.rdbms.DatabaseManager;
+import org.dspace.orm.entity.EPerson;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -47,14 +42,10 @@ import org.springframework.util.CollectionUtils;
  * 
  * @version $Revision$
  */
-public class Context implements org.dspace.services.model.Context
+public class Context
 {
     private static final Logger log = Logger.getLogger(Context.class);
     
-    // TODO: I want you! To remove this deprecated code.
-    private boolean isDatabase = false;
-    /** Current database connection **/
-    private Connection connection;
     /** Current hibernate session **/
     private Session session;
     /** Current user - null means anonymous access */
@@ -81,47 +72,11 @@ public class Context implements org.dspace.services.model.Context
     /** Object cache for this context */
     private Map<String, Object> objectCache;
 
-    /** Group IDs of special groups user is a member of */
-    private List<Integer> specialGroups;
-
     /** Content events */
     private LinkedList<Event> events = null;
 
     /** Event dispatcher name */
     private String dispName = null;
-    
-    @Deprecated
-    /**
-     * This constructor has been deprecated. 
-     * The reason is that DSpace database model is being replaced by a DAO approach using Hibernate.
-     * There are now two options:
-     * 1. Using Spring DI
-     * <code>
-     * @Autowired ContextService contextService;
-     * ...
-     * contextService.getContext()
-     * </code>
-     * 2. Using DSpace util class:
-     * <code>new DSpace().getContextService().getContext()</code>
-     * 
-     * @throws SQLException 
-     */
-    public Context () throws SQLException {
-    	this.isDatabase = true;
-    	connection = DatabaseManager.getConnection();
-    	connection.setAutoCommit(false);
-    	
-        currentUser = null;
-        currentLocale = I18nUtil.DEFAULTLOCALE;
-        extraLogInfo = "";
-        ignoreAuth = false;
-
-        objectCache = new HashMap<String, Object>();
-        specialGroups = new ArrayList<Integer>();
-
-        authStateChangeHistory = new Stack<Boolean>();
-        authStateClassCallHistory = new Stack<String>();
-    }
 
     /**
      * Construct a new context object. No user
@@ -137,7 +92,6 @@ public class Context implements org.dspace.services.model.Context
         ignoreAuth = false;
 
         objectCache = new HashMap<String, Object>();
-        specialGroups = new ArrayList<Integer>();
 
         authStateChangeHistory = new Stack<Boolean>();
         authStateClassCallHistory = new Stack<String>();
@@ -177,10 +131,12 @@ public class Context implements org.dspace.services.model.Context
     }
 
     /**
+     * Must use Spring!
      * Gets the current Locale
      * 
      * @return Locale the current Locale
      */
+    @Deprecated
     public Locale getCurrentLocale()
     {
         return currentLocale;
@@ -320,32 +276,14 @@ public class Context implements org.dspace.services.model.Context
      * Close the context object after all of the operations performed in the
      * context have completed successfully. Any transaction with the database is
      * committed.
-     * 
-     * @exception SQLException
-     *                if there was an error completing the database transaction
-     *                or closing the connection
      */
-    public void complete() throws SQLException
+    public void complete()
     {
-    	// TODO: Remove this code, please!
-    	if (this.isDatabase) {
-    		try
-            {
-                // Commit any changes made as part of the transaction
-                commit();
-            }
-            finally
-            {
-                // Free the connection
-                DatabaseManager.freeConnection(connection);
-                connection = null;
-            }
-    	} else {
-    		Session session = this.getSession();
-        	Transaction transaction = session.getTransaction();
-        	transaction.commit();
-        	session.close();
-    	}
+    	Session session = this.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.commit();
+        session.close();
+    	
     	clearCache();
     }
 
@@ -353,11 +291,8 @@ public class Context implements org.dspace.services.model.Context
      * Commit any transaction that is currently in progress, but do not close
      * the context.
      * 
-     * @exception SQLException
-     *                if there was an error completing the database transaction
-     *                or closing the connection
      */
-    public void commit() throws SQLException
+    public void commit()
     {
         // Commit any changes made as part of the transaction
         Dispatcher dispatcher = null;
@@ -373,23 +308,17 @@ public class Context implements org.dspace.services.model.Context
                 }
 
                 dispatcher = EventManager.getDispatcher(dispName);
-                if (isDatabase) {
-                	connection.commit();
-                } else {
-                	Session session = this.getSession();
-                	Transaction transaction = session.getTransaction();
-                	transaction.commit();
-                }
+                Session session = this.getSession();
+                Transaction transaction = session.getTransaction();
+                transaction.commit();
+                
                 dispatcher.dispatch(this);
             }
             else
             {
-            	if (isDatabase) connection.commit();
-            	else {
-            		Session session = this.getSession();
-                	Transaction transaction = session.getTransaction();
-                	transaction.commit();
-            	}
+            	Session session = this.getSession();
+                Transaction transaction = session.getTransaction();
+                transaction.commit();
             }
 
         }
@@ -472,43 +401,12 @@ public class Context implements org.dspace.services.model.Context
      */
     public void abort()
     {
-    	if (isDatabase) {
-    		try
-            {
-                if (!connection.isClosed())
-                {
-                    connection.rollback();
-                }
-            }
-            catch (SQLException se)
-            {
-                log.error(se.getMessage(), se);
-            }
-            finally
-            {
-                try
-                {
-                    if (!connection.isClosed())
-                    {
-                        DatabaseManager.freeConnection(connection);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    log.error("Exception aborting context", ex);
-                }
-                connection = null;
-                events = null;
-                clearCache();
-            }
-    	} else {
-	    	Session session = this.getSession();
-	        Transaction transaction = session.getTransaction();
-	    	if (!transaction.isActive())
-	            transaction.rollback();
-	        events = null;
-	        clearCache();
-    	}
+    	Session session = this.getSession();
+	    Transaction transaction = session.getTransaction();
+	    if (!transaction.isActive())
+	        transaction.rollback();
+	    events = null;
+	    clearCache();
     }
 
     /**
@@ -520,12 +418,8 @@ public class Context implements org.dspace.services.model.Context
      *         <code>false</code>
      */
     public boolean isValid()
-    {
-    	if (isDatabase)
-    		// Only return true if our DB connection is live
-    		return connection != null;
-    	else 
-    		return (session.getTransaction() != null &&
+    {	
+    	return (session.getTransaction() != null &&
         		session.getTransaction().isActive());
     }
 
@@ -599,53 +493,7 @@ public class Context implements org.dspace.services.model.Context
         return objectCache.size();
     }
 
-    /**
-     * set membership in a special group
-     * 
-     * @param groupID
-     *            special group's ID
-     */
-    public void setSpecialGroup(int groupID)
-    {
-        specialGroups.add(Integer.valueOf(groupID));
-
-        // System.out.println("Added " + groupID);
-    }
-
-    /**
-     * test if member of special group
-     * 
-     * @param groupID
-     *            ID of special group to test
-     * @return true if member
-     */
-    public boolean inSpecialGroup(int groupID)
-    {
-        if (specialGroups.contains(Integer.valueOf(groupID)))
-        {
-            // System.out.println("Contains " + groupID);
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Get an array of all of the special groups that current user is a member
-     * of.
-     * @throws SQLException
-     */
-    public Group[] getSpecialGroups() throws SQLException
-    {
-        List<Group> myGroups = new ArrayList<Group>();
-        for (Integer groupId : specialGroups)
-        {
-            myGroups.add(Group.find(this, groupId.intValue()));
-        }
-
-        return myGroups.toArray(new Group[myGroups.size()]);
-    }
-
+   
     protected void finalize() throws Throwable
     {
         /*
@@ -665,10 +513,7 @@ public class Context implements org.dspace.services.model.Context
      */
     @Deprecated
 	public Connection getDBConnection() {
-    	// TODO: Remove this deprecated code! Please!
-    	if (connection != null) return connection;
-    	
-		SessionImplementor session = (SessionImplementor) this.getSession();
+    	SessionImplementor session = (SessionImplementor) this.getSession();
 		return session.connection();
 	}
 }

@@ -26,6 +26,7 @@ import org.dspace.content.MetadataField;
 import org.dspace.content.MetadataSchema;
 import org.dspace.content.NonUniqueMetadataException;
 import org.dspace.core.Context;
+import org.dspace.utils.DSpace;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -98,7 +99,7 @@ public class MetadataImporter
     		AuthorizeException, SAXException, NonUniqueMetadataException, RegistryImportException
     {
         // create a context
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
         context.setIgnoreAuthorization(true);
         
         // read the XML

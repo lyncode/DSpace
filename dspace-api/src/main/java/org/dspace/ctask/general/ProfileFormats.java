@@ -75,7 +75,7 @@ public class ProfileFormats extends AbstractCurationTask
     {
         try
         {
-            Context c = new Context();
+            Context c = new DSpace().getContextService().getContext();
             StringBuilder sb = new StringBuilder();
             for (String fmt : fmtTable.keySet())
             {

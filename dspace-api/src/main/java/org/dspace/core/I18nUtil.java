@@ -9,7 +9,6 @@ package org.dspace.core;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.dspace.eperson.EPerson;
 
 import java.io.File;
 import java.util.Locale;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 
 
 /**
+ *
  * I18nUtil.java
  *
  * Some Utilities for i18n Support.
@@ -94,21 +94,21 @@ public class I18nUtil
      * Get the Locale for a specified EPerson. If the language is missing,
      * return the default Locale for the repository.
      *
-     * @param ep
+     * @param eperson
      */
-    public static Locale getEPersonLocale(EPerson ep)
+    public static Locale getEPersonLocale(org.dspace.orm.entity.EPerson eperson)
     {
-        if (ep == null)
+        if (eperson == null)
         {
             log.error("No EPerson specified, returning default locale");
             return I18nUtil.getDefaultLocale();
         }
 
-        String lang = ep.getLanguage();
+        String lang = eperson.getLanguage();
         
         if (StringUtils.isBlank(lang))
         {
-            log.error("No language specified for EPerson " + ep.getID());
+            log.error("No language specified for EPerson " + eperson.getID());
             return I18nUtil.getDefaultLocale();
         }
 

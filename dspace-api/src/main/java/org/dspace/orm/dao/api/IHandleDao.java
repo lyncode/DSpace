@@ -25,4 +25,10 @@ public interface IHandleDao {
     Handle selectByResourceId(int resourseType, int id);
 
     Handle selectByHandle(String handle);
+
+	List<Handle> selectByPrefix(String naHandle);
+
+	long countByPrefix(String oldH);
+
+	long updatePrefix(String oldH, String newH);
 }

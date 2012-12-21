@@ -57,7 +57,7 @@ public class Groomer
         // Scan for unsalted hashes
         else if (command.hasOption('u'))
         {
-            Context myContext = new Context();
+            Context myContext = new DSpace().getContextService().getContext();
             final TableRowIterator tri = DatabaseManager.query(myContext,
                     "SELECT email FROM EPerson WHERE password IS NOT NULL AND digest_algorithm IS NULL");
             for (TableRow row = tri.next(); tri.hasNext(); row = tri.next())

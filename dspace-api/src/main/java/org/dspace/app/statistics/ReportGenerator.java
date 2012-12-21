@@ -32,6 +32,7 @@ import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.handle.HandleManager;
+import org.dspace.utils.DSpace;
 
 /**
  * This class performs the action of coordinating a usage report being
@@ -150,7 +151,7 @@ public class ReportGenerator
         throws Exception, SQLException
     {
         // create context as super user
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
         context.setIgnoreAuthorization(true);
         
         String myFormat = null;

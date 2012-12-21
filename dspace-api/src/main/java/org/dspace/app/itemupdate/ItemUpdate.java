@@ -30,7 +30,9 @@ import org.apache.commons.cli.PosixParser;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
-import org.dspace.eperson.EPerson;
+import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.entity.EPerson;
+import org.dspace.utils.DSpace;
 
 /**
  *   
@@ -349,7 +351,7 @@ public class ItemUpdate {
 	        
 	        pr("ItemUpdate - initializing run on " + (new Date()).toString());
 	               	
-	        context = new Context();  
+	        context = new DSpace().getContextService().getContext();  
 	        iu.setEPerson(context, iu.eperson);	
 	        context.setIgnoreAuthorization(true);
 	        
@@ -562,16 +564,17 @@ public class ItemUpdate {
             pr(" (run with -h flag for details)");
             throw new Exception("EPerson not specified.");        }
 
+        IEPersonDao persondao = new DSpace().getSingletonService(IEPersonDao.class);
         EPerson myEPerson = null;
 
         if (eperson.indexOf('@') != -1)
         {
             // @ sign, must be an email
-            myEPerson = EPerson.findByEmail(context, eperson);
+            myEPerson = persondao.findByEmail(eperson);
         }
         else
         {
-            myEPerson = EPerson.find(context, Integer.parseInt(eperson));
+            myEPerson = persondao.findById(Integer.parseInt(eperson));
         }
 
         if (myEPerson == null)

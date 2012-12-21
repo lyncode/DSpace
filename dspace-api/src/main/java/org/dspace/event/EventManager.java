@@ -21,6 +21,7 @@ import org.apache.commons.pool.impl.GenericKeyedObjectPool;
 import org.apache.log4j.Logger;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
+import org.dspace.utils.DSpace;
 
 /**
  * Class for managing the content event environment. The EventManager mainly
@@ -282,8 +283,8 @@ public class EventManager
         public void destroyObject(Object key, Object dispatcher)
                 throws Exception
         {
-            Context ctx = new Context();
-
+            Context ctx = new DSpace().getContextService().getContext();
+        	
             for (Iterator ci = ((Dispatcher) dispatcher).getConsumers()
                     .iterator(); ci.hasNext();)
             {

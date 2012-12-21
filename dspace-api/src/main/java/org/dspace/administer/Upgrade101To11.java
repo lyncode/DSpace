@@ -12,6 +12,7 @@ import org.dspace.core.Context;
 import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRow;
 import org.dspace.storage.rdbms.TableRowIterator;
+import org.dspace.utils.DSpace;
 
 /**
  * A command-line tool for performing necessary tweaks in the database for the
@@ -34,7 +35,7 @@ public class Upgrade101To11
 
         try
         {
-            context = new Context();
+            context = new DSpace().getContextService().getContext();
 
             // Deal with withdrawn items first.
             // last_modified takes the value of the deletion date

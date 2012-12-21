@@ -143,7 +143,7 @@ public class SupervisedItem extends WorkspaceItem
     public Group[] getSupervisorGroups()
         throws SQLException
     {
-        Context ourContext = new Context();
+        Context ourContext = new DSpace().getContextService().getContext();
         
         List<Group> groupList = new ArrayList<Group>();
         String query = "SELECT epersongroup.* " +

@@ -36,6 +36,7 @@ import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
 import org.dspace.sort.SortOption;
+import org.dspace.utils.DSpace;
 
 // issues
 // need to filter query string for security
@@ -361,7 +362,7 @@ public class DSQuery
 
         try
         {
-            Context c = new Context();
+            Context c = new DSpace().getContextService().getContext();
 
             QueryArgs args = new QueryArgs();
             args.setQuery(query);

@@ -82,7 +82,7 @@ public class StatisticsImporter
             try
             {
                 System.out.print("Loading local communities... ");
-                Context c = new Context();
+                Context c = new DSpace().getContextService().getContext();
                 Community[] communities = Community.findAll(c);
                 localCommunities = new ArrayList<Integer>();
                 for (Community community : communities)
@@ -456,7 +456,7 @@ public class StatisticsImporter
         boolean local = line.hasOption('l');
 
 		// We got all our parameters now get the rest
-		Context context = new Context();
+		Context context = new DSpace().getContextService().getContext();
 
         // Verbose option
         boolean verbose = line.hasOption('v');

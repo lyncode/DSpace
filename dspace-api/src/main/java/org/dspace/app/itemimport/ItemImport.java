@@ -50,9 +50,10 @@ import org.dspace.content.WorkspaceItem;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
-import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
 import org.dspace.handle.HandleManager;
+import org.dspace.orm.dao.api.IEPersonDao;
+import org.dspace.orm.entity.EPerson;
 import org.dspace.search.DSIndexer;
 import org.dspace.workflow.WorkflowManager;
 import org.dspace.xmlworkflow.XmlWorkflowManager;
@@ -427,19 +428,20 @@ public class ItemImport
             ItemImport myloader = new ItemImport();
 
             // create a context
-            Context c = new Context();
+            Context c = new DSpace().getContextService().getContext();
 
+            IEPersonDao personDao = new DSpace().getSingletonService(IEPersonDao.class);
             // find the EPerson, assign to context
             EPerson myEPerson = null;
 
             if (eperson.indexOf('@') != -1)
             {
                 // @ sign, must be an email
-                myEPerson = EPerson.findByEmail(c, eperson);
+                myEPerson = personDao.findByEmail(eperson);
             }
             else
             {
-                myEPerson = EPerson.find(c, Integer.parseInt(eperson));
+                myEPerson = personDao.findById(Integer.parseInt(eperson));
             }
 
             if (myEPerson == null)

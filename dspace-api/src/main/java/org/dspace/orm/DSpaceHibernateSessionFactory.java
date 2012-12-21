@@ -17,11 +17,15 @@ public class DSpaceHibernateSessionFactory extends LocalSessionFactoryBean {
 		Properties prop = new Properties();
 		
 		String dbname = config.getProperty("db.name");
-		// FIXME: Must specify the database version..
-		if (dbname == null || !dbname.equals("oracle")) // Postgres is the default
-			prop.put("hibernate.dialect", PostgreSQLDialect.class.getName());
-		else
-			prop.put("hibernate.dialect", OracleDialect.class.getName());
+		String dialect = config.getProperty("db.dialect");
+		if (dialect == null) {
+			if (dbname == null || !dbname.equals("oracle")) // Postgres is the default
+				prop.put("hibernate.dialect", PostgreSQLDialect.class.getName());
+			else
+				prop.put("hibernate.dialect", OracleDialect.class.getName());
+		} else {
+			prop.put("hibernate.dialect", dialect);
+		}
 		
 		prop.put("hibernate.connection.autocommit", false);
 		return prop;

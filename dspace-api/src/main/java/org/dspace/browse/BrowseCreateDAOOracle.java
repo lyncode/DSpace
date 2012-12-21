@@ -30,7 +30,7 @@ import org.dspace.storage.rdbms.TableRowIterator;
  * instantiated directly, but should be obtained via the BrowseDAOFactory:
  * 
  * <code>
- * Context context = new Context();
+ * Context context = new DSpace().getContextService().getContext();
  * BrowseCreateDAO dao = BrowseDAOFactory.getCreateInstance(context);
  * </code>
  * 
@@ -936,7 +936,7 @@ public class BrowseCreateDAOOracle implements BrowseCreateDAO
 
         try
         {
-            c = new Context();
+            c = new DSpace().getContextService().getContext();
             String testQuery = "SELECT * FROM " + table + " WHERE ROWNUM=1";
             DatabaseManager.query(c, testQuery);
             return true;

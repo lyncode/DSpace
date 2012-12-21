@@ -310,7 +310,7 @@ public class XSLTIngestionCrosswalk
         }
 
         // Sanity-check the generated DIM, make sure it would load.
-        Context context = new Context();
+        Context context = new DSpace().getContextService().getContext();
         Iterator di = dimList.iterator();
         while (di.hasNext())
         {

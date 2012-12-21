@@ -266,7 +266,7 @@ public class EmbargoManager
         Context context = null;
         try
         {
-            context = new Context();
+            context = new DSpace().getContextService().getContext();
             context.setIgnoreAuthorization(true);
             Date now = new Date();
              

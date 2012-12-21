@@ -14,6 +14,7 @@ import org.dspace.content.Collection;
 import org.dspace.content.Item;
 import org.dspace.content.ItemIterator;
 import org.dspace.core.Context;
+import org.dspace.utils.DSpace;
 
 /**
  * Command-line tool for making changes to DSpace database when updating from
@@ -34,7 +35,7 @@ public class Upgrade11To12
 {
     public static void main(String[] argv) throws Exception
     {
-        Context c = new Context();
+        Context c = new DSpace().getContextService().getContext();
 
         // ve are superuser!
         c.setIgnoreAuthorization(true);

@@ -22,6 +22,7 @@ import org.dspace.core.Context;
 import org.dspace.core.I18nUtil;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
+import org.dspace.utils.DSpace;
 
 /**
  * A command-line tool for creating an initial administrator for setting up a
@@ -45,7 +46,12 @@ import org.dspace.eperson.Group;
 public final class CreateAdministrator
 {
 	/** DSpace Context object */
-	private Context context;
+	private Context c;
+	
+	private Context getContext () {
+		if (c == null) c = new DSpace().getContextService().getContext();
+		return c;
+	}
 	
     /**
      * For invoking via the command line.  If called with no command line arguments,
@@ -91,7 +97,7 @@ public final class CreateAdministrator
     private CreateAdministrator()
     	throws Exception
     {
-    	context = new Context();
+    	
     }
     
     /**
@@ -228,10 +234,10 @@ public final class CreateAdministrator
     {
     	// Of course we aren't an administrator yet so we need to
     	// circumvent authorisation
-    	context.setIgnoreAuthorization(true);
+    	getContext().setIgnoreAuthorization(true);
     	
     	// Find administrator group
-    	Group admins = Group.find(context, 1);
+    	Group admins = Group.find(getContext(), 1);
     	
     	if (admins == null)
     	{
@@ -239,13 +245,13 @@ public final class CreateAdministrator
     	}
     	
     	// Create the administrator e-person
-        EPerson eperson = EPerson.findByEmail(context,email);
+        EPerson eperson = EPerson.findByEmail(getContext(),email);
         
         // check if the email belongs to a registered user,
         // if not create a new user with this email
         if (eperson == null)
         {
-            eperson = EPerson.create(context);
+            eperson = EPerson.create(getContext());
             eperson.setEmail(email);
             eperson.setCanLogIn(true);
             eperson.setRequireCertificate(false);
@@ -261,7 +267,7 @@ public final class CreateAdministrator
     	admins.addMember(eperson);
     	admins.update();
     	
-    	context.complete();
+    	getContext().complete();
     	
     	System.out.println("Administrator account created");
     }

@@ -151,7 +151,7 @@ public class CurationCli
         	System.exit(1);
     	}
 
-        Context c = new Context();
+        Context c = new DSpace().getContextService().getContext();
         if (ePersonName != null)
         {
             EPerson ePerson = EPerson.findByEmail(c, ePersonName);

@@ -14,7 +14,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
-import org.dspace.eperson.EPerson;
+import org.dspace.orm.entity.EPerson;
 
 /**
  * Demonstration and test consumer for the event system. This consumer only

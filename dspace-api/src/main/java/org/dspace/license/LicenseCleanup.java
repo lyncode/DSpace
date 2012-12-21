@@ -71,7 +71,7 @@ public class LicenseCleanup
             AuthorizeException, IOException
     {
 
-        Context ctx = new Context();
+        Context ctx = new DSpace().getContextService().getContext();
         ctx.setIgnoreAuthorization(true);
         ItemIterator iter = Item.findAll(ctx);
 

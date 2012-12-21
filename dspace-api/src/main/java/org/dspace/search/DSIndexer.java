@@ -65,6 +65,7 @@ import org.dspace.core.LogManager;
 import org.dspace.handle.HandleManager;
 import org.dspace.sort.SortOption;
 import org.dspace.sort.OrderFormat;
+import org.dspace.utils.DSpace;
 
 import org.dspace.app.util.DCInputsReaderException;
 import org.dspace.app.util.Util;
@@ -410,7 +411,7 @@ public class DSIndexer
         try
         {
             setBatchProcessingMode(true);
-            Context context = new Context();
+            Context context = new DSpace().getContextService().getContext();
             context.setIgnoreAuthorization(true);
 
             String usage = "org.dspace.search.DSIndexer [-cbhof[r <item handle>]] or nothing to update/clean an existing index.";
