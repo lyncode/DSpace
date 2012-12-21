@@ -305,6 +305,7 @@ CREATE TABLE Community
   introductory_text CLOB,
   logo_bitstream_id INTEGER REFERENCES Bitstream(bitstream_id),
   copyright_text    CLOB,
+  istop				NUMBER(1),
   side_bar_text     VARCHAR2(2000),
   admin             INTEGER REFERENCES EPersonGroup( eperson_group_id )
 );
