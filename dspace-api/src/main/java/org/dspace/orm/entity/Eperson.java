@@ -38,6 +38,7 @@ public class Eperson {
     private Integer subFrequency;
     private String phone;
     private String netid;
+    private String language;
     private List<Collection> collections;
     private List<EpersonGroup> epersonGroups;
    
@@ -255,4 +256,14 @@ public class Eperson {
     public void setEpersonGroups(List<EpersonGroup> epersonGroups) {
         this.epersonGroups = epersonGroups;
     }
+
+
+    @Column(name = "language", nullable = true)
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 }

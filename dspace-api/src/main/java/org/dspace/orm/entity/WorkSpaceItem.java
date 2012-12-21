@@ -7,12 +7,17 @@
  */
 package org.dspace.orm.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -30,6 +35,7 @@ public class WorkSpaceItem implements IDSpaceObject{
     private boolean multipleFiles;
     private Integer stageReached;
     private Integer pageReached;
+    private List<EpersonGroup> epersonGroups;
     
     @Id
     @Column(name = "workspace_item_id")
@@ -115,5 +121,13 @@ public class WorkSpaceItem implements IDSpaceObject{
 		this.multipleTitles = multipleTitles;
 	}
 
-   
+	 @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+	    @JoinTable(name = "epersongroup2workspaceitem", joinColumns = { @JoinColumn(name = "workspace_item_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "eperson_group_id", nullable = false) })
+		public List<EpersonGroup> getEpersonGroups() {
+			return epersonGroups;
+		}
+
+		public void setEpersonGroups(List<EpersonGroup> epersonGroups) {
+			this.epersonGroups = epersonGroups;
+		}
 }

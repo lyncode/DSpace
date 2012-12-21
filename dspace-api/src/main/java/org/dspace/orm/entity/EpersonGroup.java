@@ -26,6 +26,7 @@ public class EpersonGroup {
     private int id;
     private String name;
     private List<Eperson> epersons;
+    private List<WorkSpaceItem> workSpaceItems;
     
     @Id
     @Column(name = "eperson_group_id")
@@ -56,4 +57,14 @@ public class EpersonGroup {
     public void setEpersons(List<Eperson> epersons) {
         this.epersons = epersons;
     }
+    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinTable(name = "epersongroup2workspaceitem", joinColumns = { @JoinColumn(name = "eperson_group_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "workspace_item_id", nullable = false) })
+	public List<WorkSpaceItem> getWorkSpaceItems() {
+		return workSpaceItems;
+	}
+
+	public void setWorkSpaceItems(List<WorkSpaceItem> workSpaceItems) {
+		this.workSpaceItems = workSpaceItems;
+	}
 }
