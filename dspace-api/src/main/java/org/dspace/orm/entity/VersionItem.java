@@ -51,7 +51,7 @@ public class VersionItem implements IDSpaceObject{
     @Transient
     public int getType()
     {
-    	return Constants.WORKSPACEITEM;
+    	return Constants.VERSIONITEM;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

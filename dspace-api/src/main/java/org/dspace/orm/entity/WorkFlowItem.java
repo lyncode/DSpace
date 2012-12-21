@@ -7,17 +7,23 @@
  */
 package org.dspace.orm.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.dspace.core.Constants;
+import org.dspace.eperson.EPerson;
 
 /**
  * @author Miguel Pinto <mpinto@lyncode.com>
@@ -35,6 +41,7 @@ public class WorkFlowItem implements IDSpaceObject{
     private boolean multipleTitles;
     private boolean publishedBefore;
     private boolean multipleFiles;
+    private List<EPerson> epersons;
     
     @Id
     @Column(name = "workflow_id")
@@ -121,7 +128,16 @@ public class WorkFlowItem implements IDSpaceObject{
 		this.multipleFiles = multipleFiles;
 	}
 
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinTable(name = "tasklistitem", joinColumns = { @JoinColumn(name = "workflow_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "eperson_id", nullable = false) })
+	public List<EPerson> getEpersons() {
+		return epersons;
+	}
+
+	public void setEpersons(List<EPerson> epersons) {
+		this.epersons = epersons;
+	}
+
 	
 
-   
 }

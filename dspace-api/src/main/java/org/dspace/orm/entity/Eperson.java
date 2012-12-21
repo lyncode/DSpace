@@ -44,7 +44,7 @@ public class Eperson implements IDSpaceObject {
     private String language;
     private List<Collection> collections;
     private List<EpersonGroup> epersonGroups;
-   
+    private List<WorkFlowItem> workFlowItems;
     
     @Id
     @Column(name = "eperson_id")
@@ -274,5 +274,15 @@ public class Eperson implements IDSpaceObject {
 	@Transient
 	public int getType() {
 		return Constants.EPERSON;
+	}
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinTable(name = "tasklistitem", joinColumns = { @JoinColumn(name = "eperson_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "workflow_id", nullable = false) })
+	public List<WorkFlowItem> getWorkFlowItems() {
+		return workFlowItems;
+	}
+
+	public void setWorkFlowItems(List<WorkFlowItem> workFlowItems) {
+		this.workFlowItems = workFlowItems;
 	}
 }

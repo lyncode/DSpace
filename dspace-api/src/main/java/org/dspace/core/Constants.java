@@ -56,7 +56,7 @@ public class Constants
     public static final int EPERSONGROUP = 12;
     
     /** Type of individual handle objects */
-    public static final int HANDLE = 12;
+    public static final int HANDLE = 13;
     
     /**
      * lets you look up type names from the type IDs
