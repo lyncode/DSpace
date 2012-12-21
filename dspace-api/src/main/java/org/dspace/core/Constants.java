@@ -39,6 +39,9 @@ public class Constants
 
     /** Type of individual eperson objects */
     public static final int EPERSON = 7;
+    
+    /** Type of individual workspaceitem objects */
+    public static final int WORKSPACEITEM = 8;
 
     /**
      * lets you look up type names from the type IDs
