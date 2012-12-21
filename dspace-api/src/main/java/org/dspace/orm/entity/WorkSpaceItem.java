@@ -20,8 +20,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.dspace.core.Constants;
+
+/**
+ * @author Miguel Pinto <mpinto@lyncode.com>
+ * @version $Revision$
+ */
 
 @Entity
 @Table(name = "workspaceitem")
@@ -40,17 +46,16 @@ public class WorkSpaceItem implements IDSpaceObject{
     @Id
     @Column(name = "workspace_item_id")
     @GeneratedValue
-    public int getId() {
+    public int getID() {
         return id;
     }
     
-    @Override
-    public int getID()
-    {
-    	return this.id;
+    public int setID(int id) {
+        return this.id= id;
     }
     
     @Override
+    @Transient
     public int getType()
     {
     	return Constants.WORKSPACEITEM;

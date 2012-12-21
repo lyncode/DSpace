@@ -13,6 +13,11 @@ import org.dspace.orm.entity.WorkSpaceItem;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author Miguel Pinto <mpinto@lyncode.com>
+ * @version $Revision$
+ */
+
 @Transactional
 @Repository("IWorkSpaceItemDao")
 public class WorkSpaceItemDao extends DSpaceDao<WorkSpaceItem> implements IWorkSpaceItemDao {

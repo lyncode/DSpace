@@ -7,9 +7,9 @@
  */
 package org.dspace.orm.dao.database;
 
-import org.dspace.orm.dao.api.IWorkFlowItemDao;
+import org.dspace.orm.dao.api.IVersionItemDao;
 
-import org.dspace.orm.entity.WorkFlowItem;
+import org.dspace.orm.entity.VersionItem;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-@Repository("IWorkFlowItemDao")
-public class WorkFlowItemDao extends DSpaceDao<WorkFlowItem> implements IWorkFlowItemDao {
+@Repository("IVersionItemDao")
+public class VersionItemDao extends DSpaceDao<VersionItem> implements IVersionItemDao {
     
-	public WorkFlowItemDao() {
-		super(WorkFlowItem.class);
+	public VersionItemDao() {
+		super(VersionItem.class);
 	}
 }

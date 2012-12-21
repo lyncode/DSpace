@@ -11,6 +11,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * @author Miguel Pinto <mpinto@lyncode.com>
+ * @version $Revision$
+ */
+
 public abstract class DSpaceDao<T> implements IDSpaceDao<T> {
 	private static Logger log = LogManager.getLogger(DSpaceDao.class);
 	

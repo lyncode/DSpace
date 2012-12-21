@@ -15,8 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.dspace.core.Constants;
+
+/**
+ * @author Miguel Pinto <mpinto@lyncode.com>
+ * @version $Revision$
+ */
 
 @Entity
 @Table(name = "workflowitem")
@@ -31,22 +37,21 @@ public class WorkFlowItem implements IDSpaceObject{
     private boolean multipleFiles;
     
     @Id
-    @Column(name = "workspace_item_id")
+    @Column(name = "workflow_id")
     @GeneratedValue
-    public int getId() {
+    public int getID() {
         return id;
     }
     
-    @Override
-    public int getID()
-    {
-    	return this.id;
+    public int setID(int id) {
+        return this.id= id;
     }
     
     @Override
+    @Transient
     public int getType()
     {
-    	return Constants.WORKSPACEITEM;
+    	return Constants.WORKFLOWITEM;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
