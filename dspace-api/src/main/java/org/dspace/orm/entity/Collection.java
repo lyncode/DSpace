@@ -53,7 +53,8 @@ public class Collection extends DSpaceObject {
     private Integer submitter;
     private Integer admin;
     private List<Community> parents;
-
+    private List<Eperson> epersons;
+  
     @Autowired
     IHandleDao handleDao;
 
@@ -261,6 +262,16 @@ public class Collection extends DSpaceObject {
     @Override
     public void updateLastModified() {
         // TODO Events
+    }
+    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinTable(name = "subscription", joinColumns = { @JoinColumn(name = "eperson_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "collection_id", nullable = false) })
+    public List<Eperson> getEpersons() {
+        return epersons;
+    }
+    
+    public void setEpersons(List<Eperson> epersons) {
+        this.epersons = epersons;
     }
 
 }

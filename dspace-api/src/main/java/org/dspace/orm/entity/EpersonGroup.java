@@ -21,50 +21,39 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "bundle")
-public class Bundle {
+@Table(name = "epersongroup")
+public class EpersonGroup {
     private int id;
     private String name;
-    private Integer primary;
-    private List<Item> items;
-
+    private List<Eperson> epersons;
+    
     @Id
-    @Column(name = "bundle_id")
+    @Column(name = "eperson_group_id")
     @GeneratedValue
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     @Column(name = "name", nullable = true)
     public String getName() {
         return name;
     }
 
-    @Column(name = "primary_bitstream_id", nullable = true)
-    public Integer getPrimary() {
-        return primary;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
-
-    public void setPrimary(Integer primary) {
-        this.primary = primary;
-    }
-
+    
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinTable(name = "item2bundle", joinColumns = { @JoinColumn(name = "item_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "bundle_id", nullable = false) })
-    public List<Item> getItems() {
-        return items;
+    @JoinTable(name = "epersongroup2eperson", joinColumns = { @JoinColumn(name = "eperson_group_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "eperson_id", nullable = false) })
+    public List<Eperson> getEpersons() {
+        return epersons;
     }
     
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setEpersons(List<Eperson> epersons) {
+        this.epersons = epersons;
     }
-    
 }
