@@ -11,24 +11,10 @@ import java.util.List;
 
 import org.dspace.orm.entity.Handle;
 
-public interface IHandleDao {
-    // CRUD
-    int save(Handle c);
-
-    Handle selectById(int id);
-
-    boolean delete(Handle c);
-
-    // Listing
-    List<Handle> selectAll();
-
+public interface IHandleDao extends IDSpaceDao<Handle> {
     Handle selectByResourceId(int resourseType, int id);
-
     Handle selectByHandle(String handle);
-
 	List<Handle> selectByPrefix(String naHandle);
-
 	long countByPrefix(String oldH);
-
 	long updatePrefix(String oldH, String newH);
 }

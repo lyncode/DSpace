@@ -11,16 +11,6 @@ import java.util.List;
 
 import org.dspace.orm.entity.Community;
 
-public interface ICommunityDao {
-    // CRUD
-    int save(Community c);
-
-    Community selectById(int id);
-
-    boolean delete(Community c);
-
-    // Listing
-    List<Community> selectAll();
-
+public interface ICommunityDao extends IDSpaceDao<Community> {
     List<Community> selectTop();
 }

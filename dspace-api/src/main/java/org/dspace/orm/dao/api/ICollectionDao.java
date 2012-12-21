@@ -7,18 +7,8 @@
  */
 package org.dspace.orm.dao.api;
 
-import java.util.List;
-
 import org.dspace.orm.entity.Collection;
 
-public interface ICollectionDao {
-    // CRUD
-    int save(Collection c);
+public interface ICollectionDao extends IDSpaceDao<Collection> {
 
-    Collection selectById(int id);
-
-    boolean delete(Collection c);
-
-    // Listing
-    List<Collection> selectAll();
 }

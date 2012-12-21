@@ -7,18 +7,8 @@
  */
 package org.dspace.orm.dao.api;
 
-import java.util.List;
-
 import org.dspace.orm.entity.Bundle;
 
-public interface IBundleDao {
-    // CRUD
-    int save(Bundle c);
+public interface IBundleDao extends IDSpaceDao<Bundle> {
 
-    Bundle selectById(int id);
-
-    boolean delete(Bundle c);
-
-    // Listing
-    List<Bundle> selectAll();
 }

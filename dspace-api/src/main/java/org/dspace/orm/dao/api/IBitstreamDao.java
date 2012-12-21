@@ -7,18 +7,8 @@
  */
 package org.dspace.orm.dao.api;
 
-import java.util.List;
-
 import org.dspace.orm.entity.Bitstream;
 
-public interface IBitstreamDao {
-    // CRUD
-    int save(Bitstream c);
+public interface IBitstreamDao extends IDSpaceDao<Bitstream> {
 
-    Bitstream selectById(int id);
-
-    boolean delete(Bitstream c);
-
-    // Listing
-    List<Bitstream> selectAll();
 }
