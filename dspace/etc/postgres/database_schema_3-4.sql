@@ -21,7 +21,11 @@
 -- DUMP YOUR DATABASE FIRST. DUMP YOUR DATABASE FIRST. DUMP YOUR DATABASE FIRST. DUMP YOUR DATABASE FIRST.
 --
 
-ALTER TABLE community ADD (
-        istop NUMBER(1),
-        item_count INTEGER
+ALTER TABLE Community ADD (
+    istop NUMBER(1),
+    item_count INTEGER
+);
+
+ALTER TABLE Collection ADD (
+	item_count INTEGER
 );
