@@ -347,7 +347,8 @@ CREATE TABLE Community
   copyright_text    TEXT,
   side_bar_text     TEXT,
   admin             INTEGER REFERENCES EPersonGroup( eperson_group_id ),
-  istop				BOOL
+  istop				BOOL,
+  item_count		INTEGER
 );
 
 CREATE INDEX community_logo_fk_idx ON Community(logo_bitstream_id);

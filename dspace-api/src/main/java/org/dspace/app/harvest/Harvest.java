@@ -18,18 +18,17 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.browse.IndexBrowse;
-import org.dspace.content.Collection;
-import org.dspace.content.DSpaceObject;
 import org.dspace.harvest.HarvestedCollection;
-import org.dspace.content.Item;
-import org.dspace.content.ItemIterator;
 import org.dspace.harvest.OAIHarvester;
 import org.dspace.harvest.OAIHarvester.HarvestingException;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
+import org.dspace.orm.dao.api.ICollectionDao;
 import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.orm.dao.api.IHandleDao;
-import org.dspace.orm.entity.EPerson;
+import org.dspace.orm.entity.Collection;
+import org.dspace.orm.entity.Eperson;
+import org.dspace.orm.entity.IDSpaceObject;
 import org.dspace.utils.DSpace;
 
 /**
@@ -262,47 +261,45 @@ public class Harvest
      */
     private Collection resolveCollection(String collectionID) {
     	
-    	DSpaceObject dso;
+    	IDSpaceObject dso;
     	Collection targetCollection = null;
+    	DSpace ds = new DSpace();
+    	IHandleDao handleDao = ds.getSingletonService(IHandleDao.class);
+    	ICollectionDao collectionDao = ds.getSingletonService(ICollectionDao.class); 
     	
-    	try {
-	    	// is the ID a handle?
-	        if (collectionID != null)
-            {
-                if (collectionID.indexOf('/') != -1)
-                {
-                    // string has a / so it must be a handle - try and resolve it
-                	IHandleDao handleDao = new DSpace().getSingletonService(IHandleDao.class);
-                    dso = handleDao.selectByHandle(collectionID).toObject();
+    	// is the ID a handle?
+		if (collectionID != null)
+		{
+		    if (collectionID.indexOf('/') != -1)
+		    {
+		        // string has a / so it must be a handle - try and resolve it
+		    	
+		        dso = handleDao.selectByHandle(collectionID).toObject();
 
-                    // resolved, now make sure it's a collection
-                    if (dso == null || dso.getType() != Constants.COLLECTION)
-                    {
-                        targetCollection = null;
-                    }
-                    else
-                    {
-                        targetCollection = (Collection) dso;
-                    }
-                }
-                // not a handle, try and treat it as an integer collection
-                // database ID
-                else
-                {
-                    System.out.println("Looking up by id: " + collectionID + ", parsed as '" + Integer.parseInt(collectionID) + "', " + "in context: " + context);
-                    targetCollection = Collection.find(context, Integer.parseInt(collectionID));
-                }
-            }
-            // was the collection valid?
-            if (targetCollection == null)
-            {
-                System.out.println("Cannot resolve " + collectionID + " to collection");
-                System.exit(1);
-            }
-    	}
-    	catch (SQLException se) {
-    		se.printStackTrace();
-    	}
+		        // resolved, now make sure it's a collection
+		        if (dso == null || dso.getType() != Constants.COLLECTION)
+		        {
+		            targetCollection = null;
+		        }
+		        else
+		        {
+		            targetCollection = (Collection) dso;
+		        }
+		    }
+		    // not a handle, try and treat it as an integer collection
+		    // database ID
+		    else
+		    {
+		        System.out.println("Looking up by id: " + collectionID + ", parsed as '" + Integer.parseInt(collectionID) + "', " + "in context: " + context);
+		        targetCollection = collectionDao.selectById(Integer.parseInt(collectionID));
+		    }
+		}
+		// was the collection valid?
+		if (targetCollection == null)
+		{
+		    System.out.println("Cannot resolve " + collectionID + " to collection");
+		    System.exit(1);
+		}
     	
     	return targetCollection;
     }
@@ -356,7 +353,7 @@ public class Harvest
     		DSpace ds = new DSpace();
     		Context context = ds.getContextService().getContext();
     		IEpersonDao personDao = ds.getSingletonService(IEpersonDao.class);
-    		EPerson eperson = personDao.selectByEmail(email);
+    		Eperson eperson = personDao.selectByEmail(email);
         	context.setCurrentUser(eperson);
     		context.turnOffAuthorisationSystem();
     		

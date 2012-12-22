@@ -22,5 +22,6 @@
 --
 
 ALTER TABLE community ADD (
-        istop NUMBER(1) 
+        istop NUMBER(1),
+        item_count INTEGER
 );
