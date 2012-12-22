@@ -47,6 +47,7 @@ public class Community implements IDSpaceObject, Serializable {
     private List<Community> childs;
     private List<Collection> collections;
     private boolean istop;
+    private Integer itemCount;
 
     @Autowired
     IHandleDao handleDao;
@@ -210,5 +211,14 @@ public class Community implements IDSpaceObject, Serializable {
 
 	public void setTop(boolean istop) {
 		this.istop = istop;
+	}
+
+    @Column(name = "item_count", nullable = true)
+	public Integer getItemCount() {
+		return itemCount;
+	}
+
+	public void setItemCount(Integer itemCount) {
+		this.itemCount = itemCount;
 	}
 }
