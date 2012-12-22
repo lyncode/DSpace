@@ -7,9 +7,7 @@
  */
 package org.dspace.orm.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +41,7 @@ public class Bitstream implements IDSpaceObject {
     private boolean deleted;
     private Integer storeNumber;
     private Integer sequenceId;
-    private Set<Bundle> bundles = new HashSet<Bundle>();
+    private List<Bundle> bundles;
 
     @Id
     @Column(name = "bitstream_id")
@@ -115,11 +113,11 @@ public class Bitstream implements IDSpaceObject {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     @JoinTable(name = "bundle2bitstream", joinColumns = { @JoinColumn(name = "bitstream_id") }, inverseJoinColumns = { @JoinColumn(name = "bundle_id") })
-    public Set<Bundle> getBundles() {
+    public List<Bundle> getBundles() {
         return bundles;
     }
 
-    public void setBundles(Set<Bundle> bundles) {
+    public void setBundles(List<Bundle> bundles) {
         this.bundles = bundles;
     }
 

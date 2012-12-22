@@ -29,7 +29,7 @@ import org.dspace.core.Constants;
 @Table(name = "fileextension")
 public class FileExtension implements IDSpaceObject{
     private int id;
-    private Integer bitstreamFormat;
+    private BitstreamFormat bitstreamFormat;
     private String extension;
 
    
@@ -60,12 +60,13 @@ public class FileExtension implements IDSpaceObject{
 		this.extension = extension;
 	}
 	
-	@Column(name = "bitstream_format_id", nullable = true)
-	public Integer getBitstreamFormat() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bitstream_format_id", nullable = true)
+	public BitstreamFormat getBitstreamFormat() {
 		return bitstreamFormat;
 	}
 
-	public void setBitstreamFormat(Integer bitstreamFormat) {
+	public void setBitstreamFormat(BitstreamFormat bitstreamFormat) {
 		this.bitstreamFormat = bitstreamFormat;
 	}
 

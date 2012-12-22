@@ -30,6 +30,7 @@ public class Bundle implements IDSpaceObject {
     private String name;
     private Integer primary;
     private List<Item> items;
+    private List<Bitstream> bitstreams;
 
     @Id
     @Column(name = "bundle_id")
@@ -74,6 +75,16 @@ public class Bundle implements IDSpaceObject {
 	@Transient
 	public int getType() {
 		return Constants.BUNDLE;
+	}
+
+	 @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @JoinTable(name = "bundle2bitstream", joinColumns = { @JoinColumn(name = "bundle_id") }, inverseJoinColumns = { @JoinColumn(name = "bitstream_id") })
+	public List<Bitstream> getBitstreams() {
+		return bitstreams;
+	}
+
+	public void setBitstreams(List<Bitstream> bitstreams) {
+		this.bitstreams = bitstreams;
 	}
     
 }
