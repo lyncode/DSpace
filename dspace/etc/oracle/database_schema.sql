@@ -271,7 +271,9 @@ CREATE TABLE MetadataValue
   text_lang  VARCHAR(24),
   place              INTEGER,
   authority VARCHAR(100),
-  confidence INTEGER DEFAULT -1
+  confidence INTEGER DEFAULT -1,
+  resource_id INTEGER,
+  resource_type INTEGER
 );
 
 -- Create the DC schema

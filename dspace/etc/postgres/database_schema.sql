@@ -293,7 +293,8 @@ CREATE TABLE MetadataSchemaRegistry
 (
   metadata_schema_id INTEGER PRIMARY KEY DEFAULT NEXTVAL('metadataschemaregistry_seq'),
   namespace          VARCHAR(256) UNIQUE,
-  short_id           VARCHAR(32) UNIQUE
+  short_id           VARCHAR(32) UNIQUE,
+  resource_type		 INTEGER
 );
 
 CREATE TABLE MetadataFieldRegistry
@@ -314,7 +315,9 @@ CREATE TABLE MetadataValue
   text_lang          VARCHAR(24),
   place              INTEGER,
   authority          VARCHAR(100),
-  confidence         INTEGER DEFAULT -1
+  confidence         INTEGER DEFAULT -1,
+  resource_id		 INTEGER,
+  resource_type		 INTEGER
 );
 
 -- Create a dcvalue view for backwards compatibilty

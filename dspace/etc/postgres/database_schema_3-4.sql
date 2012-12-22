@@ -29,3 +29,8 @@ ALTER TABLE Community ADD (
 ALTER TABLE Collection ADD (
 	item_count INTEGER
 );
+
+ALTER TABLE MetadataValue ADD (
+	resource_id		 INTEGER,
+	resource_type		 INTEGER
+);
