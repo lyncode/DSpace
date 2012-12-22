@@ -29,6 +29,8 @@ public class EpersonGroup implements IDSpaceObject {
     private String name;
     private List<Eperson> epersons;
     private List<WorkSpaceItem> workSpaceItems;
+
+    private List<EpersonGroup> epersonGroups;
     
     @Id
     @Column(name = "eperson_group_id")
@@ -48,6 +50,16 @@ public class EpersonGroup implements IDSpaceObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinTable(name = "group2group", joinColumns = { @JoinColumn(name = "parent_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "child_id", nullable = false) })
+    public List<EpersonGroup> getGroups() {
+        return epersonGroups;
+    }
+    
+    public void setGroups(List<EpersonGroup> epersonGroups) {
+        this.epersonGroups = epersonGroups;
     }
     
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
