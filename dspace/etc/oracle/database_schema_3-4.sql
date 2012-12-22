@@ -23,3 +23,5 @@
 
 ALTER TABLE Community ADD istop NUMBER(1);
 ALTER TABLE Community ADD item_count INTEGER;
+
+ALTER TABLE Collection ADD item_count INTEGER;
