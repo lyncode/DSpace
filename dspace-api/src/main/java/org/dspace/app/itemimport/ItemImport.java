@@ -437,7 +437,7 @@ public class ItemImport
             if (eperson.indexOf('@') != -1)
             {
                 // @ sign, must be an email
-                myEPerson = personDao.findByEmail(eperson);
+                myEPerson = personDao.selectByEmail(eperson);
             }
             else
             {

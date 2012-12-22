@@ -46,6 +46,7 @@ public class Community implements IDSpaceObject, Serializable {
     private List<Community> parents;
     private List<Community> childs;
     private List<Collection> collections;
+    private boolean istop;
 
     @Autowired
     IHandleDao handleDao;
@@ -201,4 +202,13 @@ public class Community implements IDSpaceObject, Serializable {
     public int getType() {
         return Constants.COMMUNITY;
     }
+
+    @Column(name="istop")
+	public boolean isTop() {
+		return istop;
+	}
+
+	public void setTop(boolean istop) {
+		this.istop = istop;
+	}
 }

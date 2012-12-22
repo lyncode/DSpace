@@ -9,25 +9,56 @@ package org.dspace.orm.dao.database;
 
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.dspace.orm.dao.api.IHandleDao;
 import org.dspace.orm.entity.Handle;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author João Melo <jmelo@lyncode.com>
+ * @author Miguel Pinto <mpinto@lyncode.com>
+ */
 @Transactional
 @Repository("IHandleDao")
 public class HandleDao extends DSpaceDao<Handle>  implements IHandleDao {
-    private static Logger log = LogManager.getLogger(HandleDao.class);
+//    private static Logger log = LogManager.getLogger(HandleDao.class);
     
     public HandleDao () {
     	super(Handle.class);
     }
+
+	@Override
+	public Handle selectByResourceId(int resourseType, int id) {
+		return (Handle) super.getSession().createCriteria(Handle.class)
+				.add(Restrictions.and(
+						Restrictions.eq("resourceType", resourseType),
+						Restrictions.eq("resourceId", id)
+					))
+				.uniqueResult();
+	}
+
+	@Override
+	public Handle selectByHandle(String handle) {
+		return (Handle) super.getSession().createCriteria(Handle.class)
+				.add(Restrictions.eq("handle", handle))
+				.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Handle> selectByPrefix(String naHandle) {
+		return (List<Handle>) super.getSession().createCriteria(Handle.class)
+				.add(Restrictions.like("handle", naHandle+"/%"))
+				.list();
+	}
+
+	@Override
+	public long countByPrefix(String oldH) {
+		return (Long) getSession().createCriteria(Handle.class)
+				.setProjection(Projections.rowCount())
+				.uniqueResult();
+	}
+	
 }

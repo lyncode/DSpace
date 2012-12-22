@@ -57,6 +57,9 @@ public class Constants
     
     /** Type of individual handle objects */
     public static final int HANDLE = 13;
+
+    /** Type of individual metadata objects */
+    public static final int METADATA = 14;
     
     /**
      * lets you look up type names from the type IDs

@@ -11,6 +11,6 @@ import org.dspace.orm.entity.Eperson;
 
 public interface IEpersonDao extends IDSpaceDao<Eperson>{
 
-	Eperson findByEmail(String eperson);
+	Eperson selectByEmail(String eperson);
     
 }

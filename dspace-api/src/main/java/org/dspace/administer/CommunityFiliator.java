@@ -115,7 +115,7 @@ public class CommunityFiliator
         Context c = new DSpace().getContextService().getContext();
 
         // ve are superuser!
-        c.setIgnoreAuthorization(true);
+        c.turnOffAuthorisationSystem();
 
         try
         {

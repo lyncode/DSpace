@@ -356,7 +356,7 @@ public class Harvest
     		DSpace ds = new DSpace();
     		Context context = ds.getContextService().getContext();
     		IEpersonDao personDao = ds.getSingletonService(IEpersonDao.class);
-    		EPerson eperson = personDao.findByEmail(email);
+    		EPerson eperson = personDao.selectByEmail(email);
         	context.setCurrentUser(eperson);
     		context.turnOffAuthorisationSystem();
     		
@@ -424,7 +424,7 @@ public class Harvest
     	try {
     		// Harvest will not work for an anonymous user
     		IEpersonDao personDao = new DSpace().getSingletonService(IEpersonDao.class);
-        	EPerson eperson = personDao.findByEmail(email);
+        	EPerson eperson = personDao.selectByEmail(email);
         	System.out.println("Harvest started... ");
         	context.setCurrentUser(eperson);
     		harvester.runHarvest();

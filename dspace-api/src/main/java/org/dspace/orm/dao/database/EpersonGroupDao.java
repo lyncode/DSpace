@@ -13,6 +13,10 @@ import org.dspace.orm.entity.EpersonGroup;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author João Melo <jmelo@lyncode.com>
+ * @author Miguel Pinto <mpinto@lyncode.com>
+ */
 @Transactional
 @Repository("IEpersonGroup")
 public class EpersonGroupDao extends DSpaceDao<EpersonGroup> implements IEpersonGroupDao {

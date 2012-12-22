@@ -320,7 +320,7 @@ public class Packager
         Context context = ds.getContextService().getContext();
         IEpersonDao dao = ds.getSingletonService(IEpersonDao.class);
         EPerson myEPerson = null;
-        myEPerson = dao.findByEmail(eperson);
+        myEPerson = dao.selectByEmail(eperson);
         if (myEPerson == null)
         {
             usageError("Error, eperson cannot be found: " + eperson);

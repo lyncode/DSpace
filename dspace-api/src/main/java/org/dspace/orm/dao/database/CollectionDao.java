@@ -7,17 +7,19 @@
  */
 package org.dspace.orm.dao.database;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.dspace.orm.dao.api.ICollectionDao;
 import org.dspace.orm.entity.Collection;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author João Melo <jmelo@lyncode.com>
+ * @author Miguel Pinto <mpinto@lyncode.com>
+ */
 @Transactional
 @Repository("ICollectionDao")
 public class CollectionDao extends DSpaceDao<Collection> implements ICollectionDao {
-    private static Logger log = LogManager.getLogger(CollectionDao.class);
+//    private static Logger log = LogManager.getLogger(CollectionDao.class);
 
     public CollectionDao () {
     	super(Collection.class);

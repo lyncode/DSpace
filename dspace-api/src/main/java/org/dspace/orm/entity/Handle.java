@@ -68,4 +68,8 @@ public class Handle implements IDSpaceObject {
 	public int getType() {
 		return Constants.HANDLE;
 	}
+
+	public IDSpaceObject toObject() {
+		
+	}
 }

@@ -16,5 +16,4 @@ public interface IHandleDao extends IDSpaceDao<Handle> {
     Handle selectByHandle(String handle);
 	List<Handle> selectByPrefix(String naHandle);
 	long countByPrefix(String oldH);
-	long updatePrefix(String oldH, String newH);
 }

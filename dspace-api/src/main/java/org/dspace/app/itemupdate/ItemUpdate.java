@@ -570,7 +570,7 @@ public class ItemUpdate {
         if (eperson.indexOf('@') != -1)
         {
             // @ sign, must be an email
-            myEPerson = persondao.findByEmail(eperson);
+            myEPerson = persondao.selectByEmail(eperson);
         }
         else
         {

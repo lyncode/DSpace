@@ -21,7 +21,7 @@ import org.dspace.handle.HandleManager;
 import org.dspace.workflow.WorkflowManager;
 import org.dspace.xmlworkflow.XmlWorkflowManager;
 import org.dspace.orm.dao.api.IEpersonDao;
-import org.dspace.orm.entity.EPerson;
+import org.dspace.orm.entity.Eperson;
 import org.dspace.utils.DSpace;
 
 import java.util.ArrayList;
@@ -1246,15 +1246,15 @@ public class MetadataImport
             if (line.hasOption('e'))
             {
             	IEpersonDao personDao = new DSpace().getSingletonService(IEpersonDao.class);
-                EPerson eperson;
+                Eperson eperson;
                 String e = line.getOptionValue('e');
                 if (e.indexOf('@') != -1)
                 {
-                    eperson = personDao.findByEmail(e);
+                    eperson = personDao.selectByEmail(e);
                 }
                 else
                 {
-                    eperson = personDao.findById(Integer.parseInt(e));
+                    eperson = personDao.selectById(Integer.parseInt(e));
                 }
 
                 if (eperson == null)
@@ -1264,8 +1264,7 @@ public class MetadataImport
                 }
                 c.setCurrentUser(eperson);
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Unable to find DSpace user: " + e.getMessage());
             System.exit(1);
             return;

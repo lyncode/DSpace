@@ -129,7 +129,7 @@ public class StructBuilder
         Context context = new DSpace().getContextService().getContext();
         
         // set the context
-        context.setCurrentUser(personDao.findByEmail(eperson));
+        context.setCurrentUser(personDao.selectByEmail(eperson));
  
         // load the XML
         Document document = loadXML(file);

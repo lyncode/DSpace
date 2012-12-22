@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Miguel Pinto <mpinto@lyncode.com>
  * @version $Revision$
  */
-
 @Transactional
 @Repository("IVersionItemDao")
 public class VersionItemDao extends DSpaceDao<VersionItem> implements IVersionItemDao {

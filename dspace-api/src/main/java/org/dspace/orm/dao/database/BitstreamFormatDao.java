@@ -7,17 +7,19 @@
  */
 package org.dspace.orm.dao.database;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.dspace.orm.dao.api.IBitstreamFormatDao;
 import org.dspace.orm.entity.BitstreamFormat;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author João Melo <jmelo@lyncode.com>
+ * @author Miguel Pinto <mpinto@lyncode.com>
+ */
 @Transactional
 @Repository("IBitstreamFormatDao")
 public class BitstreamFormatDao extends DSpaceDao<BitstreamFormat> implements IBitstreamFormatDao {
-	private static Logger log = LogManager.getLogger(BitstreamFormatDao.class);
+//	private static Logger log = LogManager.getLogger(BitstreamFormatDao.class);
 	
     public BitstreamFormatDao() {
 		super(BitstreamFormat.class);
