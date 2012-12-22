@@ -7,9 +7,9 @@
  */
 package org.dspace.orm.dao.database;
 
-import org.dspace.orm.dao.api.IResourcePolicyDao;
+import org.dspace.orm.dao.api.IRegistrationDataDao;
 
-import org.dspace.orm.entity.ResourcePolicy;
+import org.dspace.orm.entity.RegistrationData;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-@Repository("IResourcePolicyDao")
-public class ResourcePolicyDao extends DSpaceDao<ResourcePolicy> implements IResourcePolicyDao {
+@Repository("IRegistrationDataDao")
+public class RegistrationDataDao extends DSpaceDao<RegistrationData> implements IRegistrationDataDao {
     
-	public ResourcePolicyDao() {
-		super(ResourcePolicy.class);
+	public RegistrationDataDao() {
+		super(RegistrationData.class);
 	}
 }
