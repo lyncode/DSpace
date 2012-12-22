@@ -50,7 +50,9 @@ public class Collection implements IDSpaceObject {
     private Integer admin;
     private List<Community> parents;
     private List<Eperson> epersons;
-  
+    private Integer itemCount;
+    private List<Item> items;
+    
     @Autowired
     IHandleDao handleDao;
 
@@ -65,6 +67,16 @@ public class Collection implements IDSpaceObject {
     @JoinTable(name = "community2collection", joinColumns = { @JoinColumn(name = "collection_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "community_id", nullable = false) })
     public List<Community> getParents() {
         return parents;
+    }
+    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinTable(name = "collection2item", joinColumns = { @JoinColumn(name = "collection_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "item_id", nullable = false) })
+    public List<Item> getItems() {
+        return items;
+    }
+   
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
     @Transient
@@ -256,4 +268,13 @@ public class Collection implements IDSpaceObject {
         this.epersons = epersons;
     }
 
+    @Column(name = "item_count", nullable = true)
+   	public Integer getItemCount() {
+   		return itemCount;
+   	}
+
+   	public void setItemCount(Integer itemCount) {
+   		this.itemCount = itemCount;
+   	}
+    
 }

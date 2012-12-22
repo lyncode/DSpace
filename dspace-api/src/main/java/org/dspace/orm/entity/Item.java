@@ -35,6 +35,7 @@ public class Item implements IDSpaceObject {
     private Date lastModified;
     private Collection owningCollection;
     private List<Bundle> bundles;
+    List<Collection> collections;
     
     @Id
     @Column(name = "item_id")
@@ -45,6 +46,16 @@ public class Item implements IDSpaceObject {
 
     public void setID(int id) {
         this.id = id;
+    }
+    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinTable(name = "collection2item", joinColumns = { @JoinColumn(name = "item_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "collection_id", nullable = false) })
+    public List<Collection> getCollections() {
+        return collections;
+    }
+   
+    public void setCollections(List<Collection> collections) {
+        this.collections = collections;
     }
     
     @ManyToOne(fetch = FetchType.LAZY)

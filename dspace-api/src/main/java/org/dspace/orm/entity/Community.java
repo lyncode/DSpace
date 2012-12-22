@@ -46,6 +46,7 @@ public class Community implements IDSpaceObject, Serializable {
     private List<Community> parents;
     private List<Community> childs;
     private List<Collection> collections;
+    private List<Item> items;
     private boolean istop;
     private Integer itemCount;
 
@@ -59,6 +60,16 @@ public class Community implements IDSpaceObject, Serializable {
         return id;
     }
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+    @JoinTable(name = "community2community", joinColumns = { @JoinColumn(name = "child_comm_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "parent_comm_id", nullable = false) })
+    public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+    
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable(name = "community2community", joinColumns = { @JoinColumn(name = "child_comm_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "parent_comm_id", nullable = false) })
     public List<Community> getParents() {
@@ -221,4 +232,6 @@ public class Community implements IDSpaceObject, Serializable {
 	public void setItemCount(Integer itemCount) {
 		this.itemCount = itemCount;
 	}
+
+	
 }
