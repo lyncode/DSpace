@@ -7,9 +7,9 @@
  */
 package org.dspace.orm.dao.database;
 
-import org.dspace.orm.dao.api.IMetadataValueDao;
+import org.dspace.orm.dao.api.IMetadataFieldRegistryDao;
 
-import org.dspace.orm.entity.MetadataValue;
+import org.dspace.orm.entity.MetadataFieldRegistry;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-@Repository("IMetadataValueDao")
-public class MetadataValueDao extends DSpaceDao<MetadataValue> implements IMetadataValueDao {
+@Repository("IMetadataFieldRegistryDao")
+public class MetadataFieldRegistryDao extends DSpaceDao<MetadataFieldRegistry> implements IMetadataFieldRegistryDao {
     
-	public MetadataValueDao() {
-		super(MetadataValue.class);
+	public MetadataFieldRegistryDao() {
+		super(MetadataFieldRegistry.class);
 	}
 }

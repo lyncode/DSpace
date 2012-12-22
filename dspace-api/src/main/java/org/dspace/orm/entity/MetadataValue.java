@@ -29,7 +29,7 @@ import org.dspace.core.Constants;
 @Table(name = "metadatavalue")
 public class MetadataValue implements IDSpaceObject{
     private int id;
-    private Integer metadataField;
+    private MetadataFieldRegistry metadataField;
     private String textValue;
     private String textLang;
     private Integer place;
@@ -57,13 +57,13 @@ public class MetadataValue implements IDSpaceObject{
     	return Constants.METADATA;
     }
 
-
-    @Column(name = "metadata_field_id", nullable = true)
-	public Integer getMetadataField() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "metadata_field_id", nullable = true)
+	public MetadataFieldRegistry getMetadataField() {
 		return metadataField;
 	}
 
-	public void setMetadataField(Integer metadataField) {
+	public void setMetadataField(MetadataFieldRegistry metadataField) {
 		this.metadataField = metadataField;
 	}
 
