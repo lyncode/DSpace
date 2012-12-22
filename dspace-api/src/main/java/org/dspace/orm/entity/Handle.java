@@ -118,7 +118,14 @@ public class Handle implements IDSpaceObject {
 			case Constants.ITEM:
 				return itemDao.selectById(getResourceId());
 			case Constants.METADATA:
-				return 
+				return metadataDao.selectById(getResourceId());
+			case Constants.VERSIONITEM:
+				return versionItemDao.selectById(getResourceId());
+			case Constants.WORKFLOWITEM:
+				return workflowitemDao.selectById(getResourceId());
+			case Constants.WORKSPACEITEM:
+				return workspaceitemDao.selectById(getResourceId());
+			
 		}
 	}
 }
