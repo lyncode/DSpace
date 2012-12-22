@@ -48,7 +48,7 @@ public class RegistrationData implements IDSpaceObject{
     @Transient
     public int getType()
     {
-    	return Constants.VERSIONITEM;
+    	return Constants.RESOURCEPOLICY;
     }
 
     @Column(name = "email", nullable = true)

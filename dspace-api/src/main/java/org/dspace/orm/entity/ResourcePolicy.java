@@ -55,7 +55,7 @@ public class ResourcePolicy implements IDSpaceObject{
     @Transient
     public int getType()
     {
-    	return Constants.VERSIONITEM;
+    	return Constants.RESOURCEPOLICY;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

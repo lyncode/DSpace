@@ -58,6 +58,12 @@ public class Constants
     /** Type of individual handle objects */
     public static final int HANDLE = 13;
     
+    /** Type of individual handle objects */
+    public static final int RESOURCEPOLICY = 14;
+    
+    /** Type of individual handle objects */
+    public static final int REGISTRATIONDATA = 15;
+    
     /**
      * lets you look up type names from the type IDs
      */
