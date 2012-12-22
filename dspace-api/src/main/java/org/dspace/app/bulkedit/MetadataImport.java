@@ -1236,7 +1236,7 @@ public class MetadataImport
         catch (Exception e)
         {
             System.err.println("Unable to create a new DSpace Context: " + e.getMessage());
-            System.exit(1);
+            System. exit(1);
             return;
         }
 
