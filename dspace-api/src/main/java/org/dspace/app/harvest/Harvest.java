@@ -18,18 +18,17 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.browse.IndexBrowse;
+import org.dspace.content.Collection;
+import org.dspace.content.DSpaceObject;
 import org.dspace.harvest.HarvestedCollection;
+import org.dspace.content.Item;
+import org.dspace.content.ItemIterator;
 import org.dspace.harvest.OAIHarvester;
 import org.dspace.harvest.OAIHarvester.HarvestingException;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
-import org.dspace.orm.dao.api.ICollectionDao;
-import org.dspace.orm.dao.api.IEpersonDao;
-import org.dspace.orm.dao.api.IHandleDao;
-import org.dspace.orm.entity.Collection;
-import org.dspace.orm.entity.Eperson;
-import org.dspace.orm.entity.IDSpaceObject;
-import org.dspace.utils.DSpace;
+import org.dspace.eperson.EPerson;
+import org.dspace.handle.HandleManager;
 
 /**
  *  Test class for harvested collections.
@@ -152,7 +151,7 @@ public class Harvest
 
         // Instantiate our class
         Harvest harvester = new Harvest();
-        harvester.context = new DSpace().getContextService().getContext();
+        harvester.context = new DSpace()
         
         
         // Check our options
@@ -261,45 +260,46 @@ public class Harvest
      */
     private Collection resolveCollection(String collectionID) {
     	
-    	IDSpaceObject dso;
+    	DSpaceObject dso;
     	Collection targetCollection = null;
-    	DSpace ds = new DSpace();
-    	IHandleDao handleDao = ds.getSingletonService(IHandleDao.class);
-    	ICollectionDao collectionDao = ds.getSingletonService(ICollectionDao.class); 
     	
-    	// is the ID a handle?
-		if (collectionID != null)
-		{
-		    if (collectionID.indexOf('/') != -1)
-		    {
-		        // string has a / so it must be a handle - try and resolve it
-		    	
-		        dso = handleDao.selectByHandle(collectionID).toObject();
+    	try {
+	    	// is the ID a handle?
+	        if (collectionID != null)
+            {
+                if (collectionID.indexOf('/') != -1)
+                {
+                    // string has a / so it must be a handle - try and resolve it
+                    dso = HandleManager.resolveToObject(context, collectionID);
 
-		        // resolved, now make sure it's a collection
-		        if (dso == null || dso.getType() != Constants.COLLECTION)
-		        {
-		            targetCollection = null;
-		        }
-		        else
-		        {
-		            targetCollection = (Collection) dso;
-		        }
-		    }
-		    // not a handle, try and treat it as an integer collection
-		    // database ID
-		    else
-		    {
-		        System.out.println("Looking up by id: " + collectionID + ", parsed as '" + Integer.parseInt(collectionID) + "', " + "in context: " + context);
-		        targetCollection = collectionDao.selectById(Integer.parseInt(collectionID));
-		    }
-		}
-		// was the collection valid?
-		if (targetCollection == null)
-		{
-		    System.out.println("Cannot resolve " + collectionID + " to collection");
-		    System.exit(1);
-		}
+                    // resolved, now make sure it's a collection
+                    if (dso == null || dso.getType() != Constants.COLLECTION)
+                    {
+                        targetCollection = null;
+                    }
+                    else
+                    {
+                        targetCollection = (Collection) dso;
+                    }
+                }
+                // not a handle, try and treat it as an integer collection
+                // database ID
+                else
+                {
+                    System.out.println("Looking up by id: " + collectionID + ", parsed as '" + Integer.parseInt(collectionID) + "', " + "in context: " + context);
+                    targetCollection = Collection.find(context, Integer.parseInt(collectionID));
+                }
+            }
+            // was the collection valid?
+            if (targetCollection == null)
+            {
+                System.out.println("Cannot resolve " + collectionID + " to collection");
+                System.exit(1);
+            }
+    	}
+    	catch (SQLException se) {
+    		se.printStackTrace();
+    	}
     	
     	return targetCollection;
     }
@@ -350,10 +350,7 @@ public class Harvest
    	
     	try 
     	{
-    		DSpace ds = new DSpace();
-    		Context context = ds.getContextService().getContext();
-    		IEpersonDao personDao = ds.getSingletonService(IEpersonDao.class);
-    		Eperson eperson = personDao.selectByEmail(email);
+    		EPerson eperson = EPerson.findByEmail(context, email);
         	context.setCurrentUser(eperson);
     		context.turnOffAuthorisationSystem();
     		
@@ -420,8 +417,7 @@ public class Harvest
     	    	
     	try {
     		// Harvest will not work for an anonymous user
-    		IEpersonDao personDao = new DSpace().getSingletonService(IEpersonDao.class);
-        	EPerson eperson = personDao.selectByEmail(email);
+        	EPerson eperson = EPerson.findByEmail(context, email);
         	System.out.println("Harvest started... ");
         	context.setCurrentUser(eperson);
     		harvester.runHarvest();
