@@ -15,6 +15,20 @@ import javax.persistence.Table;
 
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.Constants;
+import org.dspace.orm.dao.api.IBitstreamDao;
+import org.dspace.orm.dao.api.IBitstreamFormatDao;
+import org.dspace.orm.dao.api.IBundleDao;
+import org.dspace.orm.dao.api.ICollectionDao;
+import org.dspace.orm.dao.api.ICommunityDao;
+import org.dspace.orm.dao.api.IEpersonDao;
+import org.dspace.orm.dao.api.IEpersonGroupDao;
+import org.dspace.orm.dao.api.IHandleDao;
+import org.dspace.orm.dao.api.IItemDao;
+import org.dspace.orm.dao.api.IMetadataDao;
+import org.dspace.orm.dao.api.IVersionItemDao;
+import org.dspace.orm.dao.api.IWorkFlowItemDao;
+import org.dspace.orm.dao.api.IWorkSpaceItemDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 @Entity
@@ -68,8 +82,43 @@ public class Handle implements IDSpaceObject {
 	public int getType() {
 		return Constants.HANDLE;
 	}
+	
+	@Autowired IBitstreamDao bitstreamDao;
+	@Autowired IBundleDao bundleDao;
+	@Autowired IHandleDao handleDao;
+	@Autowired ICommunityDao commDao;
+	@Autowired ICollectionDao collDao;
+	@Autowired IBitstreamFormatDao bitstreamFormatDao;
+	@Autowired IEpersonDao personDao;
+	@Autowired IEpersonGroupDao groupDao;
+	@Autowired IItemDao itemDao;
+	@Autowired IMetadataDao metadataDao;
+	@Autowired IVersionItemDao versionItemDao;
+	@Autowired IWorkFlowItemDao workflowitemDao;
+	@Autowired IWorkSpaceItemDao workspaceitemDao;
 
 	public IDSpaceObject toObject() {
-		
+		switch (this.getResourceType()) {
+			case Constants.BITSTREAM:
+				return bitstreamDao.selectById(getResourceId());
+			case Constants.BUNDLE:
+				return bundleDao.selectById(getResourceId());
+			case Constants.HANDLE:
+				return handleDao.selectById(getResourceId());
+			case Constants.COLLECTION:
+				return collDao.selectById(getResourceId());
+			case Constants.COMMUNITY:
+				return commDao.selectById(getResourceId());
+			case Constants.BITSTREAM_FORMAT:
+				return bitstreamFormatDao.selectById(getResourceId());
+			case Constants.EPERSON:
+				return personDao.selectById(getResourceId());
+			case Constants.EPERSONGROUP:
+				return groupDao.selectById(getResourceId());
+			case Constants.ITEM:
+				return itemDao.selectById(getResourceId());
+			case Constants.METADATA:
+				return 
+		}
 	}
 }
