@@ -9,7 +9,7 @@ package org.dspace.core;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.dspace.orm.entity.Eperson;
+import org.dspace.eperson.EPerson;
 
 import java.io.File;
 import java.util.Locale;
@@ -98,7 +98,7 @@ public class I18nUtil
      *
      * @param eperson
      */
-    public static Locale getEPersonLocale(Eperson eperson)
+    public static Locale getEPersonLocale(EPerson eperson)
     {
         if (eperson == null)
         {

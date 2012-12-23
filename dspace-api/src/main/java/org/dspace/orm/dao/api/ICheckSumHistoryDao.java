@@ -9,7 +9,7 @@ import org.dspace.orm.entity.CheckSumHistory;
  * @version $Revision$
  */
 public interface ICheckSumHistoryDao {
-	int save(CheckSumHistory c);
+	Integer save(CheckSumHistory c);
 
 	CheckSumHistory selectByKey(String key);
 

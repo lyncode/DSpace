@@ -54,8 +54,8 @@ import org.dspace.core.I18nUtil;
 import org.dspace.core.LogManager;
 import org.dspace.core.Utils;
 import org.dspace.core.Email;
+import org.dspace.eperson.EPerson;
 import org.dspace.handle.HandleManager;
-import org.dspace.orm.entity.EPerson;
 import org.dspace.utils.DSpace;
 
 /**

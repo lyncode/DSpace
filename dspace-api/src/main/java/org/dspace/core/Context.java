@@ -8,6 +8,7 @@
 package org.dspace.core;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,10 +17,13 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
+import org.dspace.eperson.EPerson;
 import org.dspace.event.Dispatcher;
 import org.dspace.event.Event;
 import org.dspace.event.EventManager;
+import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.orm.entity.Eperson;
+import org.dspace.utils.DSpace;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -114,20 +118,58 @@ public class Context
      *            the new current user, or <code>null</code> if no user is
      *            authenticated
      */
-    public void setCurrentUser(Eperson user)
+    public void setCurrentEperson(Eperson user)
     {
         currentUser = user;
     }
+    
 
     /**
-     * Get the current (authenticated) user
+     * Set the current user. Authentication must have been performed by the
+     * caller - this call does not attempt any authentication.
+     * 
+     * Use setCurrentEperson
+     * 
+     * @param user
+     *            the new current user, or <code>null</code> if no user is
+     *            authenticated
+     */
+    @Deprecated
+    public void setCurrentUser(org.dspace.eperson.EPerson user)
+    {
+    	IEpersonDao dao = new DSpace().getSingletonService(IEpersonDao.class);
+        currentUser = dao.selectById(user.getID());
+    }
+    
+    /**
+     * Get the current (authenticated) user.
      * 
      * @return the current user, or <code>null</code> if no user is
      *         authenticated
      */
-    public Eperson getCurrentUser()
+    public Eperson getCurrentEperson () {
+    	return this.currentUser;
+    }
+    
+
+    /**
+     * Get the current (authenticated) user.
+     * Use getCurrentEperson
+     * 
+     * @return the current user, or <code>null</code> if no user is
+     *         authenticated
+     */
+    @Deprecated
+    public EPerson getCurrentUser()
     {
-        return currentUser;
+    	if (this.currentUser != null)
+			try {
+				return EPerson.find(this, this.currentUser.getID());
+			} catch (SQLException e) {
+				log.error(e.getMessage(), e);
+				return null;
+			}
+		else return null;
     }
 
     /**

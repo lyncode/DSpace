@@ -8,7 +8,6 @@ import org.dspace.orm.dao.api.IDSpaceDao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -39,21 +38,14 @@ public abstract class DSpaceDao<T> implements IDSpaceDao<T> {
     }
 	
 	@Override
-    public int save(T c) {
+    public Integer save(T c) {
         Session session = getSession();
-        Transaction tx = null;
         Integer id = null;
         try {
-            tx = session.beginTransaction();
             id = (Integer) session.save(c);
-            tx.commit();
             log.debug(c.getClass().getSimpleName() + " saved");
         } catch (HibernateException e) {
-            if (tx != null)
-                tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
+        	log.error(e.getMessage(), e);
         }
         return id;
     }
@@ -62,19 +54,12 @@ public abstract class DSpaceDao<T> implements IDSpaceDao<T> {
     public boolean delete(T c) {
         boolean result = false;
         Session session = getSession();
-        Transaction tx = null;
         try {
-            tx = session.beginTransaction();
             session.delete(c);
-            tx.commit();
             log.debug(c.getClass().getSimpleName() + " deleted");
             result = true;
         } catch (HibernateException e) {
-            if (tx != null)
-                tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
+            log.error(e.getMessage(), e);
         }
         return result;
     }

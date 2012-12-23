@@ -12,6 +12,7 @@ import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.services.ContextService;
 import org.dspace.services.RequestService;
 import org.dspace.services.model.Request;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,20 +28,23 @@ public class DSpaceContextService implements ContextService {
 	@Autowired RequestService requestService;
 	@Autowired IEpersonDao epersonDao;
 
-	private Context newContext() {
-		Context ctx = new Context(sessionFactory.openSession());
+	@Override
+	public Context newContext() {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		Context ctx = new Context(session);
 		if (requestService != null) {
 			Request r = requestService.getCurrentRequest();
 			if (r != null)  {// There is one request running on this thread!
 				String userID = r.getSession().getUserId();
 				if (userID != null) 
-					ctx.setCurrentUser(epersonDao.findById(Integer.parseInt(userID)));
+					ctx.setCurrentUser(epersonDao.selectById(Integer.parseInt(userID)));
 				r.setAttribute(CONTEXT_ATTR, ctx);
 			}
 		}
 		return ctx;
 	}
-
+	
 	@Override
 	public Context getContext() {
 		if (requestService != null) {

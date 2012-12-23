@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public interface IDSpaceDao<T> {
-	int save(T c);
+	Integer save(T c);
 
     T selectById(int id);
 

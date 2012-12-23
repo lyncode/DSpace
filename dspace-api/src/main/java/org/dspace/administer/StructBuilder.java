@@ -29,7 +29,7 @@ import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.core.Context;
-import org.dspace.orm.dao.api.IEpersonDao;
+import org.dspace.eperson.EPerson;
 import org.dspace.utils.DSpace;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
@@ -125,11 +125,10 @@ public class StructBuilder
     	}
     	
         // create a context
-    	IEpersonDao personDao = new DSpace().getSingletonService(IEpersonDao.class);
         Context context = new DSpace().getContextService().getContext();
         
         // set the context
-        context.setCurrentUser(personDao.selectByEmail(eperson));
+        context.setCurrentUser(EPerson.findByEmail(context, eperson));
  
         // load the XML
         Document document = loadXML(file);

@@ -29,6 +29,7 @@ import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
 import org.dspace.handle.HandleManager;
+import org.dspace.utils.DSpace;
 
 /**
  *  Test class for harvested collections.
@@ -151,7 +152,7 @@ public class Harvest
 
         // Instantiate our class
         Harvest harvester = new Harvest();
-        harvester.context = new DSpace()
+        harvester.context = new DSpace().getContextService().getContext();
         
         
         // Check our options
