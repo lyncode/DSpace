@@ -2,7 +2,7 @@
 
 **What is?**
 
-SpringUI is a new DSpace interface that uses the most advanced technologies to fulfill DSpace community wishes, developed byLyncode. The main targets are:
+SpringUI is a new DSpace interface that uses the most advanced technologies to fulfill DSpace community wishes, developed by Lyncode. The main targets are:
 
 * Redesigned & Easy-to-modify UI (with usability studies)
 * Improved integration of statistical information
