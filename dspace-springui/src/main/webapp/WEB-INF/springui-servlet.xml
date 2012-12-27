@@ -19,8 +19,15 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
  
-	<context:component-scan base-package="org.dspace.springui.controllers" />
+	<context:component-scan base-package="org.dspace.springui.controllers, org.dspace.orm.dao" />
 	<context:spring-configured />
+	
+	<bean id="dspaceSpringProxy" class="org.dspace.springui.utils.DSpaceSpringProxy" />
+	<bean id="org.dspace.services.ConfigurationService" class="org.dspace.servicemanager.config.DSpaceConfigurationService"
+		factory-bean="dspaceSpringProxy" factory-method="getDSpaceConfigurationService" />
+	
+	<bean id="org.dspace.kernel.ServiceManager" class="org.dspace.servicemanager.DSpaceServiceManager"
+		factory-bean="dspaceSpringProxy" factory-method="getServiceManager" />
 	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="localhost"/>

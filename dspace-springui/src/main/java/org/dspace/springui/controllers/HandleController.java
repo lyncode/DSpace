@@ -24,12 +24,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HandleController {
 
-    @Autowired
-    IHandleDao handleDao;
-    @Autowired
-    ICommunityDao communityDao;
-    @Autowired
-    ICollectionDao collectionDao;
+    @Autowired IHandleDao handleDao;
+    @Autowired ICommunityDao communityDao;
+    @Autowired ICollectionDao collectionDao;
 
     @RequestMapping(value = "/handle/{prefix}/{id}", method = RequestMethod.GET)
     public String handleAction(@PathVariable("prefix") String prefix,

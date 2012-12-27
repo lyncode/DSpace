@@ -24,7 +24,10 @@
 	<!-- Spring context -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/springui-servlet.xml</param-value>
+		<param-value>
+			/WEB-INF/springui-servlet.xml
+			classpath:/spring/*.xml
+		</param-value>
 	</context-param>
 
 	<!-- session/request filter (from util), handles setting up requests and 
