@@ -1,54 +1,31 @@
-Installation instructions are included in this release package under
+#SpringUI
 
- - dspace/docs/DSpace-Manual.pdf
+**What is?**
 
-DSpace version information can be viewed online at
- - https://wiki.duraspace.org/display/DSDOC/
+SpringUI is a new DSpace interface that uses the most advanced technologies to fulfill DSpace community wishes, developed byLyncode. The main targets are:
 
-Documentation for the most recent stable release(s) may be downloaded
-or viewed online at
- - http://www.dspace.org/latest-release/
- - https://wiki.duraspace.org/display/DSDOC/
+Redesigned & Easy-to-modify UI (with usability studies)
+Improved integration of statistical information
+Improved Administration
+Improved Search/Browse mechanism
+Demo: http://demo.lyncode.com:8080/springui
 
-In addition, a listing of all known contributors to DSpace software can be
-found online at:
-https://wiki.duraspace.org/display/DSPACE/DSpaceContributors
+**Why?**
 
-Installation instructions for other versions may be different, so you
-are encouraged to obtain the appropriate version of the Documentation
-(from the links above or from the source repository).
+JSPUI is getting obsolete, it doesn't support themes neither several improvements on XMLUI. XMLUI is hard to modify to the common user. SpringUI uses the simpliest template technology together with all goods that came from the Spring 3, currently one of the most used Java web frameworks.
 
-To obtain files from the repository and build, please see:
+**Who?**
 
- - https://github.com/DSpace/DSpace/
+SpringUI is currently being developed by Lyncode, together with:
 
-or just:
+Miguel Peixoto Design Studio
+Minho University
+IBICT
+Tomas Bata University
 
- - git clone git://github.com/DSpace/DSpace.git
+##Main technologies
 
-Please refer any further problems to the dspace-tech@lists.sourceforge.net
-mailing list.
-
- - http://sourceforge.net/mail/?group_id=19984
-
-
-Detailed Issue Tracking for DSpace is done on our JIRA Issue Tracker
-
- - https://jira.duraspace.org/browse/DS
-
-
-To contribute to DSpace, please see:
-
- - https://wiki.duraspace.org/display/DSPACE/How+to+Contribute+to+DSpace
-
-
-For more details about DSpace, including a list of service providers,
-places to seek help, news articles and lists of other users, please see:
-
- - http://www.dspace.org/
-
-
-DSpace source code licensing information available online at:
- - http://www.dspace.org/license/
-
-Copyright (c) 2002-2012, DuraSpace.  All rights reserved.
+Spring 3
+Hibernate 4
+Jtwig (Twig Java port)
+Bootstrap (Default template)
