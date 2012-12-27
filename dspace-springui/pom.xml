@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>dspace-parent</artifactId>
+		<groupId>org.dspace</groupId>
+		<version>4.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+	<artifactId>dspace-springui</artifactId>
+	<packaging>war</packaging>
+	<name>DSpace Spring UI</name>
+	<description>Developed by Lyncode</description>
+	<url>http://www.lyncode.com</url>
+
+	<properties>
+		<org.springframework.version>3.1.1.RELEASE</org.springframework.version>
+		<root.basedir>${basedir}/..</root.basedir>
+	</properties>
+
+	<build>
+		<filters>
+			<!-- Filter using the properties file defined by dspace-parent POM -->
+			<filter>${filters.file}</filter>
+		</filters>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<attachClasses>true</attachClasses>
+					<!-- In version 2.1-alpha-1, this was incorrectly named warSourceExcludes -->
+					<packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
+					<warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>${basedir}/src/main/webapp</directory>
+							<includes>
+								<include>WEB-INF/web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <!--Exclude license check for XMLUI files which don't need it-->
+                    <excludes>
+                        <exclude>**/META-INF/**</exclude>
+                        <exclude>**/robots.txt</exclude>
+                        <exclude>**/readme*</exclude>
+                        <exclude>**/*.LICENSE</exclude>
+                        <exclude>**/public/**</exclude>
+                        <exclude>**/*.html.twig</exclude>
+                        <exclude>**/*.properties</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+		</plugins>
+		
+	</build>
+
+	<profiles>
+		<profile>
+			<id>oracle-support</id>
+			<activation>
+				<property>
+					<name>db.name</name>
+					<value>oracle</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.oracle</groupId>
+					<artifactId>ojdbc6</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
+	<dependencies>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.lyncode</groupId>
+			<artifactId>jtwig</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.dspace</groupId>
+			<artifactId>dspace-api</artifactId>
+		</dependency>
+	</dependencies>
+	
+	<developers>
+		<developer>
+			<name>João Melo</name>
+			<email>jmelo@lyncode.com</email>
+			<organization>Lyncode</organization>
+			<organizationUrl>http://www.lyncode.com</organizationUrl>
+			<url>http://www.lyncode.com/m/jmelo</url>
+		</developer>
+		<developer>
+			<name>Miguel Pinto</name>
+			<email>mpinto@lyncode.com</email>
+			<organization>Lyncode</organization>
+			<organizationUrl>http://www.lyncode.com</organizationUrl>
+		</developer>
+	</developers>
+</project>

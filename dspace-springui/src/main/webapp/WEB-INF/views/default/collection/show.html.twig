@@ -1,0 +1,52 @@
+{# 
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+    
+#}
+{% extends '../layout.html.twig' %}
+{% block content %}
+<ul class="breadcrumb">
+  <li><a href="{{ path('/') }}">{{ 'breadcrumb.home' | trans }}</a> <span class="divider">/</span></li>
+  {% for p in collection.hierarchyList %}
+  <li><a href="{{ concat('/handle/', p.handle) | path }}">{{ p.name }}</a> <span class="divider">/</span></li>
+  {% endfor %}
+  <li class="active">{{ collection.name }}</li>
+</ul>
+<div class="row">
+	<div class="span9">
+		<h1>{{ collection.name }}</h1>
+		<small>{{ collection.shortDescription }}</small>
+		<hr />
+		<div class="well remove-bottom-padding">
+			<form class="searchCollection" action="{{ path '/search' }}">
+				<input type="hidden" name="collection" value="{{ collection.handle }}" />
+				<div class="input-append">
+				  <input class="span9" placeholder="{{ 'search.text' | trans }}" id="appendedInputButtons" type="text">
+				  <button class="btn btn-large" type="button">{{ 'search' | trans }}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="span3">
+		{% if collection.logo || collection.introductoryText.length > 0 %}
+		<div class="block">
+			<p class="block-heading">{{ 'more.info' | trans }}</p>
+			<div class="block-body">
+				{% if collection.logo %}
+				<img src="{{ concat('/logo/', collection.logo.id ) | path }}" />
+				{% endif %}
+				{% if collection.introductoryText.length > 0 && collection.logo %}
+				<hr />
+				{% endif %}
+				{{ collection.introductoryText }}
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}

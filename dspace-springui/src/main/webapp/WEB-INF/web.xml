@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The contents of this file are subject to the license and copyright detailed 
+	in the LICENSE and NOTICE files at the root of the source tree and available 
+	online at http://www.dspace.org/license/ -->
+<web-app id="WebAppSpringUI" version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<display-name>Spring UI for DSpace</display-name>
+
+	<context-param>
+		<param-name>dspace-config</param-name>
+		<param-value>${dspace.dir}/config/dspace.cfg</param-value>
+	</context-param>
+	<!-- new ConfigurationService initialization for dspace.dir -->
+	<context-param>
+		<description>
+      	The location of the main DSpace configuration file
+    	</description>
+		<param-name>dspace.dir</param-name>
+		<param-value>${dspace.dir}</param-value>
+	</context-param>
+	<!-- Spring context -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/springui-servlet.xml</param-value>
+	</context-param>
+
+	<!-- session/request filter (from util), handles setting up requests and 
+		sessions correctly -->
+	<filter>
+		<filter-name>dspace.request</filter-name>
+		<filter-class>org.dspace.utils.servlet.DSpaceWebappServletFilter</filter-class>
+	</filter>
+
+	<!-- Filter mappings -->
+	<filter-mapping>
+		<filter-name>dspace.request</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>org.dspace.servicemanager.servlet.DSpaceKernelServletContextListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.dspace.app.util.DSpaceContextListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>springui</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>FileSevlet</servlet-name>
+		<servlet-class>org.dspace.springui.servlet.FileServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FileSevlet</servlet-name>
+		<url-pattern>/public/*</url-pattern>
+		<url-pattern>/favicon.ico</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>springui</servlet-name>
+		<url-pattern>/</url-pattern>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>/index</welcome-file>
+	</welcome-file-list>
+</web-app>

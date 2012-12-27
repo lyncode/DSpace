@@ -1,0 +1,285 @@
+
+/* Set the fixed height of the footer here */
+html, body {
+	
+		margin: 0;
+        height: 100%;
+        /* The html and body elements cannot have any padding or margin. */
+}
+
+body {
+	
+}
+
+h1, h2, h3, h4, h5 {
+	font-weight: 100;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        /* Negative indent footer by it's height */
+        margin: 0px auto -60px;
+}
+
+.content-container {
+	padding-top: 60px;
+}
+
+#push, #footer {
+  height: 60px;
+}
+
+#footer {
+  background-color: #f5f5f5;
+}
+
+#footer .container {
+        width: auto;
+        max-width: 680px;
+}
+
+#footer .container .credit {
+        margin: 20px 0;
+}
+
+form.search input {
+	font-size: 30px;
+	height: 34px;
+	width: 789px;
+}
+
+form.searchCommunity input,
+form.searchCollection input {
+	font-size: 30px;
+	height: 34px;
+	width: 549px;
+}
+
+form.search input::-webkit-input-placeholder,
+form.search input::-moz-placeholder,
+form.searchCommunity input::-webkit-input-placeholder,
+form.searchCommunity input::-moz-placeholder,
+form.searchCollection input::-webkit-input-placeholder,
+form.searchCollection input::-moz-placeholder { 
+	vertical-align: middle;
+	font-weight: 300;
+	padding-top: 8px;
+}
+
+.remove-bottom-padding {
+	padding-bottom: 0px;
+}
+
+.block {
+	border: 1px solid #CCC;
+	background: white;
+	margin: 1em 0em;
+}
+.block-body {
+	margin: 1em;
+	min-height: .25em;
+}
+
+
+.block-heading {
+	border-bottom: 1px solid #A6A6A6;
+	border-left: none;
+	color: #505050;
+	display: block;
+	margin-bottom: 0px;
+	text-shadow: none;
+	text-transform: none;
+	font-weight: bold;
+	font-size: .85em;
+	line-height: 3em;
+	
+}
+p.block-heading, a.block-heading, .block-heading a {
+	color: #505050;
+	background: #DDD;
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #DDD), color-stop(1, #FAFAFA));
+	background: -ms-linear-gradient(bottom, #DDD, #FAFAFA);
+	background: -moz-linear-gradient(center bottom, #DDD 0%, #FAFAFA 100%);
+	background: -o-linear-gradient(bottom, #DDD, #FAFAFA);
+	filter: progid:dximagetransform.microsoft.gradient(startColorStr='#e6e6e6', EndColorStr='#ffffff');
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fafafa',EndColorStr='#dddddd')";
+	display: block;
+	padding-left: 1em;
+	border-top: 1px solid white;
+	outline: none;
+}
+
+.image-head {
+	background-image: url(../img/books.jpg);
+	height: 160px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	margin-bottom: 10px;
+}
+
+
+.community {
+	position: relative;
+	margin: 15px 0;
+	background-color: white;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+.community:hover {
+	text-decoration: none;
+	border: 1px solid #AAA;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.5);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.community p.title {
+	margin: 0;
+	display: block;
+	top: -1px;
+	left: -1px;
+	padding: 3px 7px;
+	font-size: 16px;
+	font-weight: 200;
+	text-align: center;
+	background-color: whiteSmoke;
+	border-bottom: 1px solid #DDD;
+	color: #9DA0A4;
+	width: 100%;
+	-webkit-border-radius: 4px 4px 0px 0px;
+	-moz-border-radius: 4px 4px 0px 0px;
+	border-radius: 4px 4px 0px 0px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.community p.logo {
+	padding: 10px;
+	margin: 0;
+}
+
+.community p.logo img {
+	width: 100%;
+	margin: 0;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.community p.description {
+	margin: 0;
+	padding: 13px;
+	border-top: 1px solid #DDD;
+	text-align: justify;
+	color: #999;
+}
+/* Github banner */
+#github-banner {
+		position: fixed;
+		right: 0px;
+		top: 0px;
+		z-index: 1000000;
+			height: 149px;
+			width: 149px;
+			overflow:hidden;
+			padding: 0;
+			margin: 0;
+}
+		
+#github-banner a{
+			
+			display: block;
+			width: 190px;
+			font-size: 14px;
+			font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", 
+				"Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, 
+				Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
+			background-color: #333;
+			color: #FFF;
+			word-spacing: 2px;
+			text-decoration: none;
+			padding: 5px 15px 5px 25px;
+			
+			position:relative;
+			left: 20px;
+			top: -37px;
+			text-align: center;
+			
+			-moz-transform-origin: 0 0 ;
+			-moz-transform:rotate(45deg);
+			-moz-box-shadow:    1px 1px 5px 1px #666;
+			
+			-webkit-transform-origin: 0 0 ;	
+			-webkit-transform:rotate(45deg);
+			-webkit-box-shadow: 1px 1px 5px 1px #666;
+			
+			-ms-transform-origin: 0 0 ;	
+			-ms-transform:rotate(45deg);
+			-ms-box-shadow: 1px 1px 5px 1px #666;
+			
+			transform-origin: 0 0 ;	
+			transform:rotate(45deg);
+			box-shadow: 1px 1px 5px 1px #666;
+			
+			background-image: linear-gradient(bottom, #000000 3%, #666666 5%, #000000 7%, #000000 93%, #666666 95%, #000000 97%);
+			background-image: -o-linear-gradient(bottom, #000000 3%, #666666 5%, #000000 7%, #000000 93%, #666666 95%, #000000 97%);
+			background-image: -moz-linear-gradient(bottom, #000000 3%, #666666 5%, #000000 7%, #000000 93%, #666666 95%, #000000 97%);
+			background-image: -webkit-linear-gradient(bottom, #000000 3%, #666666 5%, #000000 7%, #000000 93%, #666666 95%, #000000 97%);
+			background-image: -ms-linear-gradient(bottom, #000000 3%, #666666 5%, #000000 7%, #000000 93%, #666666 95%, #000000 97%);
+			
+			background-image: -webkit-gradient(
+				linear,
+				left bottom,
+				left top,
+				color-stop(0.03, #000000),
+				color-stop(0.05, #666666),
+				color-stop(0.07, #000000),
+				color-stop(0.93, #000000),
+				color-stop(0.95, #666666),
+				color-stop(0.97, #000000)
+			);	
+			
+}
+
+.collapse {
+  height: auto;
+  width: auto;
+}
+
+.collapse.height {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition: height 0.35s ease;
+  -moz-transition: height 0.35s ease;
+  -o-transition: height 0.35s ease;
+  transition: height 0.35s ease;
+}
+
+.collapse.width {
+  position: relative;
+  width: 0;
+  overflow: hidden;
+  -webkit-transition: width 0.35s ease;
+  -moz-transition: width 0.35s ease;
+  -o-transition: width 0.35s ease;
+  transition: width 0.35s ease;
+}
+
+.collapse.in.width {
+  width: auto;
+}
+
+.collapse.in.height {
+  height: auto;
+}​

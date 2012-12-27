@@ -316,6 +316,21 @@
             </modules>
         </profile>
 
+        <!--
+           Builds SpringUI WAR for DSpace
+        -->
+        <profile>
+            <id>dspace-springui</id>
+            <activation>
+                <file>
+                    <exists>dspace-springui/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>dspace-springui</module>
+            </modules>
+        </profile>
+
 
         <!--
            Builds SWORD WAR for DSpace
@@ -395,6 +410,7 @@
             <module>dspace-xmlui</module>
             <module>dspace-lni</module>
             <module>dspace-oai</module>
+            <module>dspace-springui</module>
             <module>dspace-sword</module>
             <module>dspace-swordv2</module>
          </modules>
@@ -488,6 +504,19 @@
          <dependency>
             <groupId>org.dspace</groupId>
             <artifactId>dspace-oai</artifactId>
+            <version>4.0-SNAPSHOT</version>
+            <type>war</type>
+         </dependency>
+         <dependency>
+            <groupId>org.dspace</groupId>
+            <artifactId>dspace-springui</artifactId>
+            <version>4.0-SNAPSHOT</version>
+            <type>jar</type>
+            <classifier>classes</classifier>
+         </dependency>
+         <dependency>
+            <groupId>org.dspace</groupId>
+            <artifactId>dspace-springui</artifactId>
             <version>4.0-SNAPSHOT</version>
             <type>war</type>
          </dependency>

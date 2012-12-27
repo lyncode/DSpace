@@ -73,6 +73,15 @@
             </modules>
         </profile>
         <profile>
+            <id>dspace-springui</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>springui</module>
+            </modules>
+        </profile>
+        <profile>
             <id>dspace-swordv2</id>
             <activation>
                 <activeByDefault>true</activeByDefault>

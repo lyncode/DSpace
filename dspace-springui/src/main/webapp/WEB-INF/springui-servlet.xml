@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+ 
+	<context:component-scan base-package="org.dspace.springui.controllers" />
+	<context:spring-configured />
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="localhost"/>
+        <property name="port" value="25"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">false</prop>
+            </props>
+        </property>
+    </bean>
+	
+ 	<mvc:annotation-driven />
+ 	<mvc:interceptors>
+			<bean
+			    class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			    <property name="paramName" value="lang" />
+			</bean>
+    </mvc:interceptors>
+ 
+ 	<bean id="propertyReader" class="org.dspace.springui.jtwig.DSpacePropertyReader" />
+ 	<bean id="assetResolver" class="com.lyncode.jtwig.mvc.DefaultAssetResolver">
+ 		<property name="basePath">
+ 			<value>public</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="invokeResolver" class="com.lyncode.jtwig.mvc.DefaultInvokeResolver">
+ 		<property name="package">
+ 			<value>org.dspace.springui.invokers</value>
+ 		</property>
+ 	</bean>
+ 	<bean id="jtwigThemeResolver" class="org.dspace.springui.jtwig.DSpaceThemeResolver">
+ 		<property name="theme">
+ 			<value>default</value>
+ 		</property>
+ 	</bean>
+ 
+	<bean id="viewResolver" class="com.lyncode.jtwig.mvc.JtwigViewResolver">
+        <property name="prefix">
+            <value>/WEB-INF/views/</value>
+        </property>
+        <property name="suffix">
+            <value>.html.twig</value>
+        </property> 
+    </bean>
+    
+    <bean id="messageSource"
+	    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	    <property name="basename" value="WEB-INF/translations/messages"/>
+	    <property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	 
+	<bean id="localeResolver"
+	    class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+	    <property name="defaultLocale" value="en"/>
+	</bean>
+</beans>

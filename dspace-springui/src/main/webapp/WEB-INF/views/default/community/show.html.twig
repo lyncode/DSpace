@@ -1,0 +1,102 @@
+{# 
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+    
+#}
+{% extends '../layout.html.twig' %}
+{% block content %}
+<ul class="breadcrumb">
+  <li><a href="{{ path('/') }}">{{ 'breadcrumb.home' | trans }}</a> <span class="divider">/</span></li>
+  {% for p in community.hierarchyList %}
+  <li><a href="{{ concat('/handle/', p.handle) | path }}">{{ p.name }}</a> <span class="divider">/</span></li>
+  {% endfor %}
+  <li class="active">{{ community.name }}</li>
+</ul>
+<div class="row">
+	<div class="span9">
+		<h1>{{ community.name }}</h1>
+		<small>{{ community.shortDescription }}</small>
+		<hr />
+		<div class="well remove-bottom-padding">
+			<form class="searchCommunity" action="{{ path '/search' }}">
+				<input type="hidden" name="community" value="{{ community.handle }}" />
+				<div class="input-append">
+				  <input class="span9" placeholder="{{ 'search.text' | trans }}" id="appendedInputButtons" type="text">
+				  <button class="btn btn-large" type="button">{{ 'search' | trans }}</button>
+				</div>
+			</form>
+		</div>
+		{% if community.hasChilds %}
+		<hr />
+		<h2>{{ 'sub.communities' | trans }}</h2>
+		<div class="sub-communities">
+			{% for sub in community.childs %}
+			{% if (position % 4) == 0 %}
+			<div class="row-fluid">
+			{% endif %}
+				<a href="{{ concat ('/handle/', sub.handle) | path }}" class="community span3">
+					<p class="title">{{ sub.name }}</p>
+					{% if sub.logo %}
+					<p class="logo">
+						<img src="{{ concat('/logo/', sub.logo.id ) | path }}" />
+					</p>
+					{% endif %}
+					{% if sub.shortDescription %}
+					<p class="description">{{ sub.shortDescription }}</p>
+					{% endif %}
+				</a>
+			{% if ((position % 4) == 3) || last %}
+			</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+		{% endif %}
+		{% if community.hasCollections %}
+		<hr />
+		<h2>{{ 'community.collections' | trans }}</h2>
+		<div class="sub-collections">
+			{% for sub in community.collections %}
+			{% if (position % 3) == 0 %}
+			<div class="row-fluid">
+			{% endif %}
+				<a href="{{ concat ('/handle/', sub.handle) | path }}" class="community span4">
+					<p class="title">{{ sub.name }}</p>
+					{% if sub.logo %}
+					<p class="logo">
+						<img src="{{ concat('/logo/', sub.logo.id ) | path }}" />
+					</p>
+					{% endif %}
+					{% if sub.shortDescription %}
+					<p class="description">{{ sub.shortDescription }}</p>
+					{% endif %}
+				</a>
+			{% if ((position % 3) == 2) || last %}
+			</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+	<div class="span3">
+		{% if community.logo || community.introductoryText.length > 0 %}
+		<div class="block">
+			<p class="block-heading">{{ 'more.info' | trans }}</p>
+			<div class="block-body">
+				{% if community.logo %}
+				<img src="{{ concat('/logo/', community.logo.id ) | path }}" />
+				{% end if %}
+				{% if community.introductoryText.length > 0 && community.logo %}
+				<hr />
+				{% endif %}
+				{{ community.introductoryText }}
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}
