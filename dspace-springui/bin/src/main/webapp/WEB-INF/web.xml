@@ -26,6 +26,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/springui-servlet.xml
+			classpath:/spring/*.xml
 		</param-value>
 	</context-param>
 

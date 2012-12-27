@@ -1,0 +1,128 @@
+{# 
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+    
+#}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}DSpace{% endblock %}</title>
+	<!-- Bootstrap -->
+	<link href="{{ asset 'css/bootstrap.min.css' }}" rel="stylesheet"media="screen">
+	<!-- 
+	<link href="{{ asset 'css/bootstrap-responsive.min.css' }}" rel="stylesheet" media="screen">
+	 -->
+	<link href="{{ asset 'css/default.css' }}" rel="stylesheet" media="screen">
+	<script src="{{ asset 'js/jquery.min.js' }}"></script>
+	<script src="{{ asset 'js/bootstrap.min.js' }}"></script>
+	{% block javascripts %}{% endblock %}
+	
+</head>
+<body>
+	<div id="github-banner"><a target="_blank" href="https://github.com/lyncode/DSpace/tree/springui">Fork us on Github</a></div>
+	<!-- Menu -->
+	<a href="http://www.lyncode.com" target="_blank" style="position: fixed; z-index: 10000;"><img style="width: 150px; padding-right: 10px; padding-left: 10px; padding-top: 10px;" src="http://www.lyncode.com/bundles/lyncodesite/images/logoCor.png" /></a>
+	<div id="wrap">
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<a class="brand" href="{{ '/' | path }}">{{ 'dspace.name' | property }}</a>
+					<a href="#feedback" style="float: left;" role="button" class="btn btn-primary" data-toggle="modal">Give us Feedback</a>
+					<a href="https://twitter.com/Lyncode" target="_blank" style="float: left;"><img style="width: 80px; padding-right: 10px; padding-left: 10px; padding-top: 7px;" src="http://www.dca.ca.gov/cba/images/follow_bird_us-a.png" /></a>
+					<a href="https://jira.duraspace.org/browse/DS-1434" target="_blank" style="float: left;"><img style="height: 30px; width: 60px; padding-right: 10px; padding-left: 10px; padding-top: 7px;" src="http://www.atlassian.com/en/wac/software/jira/overview/productLogo/imageBinary/jira_logo_landing.png" /></a>
+					<div class="nav-collapse collapse">
+						<ul class="nav pull-right">
+						{% call UserRelated getUserInfo  %}
+						{% if user.isGuest %}
+							<li><a class="btn-header" href="{{ path '/user/login' }}">{{ translate 'login' }}</a></li>
+							<li><a class="btn-header" href="{{ path '/user/register' }}">{{ translate 'register' }}</a></li>
+						{% else %}
+							<li class="dropdown">
+			                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ translate ('hi', user.name) }} <b class="caret"></b></a>
+			                  <ul class="dropdown-menu">
+			                    <li><a href="{{ path '/user/edit' }}">{{ translate 'profile.edit' }}</a></li>
+			                    <li class="divider"></li>
+			                    <li class="nav-header"><a href="{{ path '/user/logout' }}">{{ translate 'logout' }}</a></li>
+			                  </ul>
+			                </li>
+						{% endif %}
+						</ul>
+					</div>
+					<!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+		<div class="container content-container">
+			
+			{% block content %}
+			No content defined
+			{% endblock %}
+			
+		</div>
+		<div id="push"></div>
+	</div>
+	<div id="footer">
+      <div class="container">
+        <p class="muted credit">Template by <a href="http://www.lyncode.com">Lyncode</a></p>
+      </div>
+    </div>
+    <div id="feedback" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="feedbackLabel" aria-hidden="true">
+      <form id="feedbackform" action="{{ path('/feedback') }}" method="post">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    		<h3 id="feedbackLabel">Send Feedback</h3>
+		  </div>
+		  <div class="modal-body">
+		  	<div id="feedbackError" style="display: none;" class="alert alert-danger">
+		  		<strong>Error</strong> Something went wrong, please, try again.
+		  	</div>
+		    <div id="feedbackSuccess" style="display: none;" class="alert alert-success">
+		  		<strong>Success</strong> Your feedback has been sent, many thanks!
+		  	</div>
+		    <div class="form-horizontal">
+			  <div class="control-group">
+			    <label class="control-label" for="name">Name</label>
+			    <div class="controls">
+			      <input type="text" id="name" placeholder="Name" name="name"> 
+			    </div>
+			  </div>
+		      <div class="control-group">
+			    <label class="control-label" for="inputEmail">Email</label>
+			    <div class="controls">
+			      <input type="text" name="mail" id="inputEmail" placeholder="Email">
+			    </div>
+			  </div>
+		      <div class="control-group">
+			    <label class="control-label" for="message">Message</label>
+			    <div class="controls">
+			      <textarea rows="5" name="message" id="message" placeholder="Type your text here..."></textarea>
+			    </div>
+			  </div>
+		    </div>
+		  </div>
+		  <div class="modal-footer">
+		  	<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		    <button type="button" class="btn btn-primary" id="submitFeedback">Send us feedback</button>
+		  </div>
+	  </form>
+	</div>
+	<script type="text/javascript">
+		$('#submitFeedback').click(function(){
+			$('#feedbackError').hide(); 
+			$('#feedbackSuccess').hide();
+			$.post("{{path('/feedback')}}", $("#feedbackform").serialize())
+				.done(function() { $('#feedbackError').hide(); $('#feedbackSuccess').show(); })
+			    .fail(function() { $('#feedbackError').show(); $('#feedbackSuccess').hide(); })
+		});
+	</script>
+</body>
+</html>

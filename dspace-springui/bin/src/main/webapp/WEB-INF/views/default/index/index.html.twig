@@ -1,0 +1,45 @@
+{# 
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+    
+#}
+{% extends '../layout.html.twig' %}
+{% block content %}
+<div class="image-head" src="{{ asset 'img/books.jpg' }}"></div>
+<div class="well remove-bottom-padding">
+	<form class="search" action="{{ path '/search' }}">
+		<div class="input-append">
+		  <input class="span9" placeholder="{{ 'search.text' | trans }}" id="appendedInputButtons" type="text">
+		  <button class="btn btn-large" type="button">{{ 'search' | trans }}</button>
+		</div>
+	</form>
+</div>
+<hr />
+<h2>{{ 'community.list' | trans }}</h2>
+<div class="communities">
+	{% call CommunityRelated getCommunityList %}
+	{% for community in communities %}
+	{% if (position % 4) == 0 %}
+	<div class="row-fluid">
+	{% endif %}
+		<a href="{{ concat ('/handle/', community.handle) | path }}" class="community span3">
+			<p class="title">{{ community.name }}</p>
+			{% if community.logo %}
+			<p class="logo">
+				<img src="{{ concat('/logo/', community.logo.id ) | path }}" />
+			</p>
+			{% endif %}
+			{% if community.shortDescription %}
+			<p class="description">{{ community.shortDescription }}</p>
+			{% endif %}
+		</a>
+	{% if ((position % 4) == 3) || last %}
+	</div>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endblock %}

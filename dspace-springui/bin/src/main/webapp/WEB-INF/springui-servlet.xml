@@ -19,18 +19,13 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
  
-	<context:component-scan base-package="org.dspace.springui.controllers"  />
+	<context:component-scan base-package="org.dspace.springui.controllers, org.dspace.orm.dao" />
 	<context:spring-configured />
 	
 	<bean id="dspaceSpringProxy" class="org.dspace.springui.utils.DSpaceSpringProxy" />
-	<bean id="iHandleDao" class="org.dspace.orm.dao.api.IHandleDao"
-		factory-bean="dspaceSpringProxy" factory-method="getIHandleDao" />
-	<bean id="iCommunityDao" class="org.dspace.orm.dao.api.ICommunityDao"
-		factory-bean="dspaceSpringProxy" factory-method="getICommunityDao" />
-	<bean id="iCollectionDao" class="org.dspace.orm.dao.api.ICollectionDao"
-		factory-bean="dspaceSpringProxy" factory-method="getICollectionDao" />
 	<bean id="org.dspace.services.ConfigurationService" class="org.dspace.servicemanager.config.DSpaceConfigurationService"
 		factory-bean="dspaceSpringProxy" factory-method="getDSpaceConfigurationService" />
+	
 	<bean id="org.dspace.kernel.ServiceManager" class="org.dspace.servicemanager.DSpaceServiceManager"
 		factory-bean="dspaceSpringProxy" factory-method="getServiceManager" />
 	

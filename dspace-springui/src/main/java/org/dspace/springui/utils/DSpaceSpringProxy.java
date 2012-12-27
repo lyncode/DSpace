@@ -8,6 +8,9 @@
 package org.dspace.springui.utils;
 
 import org.dspace.kernel.ServiceManager;
+import org.dspace.orm.dao.api.ICollectionDao;
+import org.dspace.orm.dao.api.ICommunityDao;
+import org.dspace.orm.dao.api.IHandleDao;
 import org.dspace.servicemanager.config.DSpaceConfigurationService;
 import org.dspace.services.ConfigurationService;
 import org.dspace.utils.DSpace;
@@ -29,6 +32,18 @@ public class DSpaceSpringProxy {
     }
     
     public ServiceManager getServiceManager () {
-        return dspace.getServiceManager();
+        return this.getService(ServiceManager.class);
+    }
+    
+    public IHandleDao getIHandleDao () {
+    	return this.getService(IHandleDao.class);
+    }
+
+    public ICommunityDao getICommunityDao () {
+    	return this.getService(ICommunityDao.class);
+    }
+    
+    public ICollectionDao getICollectionDao () {
+    	return this.getService(ICollectionDao.class);
     }
 }
