@@ -79,11 +79,7 @@
         </property> 
     </bean>
     
-    <bean id="messageSource"
-	    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-	    <property name="basename" value="WEB-INF/translations/messages"/>
-	    <property name="defaultEncoding" value="UTF-8"/>
-	</bean>
+    <bean id="messageSource" class="org.dspace.springui.i18n.DSpaceXLIFFMessageSource" />
 	 
 	<bean id="localeResolver"
 	    class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
