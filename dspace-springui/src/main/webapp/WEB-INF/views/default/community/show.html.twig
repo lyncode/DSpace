@@ -25,14 +25,14 @@
 			<form class="searchCommunity" action="{{ path '/search' }}">
 				<input type="hidden" name="community" value="{{ community.handle }}" />
 				<div class="input-append">
-				  <input class="span9" placeholder="{{ 'search.text' | trans }}" id="appendedInputButtons" type="text">
-				  <button class="btn btn-large" type="button">{{ 'search' | trans }}</button>
+				  <input class="span9" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
+				  <button class="btn btn-large" type="button">{{ 'Search' | trans }}</button>
 				</div>
 			</form>
 		</div>
 		{% if community.hasChilds %}
 		<hr />
-		<h2>{{ 'sub.communities' | trans }}</h2>
+		<h2>{{ 'Sub-communities' | trans }}</h2>
 		<div class="sub-communities">
 			{% for sub in community.childs %}
 			{% if (position % 4) == 0 %}
@@ -57,7 +57,7 @@
 		{% endif %}
 		{% if community.hasCollections %}
 		<hr />
-		<h2>{{ 'community.collections' | trans }}</h2>
+		<h2>{{ 'Collections' | trans }}</h2>
 		<div class="sub-collections">
 			{% for sub in community.collections %}
 			{% if (position % 3) == 0 %}
