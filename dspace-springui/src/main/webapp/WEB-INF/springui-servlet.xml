@@ -85,4 +85,7 @@
 	    class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 	    <property name="defaultLocale" value="en"/>
 	</bean>
+	
+	<bean id="authorizationService" class="org.dspace.services.auth.DSpaceAuthorizationService" />
+	<bean id="storageService" class="org.dspace.services.storage.DSpaceStorageService" />
 </beans>

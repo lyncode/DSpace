@@ -16,12 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.dspace.authorize.AuthorizeException;
 import org.dspace.core.Constants;
 import org.dspace.core.Utils;
 import org.dspace.orm.dao.api.IBitstreamDao;
 import org.dspace.orm.entity.Bitstream;
 import org.dspace.orm.entity.Bundle;
+import org.dspace.services.auth.AuthorizationException;
 import org.dspace.services.exceptions.StorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -76,7 +76,7 @@ public class FileController {
                 model.addAttribute("title", "Logo doesn't exist");
                 model.addAttribute("message", "The logo you are looking for doesn't exist");
             }
-        } catch (AuthorizeException e) {
+        } catch (AuthorizationException e) {
             log.info(e.getMessage(), e);
             model.addAttribute("title", "Authorization denied");
             model.addAttribute("message", "You don't have access to this resource");
