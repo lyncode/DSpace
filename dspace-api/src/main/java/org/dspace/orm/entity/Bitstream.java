@@ -24,17 +24,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-<<<<<<< HEAD
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.core.Constants;
-import org.dspace.services.AuthorizationService;
-import org.dspace.services.StorageService;
-=======
+
 import org.dspace.services.AuthorizationService;
 import org.dspace.services.StorageService;
 import org.dspace.services.auth.Action;
 import org.dspace.services.auth.AuthorizationException;
->>>>>>> 10d60dd... Authorization service implemented
 import org.dspace.services.exceptions.StorageException;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -235,13 +229,8 @@ public class Bitstream extends DSpaceObject {
 	}
 	
 	@Transient
-<<<<<<< HEAD
-	public InputStream retrieve () throws AuthorizeException, StorageException {
-		authorization.authorized(this, Constants.READ);
-=======
 	public InputStream retrieve () throws StorageException, AuthorizationException {
 		authorization.authorized(this, Action.READ);
->>>>>>> 10d60dd... Authorization service implemented
 		return storage.retrieve(this);
 	}
 

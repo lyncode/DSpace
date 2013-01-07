@@ -7,19 +7,10 @@
  */
 package org.dspace.services.auth;
 
-<<<<<<< HEAD
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.authorize.ResourcePolicy;
-import org.dspace.content.DSpaceObject;
-import org.dspace.core.Constants;
-import org.dspace.core.ContextV2;
-import org.dspace.eperson.Group;
-=======
 import java.util.List;
 
 import org.dspace.core.DSpaceContext;
 import org.dspace.orm.dao.api.IResourcePolicyDao;
->>>>>>> 10d60dd... Authorization service implemented
 import org.dspace.orm.entity.Eperson;
 import org.dspace.orm.entity.IDSpaceObject;
 import org.dspace.orm.entity.ResourcePolicy;
@@ -72,42 +63,11 @@ public class DSpaceAuthorizationService implements AuthorizationService {
 	@Override
 	public void authorized(IDSpaceObject object, Action action, boolean inheritance)
 			throws AuthorizationException {
-<<<<<<< HEAD
-		ContextV2 c = contextService.getContext();
-		if (object == null)
-        {
-            // action can be -1 due to a null entry
-            String actionText;
-
-            if (action == -1)
-            {
-                actionText = "null";
-            } else
-            {
-                actionText = Constants.actionText[action];
-            }
-
-            Eperson e = c.getCurrentEperson();
-            int userid;
-
-            if (e == null)
-            {
-                userid = 0;
-            } else
-            {
-                userid = e.getID();
-            }
-
-            throw new AuthorizeException(
-                    "Authorization attempted on null DSpace object "
-                            + actionText + " by user " + userid);
-=======
 		DSpaceContext c = contextService.getContext();
         Eperson e = c.getCurrentEperson();
 		if (object == null)
         {
             throw new AuthorizationException(action, e, object);
->>>>>>> 10d60dd... Authorization service implemented
         }
 
         if (!authorize(object, action, e, inheritance))
@@ -118,7 +78,7 @@ public class DSpaceAuthorizationService implements AuthorizationService {
 
 	private boolean authorize(IDSpaceObject o, Action action,
 			Eperson e, boolean useInheritance) {
-		ContextV2 c = contextService.getContext();
+		DSpaceContext c = contextService.getContext();
 		
 		if (o == null)
         {
@@ -132,11 +92,7 @@ public class DSpaceAuthorizationService implements AuthorizationService {
         }
 
         // is eperson set? if not, userid = 0 (anonymous)
-<<<<<<< HEAD
-        int userid = 0;
-=======
         
->>>>>>> 10d60dd... Authorization service implemented
         if (e != null)
         {
             // perform isAdmin check to see
@@ -175,12 +131,7 @@ public class DSpaceAuthorizationService implements AuthorizationService {
                 }
             }
         }
-<<<<<<< HEAD
-
-        // default authorization is denial
-=======
         
->>>>>>> 10d60dd... Authorization service implemented
         return false;
 	}
 
