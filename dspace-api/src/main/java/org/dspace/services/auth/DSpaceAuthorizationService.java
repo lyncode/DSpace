@@ -143,5 +143,4 @@ public class DSpaceAuthorizationService implements AuthorizationService {
 			this.config = new DSpaceAuthorizeConfiguration(configService);
 		return this.config;
 	}
-
 }
