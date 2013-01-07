@@ -274,7 +274,7 @@ public class ContextV2 extends Context {
                                         "restore_auth_sys_state",
                                         "Class: "
                                                 + caller
-                                                + " call restore but previous state change made by "
+                                                + " called restore but previous state change made by "
                                                 + previousCaller));
             }
         }
