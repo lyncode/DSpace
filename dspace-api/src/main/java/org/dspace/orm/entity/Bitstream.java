@@ -24,7 +24,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 import org.dspace.services.AuthorizationService;
 import org.dspace.services.StorageService;
 import org.dspace.services.auth.Action;
