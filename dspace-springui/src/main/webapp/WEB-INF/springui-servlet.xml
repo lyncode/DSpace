@@ -19,20 +19,7 @@
 	http://www.springframework.org/schema/mvc
 	http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
  
-	<context:component-scan base-package="org.dspace.springui.controllers"  />
 	<context:spring-configured />
-	
-	<bean id="dspaceSpringProxy" class="org.dspace.springui.utils.DSpaceSpringProxy" />
-	<bean id="iHandleDao" class="org.dspace.orm.dao.api.IHandleDao"
-		factory-bean="dspaceSpringProxy" factory-method="getIHandleDao" />
-	<bean id="iCommunityDao" class="org.dspace.orm.dao.api.ICommunityDao"
-		factory-bean="dspaceSpringProxy" factory-method="getICommunityDao" />
-	<bean id="iCollectionDao" class="org.dspace.orm.dao.api.ICollectionDao"
-		factory-bean="dspaceSpringProxy" factory-method="getICollectionDao" />
-	<bean id="org.dspace.services.ConfigurationService" class="org.dspace.servicemanager.config.DSpaceConfigurationService"
-		factory-bean="dspaceSpringProxy" factory-method="getDSpaceConfigurationService" />
-	<bean id="org.dspace.kernel.ServiceManager" class="org.dspace.servicemanager.DSpaceServiceManager"
-		factory-bean="dspaceSpringProxy" factory-method="getServiceManager" />
 	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="localhost"/>
@@ -44,8 +31,8 @@
             </props>
         </property>
     </bean>
-	
- 	<mvc:annotation-driven />
+    
+    <mvc:annotation-driven />
  	<mvc:interceptors>
 			<bean
 			    class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
@@ -78,14 +65,19 @@
             <value>.html.twig</value>
         </property> 
     </bean>
-    
-    <bean id="messageSource" class="org.dspace.springui.i18n.DSpaceXLIFFMessageSource" />
-	 
+
 	<bean id="localeResolver"
 	    class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
 	    <property name="defaultLocale" value="en"/>
 	</bean>
 	
-	<bean id="authorizationService" class="org.dspace.services.auth.DSpaceAuthorizationService" />
-	<bean id="storageService" class="org.dspace.services.storage.DSpaceStorageService" />
+	<!-- Requires DSpace Core Services -->
+	<!-- This bean is responsible of injecting all DSpace core beans into the current webapp context -->
+	<bean id="dspaceServices" class="org.dspace.springui.utils.DSpaceBeanProxy" />
+	
+	<context:component-scan base-package="org.dspace.springui.controllers"  />
+	
+	<bean id="messageSource" class="org.dspace.springui.i18n.DSpaceXLIFFMessageSource" depends-on="dspaceServices" />
+	<bean id="authorizationService" class="org.dspace.services.auth.DSpaceAuthorizationService" depends-on="dspaceServices" />
+	<bean id="storageService" class="org.dspace.services.storage.DSpaceStorageService" depends-on="dspaceServices" />
 </beans>

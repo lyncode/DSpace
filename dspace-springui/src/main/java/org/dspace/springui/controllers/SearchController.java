@@ -9,11 +9,13 @@ package org.dspace.springui.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@DependsOn("dspaceServices")
 public class SearchController {
     @RequestMapping(value = "/search/{query}")
     public String searchAction(@PathVariable("query") String query,

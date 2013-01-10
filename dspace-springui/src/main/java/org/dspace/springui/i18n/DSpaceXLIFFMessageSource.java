@@ -40,6 +40,7 @@ public class DSpaceXLIFFMessageSource implements MessageSource {
 
 	@Autowired
 	ConfigurationService config;
+	
 	private Map<String, XLIFF> map;
 	private Map<String, String> localeMap = new TreeMap<String, String>();
 	private WatchService watch;

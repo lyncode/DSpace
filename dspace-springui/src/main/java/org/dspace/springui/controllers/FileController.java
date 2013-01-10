@@ -24,6 +24,7 @@ import org.dspace.orm.entity.Bundle;
 import org.dspace.services.auth.AuthorizationException;
 import org.dspace.services.exceptions.StorageException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@DependsOn("dspaceServices")
 public class FileController {
     private static Logger log = LogManager.getLogger(FileController.class);
 

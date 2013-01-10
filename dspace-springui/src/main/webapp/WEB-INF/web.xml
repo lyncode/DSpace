@@ -8,6 +8,17 @@
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
 	<display-name>Spring UI for DSpace</display-name>
+	
+
+	<listener>
+		<listener-class>org.dspace.servicemanager.servlet.DSpaceKernelServletContextListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.dspace.app.util.DSpaceContextListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
 	<context-param>
 		<param-name>dspace-config</param-name>
@@ -24,6 +35,10 @@
 	<!-- Spring context -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
+		<!-- 
+		This is a small trick that will cause dspaceProxy beans to be instantiated before
+		loading the services (that require them).
+		-->
 		<param-value>
 			/WEB-INF/springui-servlet.xml
 		</param-value>
@@ -44,16 +59,6 @@
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
-
-	<listener>
-		<listener-class>org.dspace.servicemanager.servlet.DSpaceKernelServletContextListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>org.dspace.app.util.DSpaceContextListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
 
 	<servlet>
 		<servlet-name>springui</servlet-name>
