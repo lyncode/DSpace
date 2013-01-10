@@ -80,4 +80,7 @@
 	<bean id="messageSource" class="org.dspace.springui.i18n.DSpaceXLIFFMessageSource" depends-on="dspaceServices" />
 	<bean id="authorizationService" class="org.dspace.services.auth.DSpaceAuthorizationService" depends-on="dspaceServices" />
 	<bean id="storageService" class="org.dspace.services.storage.DSpaceStorageService" depends-on="dspaceServices" />
+	<bean id="sessionFilter" class="org.dspace.springui.servlet.HibernateSessionFilter" depends-on="dspaceServices" />
+	<bean id="sessionManager" class="org.dspace.springui.session.SessionManager" depends-on="dspaceServices" />
+	<bean id="sessionCommiter" class="org.dspace.springui.session.SessionCommitter" depends-on="dspaceServices" />
 </beans>

@@ -43,7 +43,12 @@
 			/WEB-INF/springui-servlet.xml
 		</param-value>
 	</context-param>
-
+	
+	<!-- Will call filters defined as spring beans -->
+	<filter>
+    	<filter-name>delegateFilter</filter-name>
+    	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  	</filter>
 	<!-- session/request filter (from util), handles setting up requests and 
 		sessions correctly -->
 	<filter>
