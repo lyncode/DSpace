@@ -9,6 +9,8 @@ package org.dspace.springui.utils;
 
 import java.lang.reflect.Proxy;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.dspace.kernel.ServiceManager;
 import org.dspace.utils.DSpace;
 import org.springframework.beans.BeansException;
@@ -25,6 +27,7 @@ import org.springframework.context.ApplicationContextAware;
  * @author João Melo <jmelo@lyncode.com>
  */
 public class DSpaceBeanProxy implements ApplicationContextAware {
+	private static Logger log = LogManager.getLogger(DSpaceBeanProxy.class);
 	private boolean initialized = false; 
 	
 	@Override
@@ -38,6 +41,7 @@ public class DSpaceBeanProxy implements ApplicationContextAware {
 			
 			ServiceManager sm = dspace.getServiceManager();
 			
+			log.info("Services added to the current application context: ");
 			for (String name : sm.getServicesNames()) {
 				Object obj = sm.getServiceByName(name, Object.class);
 				Class<?> realClass = null;
@@ -54,7 +58,7 @@ public class DSpaceBeanProxy implements ApplicationContextAware {
 				if (realClass != null) {
 					BeanDefinition bean = BeanDefinitionBuilder.genericBeanDefinition(realClass).getBeanDefinition();
 					if (!registry.containsBean(name)) {
-						System.out.println("Serviço ("+name+") = "+realClass.getName());
+						log.info("Service name: "+name+" (class: "+realClass.getName()+")");
 						registry.registerBeanDefinition(name, bean);
 						registry.registerSingleton(name, obj);
 					}
