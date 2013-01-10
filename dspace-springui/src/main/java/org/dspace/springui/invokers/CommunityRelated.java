@@ -24,6 +24,7 @@ public class CommunityRelated {
     ICommunityDao comRep;
 
     public void getCommunityList(Map<String, Object> model) {
+    	log.debug("Communities listed");
         model.put("communities", comRep.selectTop());
     }
 }
