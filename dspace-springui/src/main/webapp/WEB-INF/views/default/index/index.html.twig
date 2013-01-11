@@ -26,7 +26,7 @@
 	{% if (position % 4) == 0 %}
 	<div class="row-fluid">
 	{% endif %}
-		<a href="{{ concat ('/handle/', community.handle) | path }}" class="community span3">
+		<a href="{{ concat ('/handle/', community.handle ) | path }}" class="community span3">
 			<p class="title">{{ community.name }}</p>
 			{% if community.logo %}
 			<p class="logo">

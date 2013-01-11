@@ -10,7 +10,7 @@
 {% extends '../layout.html.twig' %}
 {% block content %}
 <ul class="breadcrumb">
-  <li><a href="{{ path('/') }}">{{ 'breadcrumb.home' | trans }}</a> <span class="divider">/</span></li>
+  <li><a href="{{ path('/') }}">{{ 'Homepage' | trans }}</a> <span class="divider">/</span></li>
   {% for p in community.hierarchyList %}
   <li><a href="{{ concat('/handle/', p.handle) | path }}">{{ p.name }}</a> <span class="divider">/</span></li>
   {% endfor %}
@@ -22,15 +22,15 @@
 		<small>{{ community.shortDescription }}</small>
 		<hr />
 		<div class="well remove-bottom-padding">
-			<form class="searchCommunity" action="{{ path '/search' }}">
+			<form class="search" method="POST" action="{{ path '/search' }}">
 				<input type="hidden" name="community" value="{{ community.handle }}" />
 				<div class="input-append">
-				  <input class="span9" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
-				  <button class="btn btn-large" type="button">{{ 'Search' | trans }}</button>
+				  <input class="span6" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
+				  <button class="btn btn-large">{{ 'Search' | trans }}</button>
 				</div>
 			</form>
 		</div>
-		{% if community.hasChilds %}
+		{% if community.childs %}
 		<hr />
 		<h2>{{ 'Sub-communities' | trans }}</h2>
 		<div class="sub-communities">
@@ -55,7 +55,7 @@
 			{% endfor %}
 		</div>
 		{% endif %}
-		{% if community.hasCollections %}
+		{% if community.collections %}
 		<hr />
 		<h2>{{ 'Collections' | trans }}</h2>
 		<div class="sub-collections">
@@ -84,12 +84,12 @@
 	<div class="span3">
 		{% if community.logo || community.introductoryText.length > 0 %}
 		<div class="block">
-			<p class="block-heading">{{ 'more.info' | trans }}</p>
+			<p class="block-heading">{{ 'More information' | trans }}</p>
 			<div class="block-body">
 				{% if community.logo %}
 				<img src="{{ concat('/logo/', community.logo.id ) | path }}" />
 				{% end if %}
-				{% if community.introductoryText.length > 0 && community.logo %}
+				{% if (community.introductoryText.length > 0) && (community.logo) %}
 				<hr />
 				{% endif %}
 				{{ community.introductoryText }}

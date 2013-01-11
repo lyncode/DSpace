@@ -45,17 +45,13 @@ h1, h2, h3, h4, h5 {
         margin: 20px 0;
 }
 
+form.search {
+	text-align: center;
+}
+
 form.search input {
 	font-size: 30px;
 	height: 34px;
-	width: 789px;
-}
-
-form.searchCommunity input,
-form.searchCollection input {
-	font-size: 30px;
-	height: 34px;
-	width: 549px;
 }
 
 form.search input::-webkit-input-placeholder,
