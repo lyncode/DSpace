@@ -60,6 +60,7 @@ public class DSpaceSessionFactoryBuilder  {
 			}
 	
 			prop.put("hibernate.connection.autocommit", false);
+			prop.put("hibernate.current_session_context_class", "thread");
 			
 			local.setHibernateProperties(prop);
 			local.afterPropertiesSet();
