@@ -21,6 +21,7 @@ import org.dspace.core.Utils;
 import org.dspace.orm.dao.api.IBitstreamDao;
 import org.dspace.orm.entity.Bitstream;
 import org.dspace.orm.entity.Bundle;
+import org.dspace.services.ContextService;
 import org.dspace.services.auth.AuthorizationException;
 import org.dspace.services.exceptions.StorageException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class FileController {
     private static Logger log = LogManager.getLogger(FileController.class);
 
     @Autowired IBitstreamDao bitstreamDao;
+    @Autowired ContextService contextService;
     
     @RequestMapping(value = "/logo/{id}", method = RequestMethod.GET)
     public String retrieveLogoAction(@PathVariable("id") String fileID,
