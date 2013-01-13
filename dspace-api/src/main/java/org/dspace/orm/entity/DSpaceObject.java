@@ -44,7 +44,7 @@ public abstract class DSpaceObject implements IDSpaceObject {
 	
 	@Transient
 	public Handle getHandle () {
-		return handleDao.selectByResourceId(getType().getId(), getID());
+		return handleDao.selectByResourceId(getType(), getID());
 	}
 	
 	@Transient
