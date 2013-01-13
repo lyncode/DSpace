@@ -39,7 +39,7 @@ public abstract class DSpaceObject implements IDSpaceObject {
 	
 	@Transient
 	public List<MetadataValue> getMetadata () {
-		return metadataDao.selectByResourceId(getType().getId(), getID());
+		return metadataDao.selectByResourceId(getType(), getID());
 	}
 	
 	@Transient
