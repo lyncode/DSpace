@@ -11,6 +11,7 @@ import org.dspace.core.Constants;
 import org.dspace.orm.dao.api.ICollectionDao;
 import org.dspace.orm.dao.api.ICommunityDao;
 import org.dspace.orm.dao.api.IHandleDao;
+import org.dspace.orm.dao.api.IMetadataValueDao;
 import org.dspace.orm.entity.Collection;
 import org.dspace.orm.entity.Community;
 import org.dspace.orm.entity.Handle;
@@ -29,6 +30,7 @@ public class HandleController {
     @Autowired IHandleDao handleDao;
     @Autowired ICommunityDao communityDao;
     @Autowired ICollectionDao collectionDao;
+    @Autowired IMetadataValueDao metadataValueDao;
 
     @RequestMapping(value = "/handle/{prefix}/{id}", method = RequestMethod.GET)
     public String handleAction(@PathVariable("prefix") String prefix,

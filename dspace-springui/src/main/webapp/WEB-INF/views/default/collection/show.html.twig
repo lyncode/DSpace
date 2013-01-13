@@ -34,7 +34,7 @@
 	<div class="span3">
 		{% if collection.logo || collection.introductoryText.length > 0 %}
 		<div class="block">
-			<p class="block-heading">{{ 'more.info' | trans }}</p>
+			<p class="block-heading">{{ 'More information' | trans }}</p>
 			<div class="block-body">
 				{% if collection.logo %}
 				<img src="{{ concat('/logo/', collection.logo.id ) | path }}" />
@@ -49,4 +49,29 @@
 	</div>
 </div>
 
+	{% if collection.items %}
+
+	<hr />
+		<h2>{{ 'Items' | trans }}</h2>
+		<div class="items-collection">
+			{% for item in collection.items %}
+			{% if (position % 4) == 0 %}
+			<div class="row-fluid">
+			{% endif %}
+				<a href="{{ concat ('/handle/', item.handle) | path }}" class="item span3">
+					<p class="title">{{ item.getFirstMetadata('dc.title') }}</p>
+					
+					<p class="logo">
+						<img src="{{ concat('/logo/', 5 ) | path  }}" />
+					</p>
+					{% if item.submitter.email %}
+					<p class="description">{{ item.getFirstMetadata('dc.description.abstract') }}</p>
+					{% endif %}
+				</a>
+			{% if ((position % 4) == 3) || last %}
+			</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+	{% endif %}
 {% endblock %}

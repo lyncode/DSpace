@@ -10,6 +10,7 @@ package org.dspace.orm.dao.database;
 import org.dspace.orm.dao.api.IMetadataSchemaRegistryDao;
 
 import org.dspace.orm.entity.MetadataSchemaRegistry;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,5 +25,12 @@ public class MetadataSchemaRegistryDao extends DSpaceDao<MetadataSchemaRegistry>
     
 	public MetadataSchemaRegistryDao() {
 		super(MetadataSchemaRegistry.class);
+	}
+
+	@Override
+	public MetadataSchemaRegistry selectByName(String schema) {
+		return (MetadataSchemaRegistry) super.getSession().createCriteria(MetadataSchemaRegistry.class)
+				.add(Restrictions.eq("shortID", schema))
+				.uniqueResult();
 	}
 }

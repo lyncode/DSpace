@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.dspace.orm.dao.api.ICommunityDao;
+import org.dspace.orm.dao.api.IMetadataValueDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class CommunityRelated {
@@ -22,6 +23,7 @@ public class CommunityRelated {
     HttpServletRequest request;
     @Autowired
     ICommunityDao comRep;
+    @Autowired IMetadataValueDao metadataValueDao;
 
     public void getCommunityList(Map<String, Object> model) {
     	log.debug("Communities listed");
