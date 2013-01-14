@@ -7,6 +7,8 @@
  */
 package org.dspace.orm.entity;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -265,6 +267,7 @@ public class Item extends DSpaceObject {
             return null;
         }
     }
+  
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy="")
 	public List<Collection> getTemplateItemCollections() {

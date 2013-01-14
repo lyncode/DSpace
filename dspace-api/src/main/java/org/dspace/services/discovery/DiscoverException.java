@@ -30,6 +30,4 @@ public class DiscoverException extends Exception {
 	public DiscoverException(Throwable cause) {
 		super(cause);
 	}
-	
-	
 }
