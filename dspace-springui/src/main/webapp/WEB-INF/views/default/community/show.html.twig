@@ -23,9 +23,9 @@
 		<hr />
 		<div class="well remove-bottom-padding">
 			<form class="search" method="POST" action="{{ path '/search' }}">
-				<input type="hidden" name="community" value="{{ community.handle }}" />
+				<input type="hidden" name="handle" value="{{ community.handle }}" />
 				<div class="input-append">
-				  <input class="span6" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
+				  <input name="query" class="span6" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
 				  <button class="btn btn-large">{{ 'Search' | trans }}</button>
 				</div>
 			</form>

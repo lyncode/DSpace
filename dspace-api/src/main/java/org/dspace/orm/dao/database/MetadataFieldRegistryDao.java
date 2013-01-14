@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-@Repository("IMetadataFieldRegistryDao")
+@Repository("org.dspace.orm.dao.api.IMetadataFieldRegistryDao")
 public class MetadataFieldRegistryDao extends DSpaceDao<MetadataFieldRegistry> implements IMetadataFieldRegistryDao {
     
 	public MetadataFieldRegistryDao() {

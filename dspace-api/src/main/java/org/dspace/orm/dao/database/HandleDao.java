@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Miguel Pinto <mpinto@lyncode.com>
  */
 @Transactional
-@Repository("IHandleDao")
+@Repository("org.dspace.orm.dao.api.IHandleDao")
 public class HandleDao extends DSpaceDao<Handle>  implements IHandleDao {
 //    private static Logger log = LogManager.getLogger(HandleDao.class);
     

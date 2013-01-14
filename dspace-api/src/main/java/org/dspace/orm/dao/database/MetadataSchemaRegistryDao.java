@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-@Repository("IMetadataSchemaRegistryDao")
+@Repository("org.dspace.orm.dao.api.IMetadataSchemaRegistryDao")
 public class MetadataSchemaRegistryDao extends DSpaceDao<MetadataSchemaRegistry> implements IMetadataSchemaRegistryDao {
     
 	public MetadataSchemaRegistryDao() {
