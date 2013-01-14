@@ -82,5 +82,14 @@
 	<bean id="storageService" class="org.dspace.services.storage.DSpaceStorageService" depends-on="dspaceServices" />
 	<bean id="sessionFilter" class="org.dspace.springui.servlet.HibernateSessionFilter" depends-on="dspaceServices" />
 	<bean id="sessionManager" class="org.dspace.springui.session.SessionManager" depends-on="dspaceServices" />
-	<bean id="sessionCommiter" class="org.dspace.springui.session.SessionCommitter" scope="request" depends-on="dspaceServices" />
+	
+	<bean 
+		id="sessionCommiter"
+		class="org.dspace.springui.session.SessionCommitter" 
+		scope="request" 
+		depends-on="dspaceServices" />
+	<bean 
+		id="discoveryService" 
+		class="org.dspace.services.discovery.DSpaceDiscoverService" 
+		depends-on="dspaceServices" />
 </beans>

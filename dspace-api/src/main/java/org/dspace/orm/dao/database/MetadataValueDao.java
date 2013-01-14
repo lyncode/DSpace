@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional
-@Repository("IMetadataValueDao")
+@Repository("org.dspace.orm.dao.api.IMetadataValueDao")
 public class MetadataValueDao extends DSpaceDao<MetadataValue> implements IMetadataValueDao {
 	private Map<String, MetadataSchemaRegistry> schemas = null;
 	private Map<String, MetadataFieldRegistry> fields = null;
@@ -42,14 +42,14 @@ public class MetadataValueDao extends DSpaceDao<MetadataValue> implements IMetad
 		super(MetadataValue.class);
 	}
 
-	private IMetadataSchemaRegistryDao getSchemaRegistry () {
-		if (schemaRegistry == null) schemaRegistry = new DSpace().getServiceManager().getServiceByName(IMetadataSchemaRegistryDao.class.getSimpleName(), IMetadataSchemaRegistryDao.class);
+	private IMetadataSchemaRegistryDao getSchemaRegistry () {		
+		if (schemaRegistry == null) schemaRegistry = new DSpace().getSingletonService(IMetadataSchemaRegistryDao.class);
 		return schemaRegistry;
 	}
 	
 
 	private IMetadataFieldRegistryDao getFieldRegistry () {
-		if (fieldRegistry == null) fieldRegistry = new DSpace().getServiceManager().getServiceByName(IMetadataFieldRegistryDao.class.getSimpleName(), IMetadataFieldRegistryDao.class);
+		if (fieldRegistry == null) fieldRegistry = new DSpace().getSingletonService(IMetadataFieldRegistryDao.class);
 		return fieldRegistry;
 	}
 	
@@ -66,7 +66,7 @@ public class MetadataValueDao extends DSpaceDao<MetadataValue> implements IMetad
 		return schemas.get(schema);
 	}
 	
-	private MetadataFieldRegistry getField (String field) { //dc.title.alternative
+	private MetadataFieldRegistry getField (String field) {
 		int pos = field.indexOf(".");
 		String schemaName = field.substring(0, pos);
 		String fieldName = field.substring(pos+1);
@@ -86,7 +86,10 @@ public class MetadataValueDao extends DSpaceDao<MetadataValue> implements IMetad
 	public List<MetadataValue> selectByResourceId(DSpaceObjectType resourceType,
 			int resourceId) {
 		return (List<MetadataValue>) this.getSession().createCriteria(MetadataValue.class)
-				.add(Restrictions.and(Restrictions.eq("resourceType", resourceType.getId()), Restrictions.eq("resource", resourceId)))
+				.add(Restrictions.and(
+						Restrictions.eq("resourceType", resourceType.getId()), 
+						Restrictions.eq("resource", resourceId)
+				))
 				.list();
 				
 	}
@@ -96,7 +99,11 @@ public class MetadataValueDao extends DSpaceDao<MetadataValue> implements IMetad
 	public List<MetadataValue> selectByResourceAndField (DSpaceObjectType resourceType, int resourceId, String field)
 	{
 		return (List<MetadataValue>) this.getSession().createCriteria(MetadataValue.class)
-				.add(Restrictions.and(Restrictions.eq("resourceType", resourceType.getId()), Restrictions.eq("resource", resourceId),  Restrictions.eq("metadataField", this.getField(field))))
+				.add(Restrictions.and(
+						Restrictions.eq("resourceType", resourceType.getId()), 
+						Restrictions.eq("resource", resourceId),  
+						Restrictions.eq("metadataField", this.getField(field))
+				))
 				.list();
 	}
 }

@@ -34,8 +34,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @DependsOn("dspaceServices")
-public class FileController {
-    private static Logger log = LogManager.getLogger(FileController.class);
+public class StorageController {
+    private static Logger log = LogManager.getLogger(StorageController.class);
 
     @Autowired IBitstreamDao bitstreamDao;
     @Autowired ContextService contextService;

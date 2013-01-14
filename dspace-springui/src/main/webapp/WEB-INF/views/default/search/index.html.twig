@@ -7,4 +7,49 @@
     http://www.dspace.org/license/
     
 #}
-{% extends '../layout.html.twig '%}
+{% extends '../layout.html.twig' %}
+{% block content %}
+<ul class="breadcrumb">
+  <li><a href="{{ path('/') }}">{{ 'Homepage' | trans }}</a> <span class="divider">/</span></li>
+  <li class="active">{{ 'Search results' | trans }}</li>
+</ul>
+<div class="row-fluid">
+	<div class="span9">
+		<div class="alert alert-info">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			{{ '<strong>Results:</strong> Showing results from <b>%1$d</b> to <b>%2$d</b>' | trans (results.start, results.getTotalSearchResults) }}
+		</div>
+		{% for item in results.dspaceObjects %}
+		{% if item.type.id == 2 %}
+		<div>
+			<a href="">
+				<strong>{{ item.firstMetadata('dc.title').textValue }}</strong>
+				{% for md in item.metadata('dc.contributor.author') %}
+				{% if last %}
+				<small>{{ md.textValue }}</small>
+				{% else %}
+				<small>{{ md.textValue }}</small>;
+				{% endif %}
+				{% endfor %}
+			</a>
+		</div>
+		{% elseif item.type.id == 3 %}	
+		<div>
+			<a href="">
+				<strong>{{ item.name }}</strong>
+			</a>
+		</div>
+		{% elseif item.type.id == 4 %}
+		<div>
+			<a href="">
+				<strong>{{ item.name }}</strong>
+			</a>
+		</div>
+		{% endif %}
+		{% endfor %}
+	</div>
+	<div class="span2">
+	teste
+	</div>
+</div>
+{% endblock %}
