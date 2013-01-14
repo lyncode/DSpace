@@ -19,49 +19,34 @@
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
 			{{ '<strong>Results:</strong> Showing results from <b>%1$d</b> to <b>%2$d</b>' | trans (results.start, results.getTotalSearchResults) }}
 		</div>
-		<table class="table table-hover table-striped">
-			<tbody>
-				{% for item in results.dspaceObjects %}
-				{% if item.type.id == 2 %}
-				<tr>
-					<td>
-						<h4>
-							<strong>{{ item.firstMetadata('dc.title').textValue }}</strong>
-							{% for md in item.metadata('dc.contributor.author') %}
-							{% if last %}
-							<small>{{ md.textValue }}</small>
-							{% else %}
-							<small>{{ md.textValue }}</small>;
-							{% endif %}
-							{% endfor %}
-						</h4>
-					</td>
-				</tr>
-				{% elseif item.type.id == 3 %}				
-				<tr class="alert">
-					<td>
-						<h4>
-							<strong>{{ item.name }}</strong>
-							<small>{{ item.shortDescription }}</small>
-						</h4>
-					</td>
-				</tr>
-				{% elseif item.type.id == 4 %}
-				<tr class="success">
-					<td>
-						<h4>
-							<strong>{{ item.name }}</strong>
-							<small>{{ item.shortDescription }}</small>
-						</h4>
-					</td>
-				</tr>
+		{% for item in results.dspaceObjects %}
+		{% if item.type.id == 2 %}
+		<div>
+			<a href="">
+				<strong>{{ item.firstMetadata('dc.title').textValue }}</strong>
+				{% for md in item.metadata('dc.contributor.author') %}
+				{% if last %}
+				<small>{{ md.textValue }}</small>
+				{% else %}
+				<small>{{ md.textValue }}</small>;
 				{% endif %}
 				{% endfor %}
-			</tbody>
-		</table>
-	<ul>
-	
-	</ul>
+			</a>
+		</div>
+		{% elseif item.type.id == 3 %}	
+		<div>
+			<a href="">
+				<strong>{{ item.name }}</strong>
+			</a>
+		</div>
+		{% elseif item.type.id == 4 %}
+		<div>
+			<a href="">
+				<strong>{{ item.name }}</strong>
+			</a>
+		</div>
+		{% endif %}
+		{% endfor %}
 	</div>
 	<div class="span2">
 	teste

@@ -25,7 +25,6 @@ import org.dspace.orm.dao.api.IBundleDao;
 import org.dspace.orm.entity.Bitstream;
 import org.dspace.orm.entity.Bundle;
 import org.dspace.services.ConfigurationService;
-import org.dspace.services.ContextService;
 import org.dspace.services.StorageService;
 import org.dspace.services.exceptions.StorageException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +62,6 @@ public class DSpaceStorageService implements StorageService {
 	IBitstreamDao bitstreamDao;
 	@Autowired
 	IBundleDao bundleDao;
-	@Autowired
-	ContextService contextService;
 
 	private List<Object> assetstores;
 	private int incoming;
