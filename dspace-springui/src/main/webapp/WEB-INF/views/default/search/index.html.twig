@@ -11,42 +11,84 @@
 {% block content %}
 <ul class="breadcrumb">
   <li><a href="{{ path('/') }}">{{ 'Homepage' | trans }}</a> <span class="divider">/</span></li>
+  {% if object %}
+  {% for p in object.hierarchyList %}
+  <li><a href="{{ concat('/handle/', p.handle) | path }}">{{ p.name }}</a> <span class="divider">/</span></li>
+  {% endfor %}
+  <li><a href="{{ concat('/handle/', object.handle) | path }}">{{ object.name }}</a> <span class="divider">/</span></li>
+  {% endif %}
   <li class="active">{{ 'Search results' | trans }}</li>
 </ul>
 <div class="row-fluid">
 	<div class="span9">
+		{#
 		<div class="alert alert-info">
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
 			{{ '<strong>Results:</strong> Showing results from <b>%1$d</b> to <b>%2$d</b>' | trans (results.start, results.getTotalSearchResults) }}
 		</div>
-		{% for item in results.dspaceObjects %}
-		{% if item.type.id == 2 %}
-		<div>
-			<a href="">
-				<strong>{{ item.firstMetadata('dc.title').textValue }}</strong>
-				{% for md in item.metadata('dc.contributor.author') %}
-				{% if last %}
-				<small>{{ md.textValue }}</small>
-				{% else %}
-				<small>{{ md.textValue }}</small>;
-				{% endif %}
-				{% endfor %}
-			</a>
+		#}
+		<ul class="nav nav-tabs" id="myTab">
+  			<li class="active">
+  				<a data-toggle="tab" href="#items">
+  				{{ 'Items' | trans }} 
+  				{% if items.getTotalSearchResults > 0 %}
+  				<span class="badge badge-info">{{ items.getTotalSearchResults }}</span>
+  				{% endif %}
+  				</a>
+  			</li>
+  			<li>
+  				<a data-toggle="tab" href="#communities">
+  				{{ 'Communities' | trans }}
+  				{% if communities.getTotalSearchResults > 0 %}
+  				<span class="badge badge-info">{{ communities.getTotalSearchResults }}
+  				{% endif %}
+  				</a>
+  			</li>
+  			<li>
+  				<a data-toggle="tab" href="#collections">
+  				{{ 'Collections' | trans }} 
+  				{% if collections.getTotalSearchResults > 0 %}
+  				<span class="badge badge-info">{{ collections.getTotalSearchResults }}
+  				{% endif %}
+  				</a>
+  			</li>
+		</ul>
+		<div id="tab" class="tab-content">
+  			<div class="tab-pane active" id="items">
+  				{% for item in items.dspaceObjects %}
+  				<div>
+					<a href="">
+					<strong>{{ item.firstMetadata('dc.title').textValue }}</strong>
+					{% for md in item.metadata('dc.contributor.author') %}
+					{% if last %}
+					<small>{{ md.textValue }}</small>
+					{% else %}
+					<small>{{ md.textValue }}</small>;
+					{% endif %}
+					{% endfor %}
+					</a>
+				</div>
+  				{% endfor %}
+  			</div>
+  			<div class="tab-pane" id="communities">
+  				{% for item in communities.dspaceObjects %}
+  				<div>
+					<a href="">
+					<strong>{{ item.name }}</strong>
+					</a>
+				</div>
+  				{% endfor %}
+  			</div>
+  			<div class="tab-pane" id="collections">
+  				{% for item in collections.dspaceObjects %}
+  				<div>
+					<a href="">
+					<strong>{{ item.name }}</strong>
+					</a>
+				</div>
+  				{% endfor %}
+  			</div>
 		</div>
-		{% elseif item.type.id == 3 %}	
-		<div>
-			<a href="">
-				<strong>{{ item.name }}</strong>
-			</a>
-		</div>
-		{% elseif item.type.id == 4 %}
-		<div>
-			<a href="">
-				<strong>{{ item.name }}</strong>
-			</a>
-		</div>
-		{% endif %}
-		{% endfor %}
 	</div>
 	<div class="span2">
 	teste

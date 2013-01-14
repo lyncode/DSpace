@@ -21,7 +21,10 @@ import org.apache.solr.common.params.HighlightParams;
 import org.dspace.discovery.DiscoverFacetField;
 import org.dspace.discovery.DiscoverHitHighlightingField;
 import org.dspace.discovery.configuration.DiscoveryConfigurationParameters;
+import org.dspace.orm.entity.Collection;
+import org.dspace.orm.entity.Community;
 import org.dspace.orm.entity.DSpaceObject;
+import org.dspace.orm.entity.Item;
 import org.dspace.orm.entity.content.DSpaceObjectType;
 import org.dspace.utils.DSpace;
 /**
@@ -305,6 +308,20 @@ public class DiscoverQuery {
 	
 	protected SolrQuery toSolrQuery()
     {
+        if(this.getDSpaceObject() != null)
+        {
+            if (this.getDSpaceObject() instanceof Community)
+            {
+                this.addFilterQueries("location:m" + this.getDSpaceObject().getID());
+            } else if (this.getDSpaceObject() instanceof Collection)
+            {
+            	this.addFilterQueries("location:l" + this.getDSpaceObject().getID());
+            } else if (this.getDSpaceObject() instanceof Item)
+            {
+            	this.addFilterQueries("handle:" + this.getDSpaceObject().getHandle());
+            }
+        }
+		
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "*:*";
@@ -318,7 +335,7 @@ public class DiscoverQuery {
         if (!includeWithdrawn)
         {
         	solrQuery.addFilterQuery("NOT(withdrawn:true)");
-		}
+        }
         
         for (String filterQuery : this.getFilterQueries())
         	solrQuery.addFilterQuery(filterQuery);
