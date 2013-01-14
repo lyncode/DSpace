@@ -36,22 +36,34 @@
   				{% endif %}
   				</a>
   			</li>
+  			{% if communities.getTotalSearchResults > 0 %}
   			<li>
   				<a data-toggle="tab" href="#communities">
   				{{ 'Communities' | trans }}
-  				{% if communities.getTotalSearchResults > 0 %}
   				<span class="badge badge-info">{{ communities.getTotalSearchResults }}
-  				{% endif %}
   				</a>
   			</li>
+  			{% else %}
+  			<li class="disabled">
+  				<a href="#communities">
+  				{{ 'Communities' | trans }}
+  				</a>
+  			</li>
+  			{% endif %}
+  			{% if collections.getTotalSearchResults > 0 %}
   			<li>
   				<a data-toggle="tab" href="#collections">
   				{{ 'Collections' | trans }} 
-  				{% if collections.getTotalSearchResults > 0 %}
   				<span class="badge badge-info">{{ collections.getTotalSearchResults }}
-  				{% endif %}
   				</a>
   			</li>
+  			{% else %}
+  			<li class="disabled">
+  				<a href="#collections">
+  				{{ 'Collections' | trans }} 
+  				</a>
+  			</li>
+  			{% endif %}
 		</ul>
 		<div id="tab" class="tab-content">
   			<div class="tab-pane active" id="items">
