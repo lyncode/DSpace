@@ -11,10 +11,12 @@ import org.dspace.core.Constants;
 import org.dspace.orm.dao.api.ICollectionDao;
 import org.dspace.orm.dao.api.ICommunityDao;
 import org.dspace.orm.dao.api.IHandleDao;
+import org.dspace.orm.dao.api.IItemDao;
 import org.dspace.orm.dao.api.IMetadataValueDao;
 import org.dspace.orm.entity.Collection;
 import org.dspace.orm.entity.Community;
 import org.dspace.orm.entity.Handle;
+import org.dspace.orm.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,7 @@ public class HandleController {
     @Autowired IHandleDao handleDao;
     @Autowired ICommunityDao communityDao;
     @Autowired ICollectionDao collectionDao;
+    @Autowired IItemDao itemDao;
     @Autowired IMetadataValueDao metadataValueDao;
 
     @RequestMapping(value = "/handle/{prefix}/{id}", method = RequestMethod.GET)
@@ -46,6 +49,10 @@ public class HandleController {
                 Collection col = collectionDao.selectById(hd.getResourceId());
                 model.addAttribute("collection", col);
                 return "collection/show";
+            case Constants.ITEM:
+                Item item = itemDao.selectById(hd.getResourceId());
+                model.addAttribute("item", item);
+                return "item/show";
         }
 
         return null;
