@@ -20,6 +20,7 @@ import org.dspace.orm.entity.content.DSpaceObjectType;
 import org.dspace.services.DiscoveryService;
 import org.dspace.services.discovery.DiscoverException;
 import org.dspace.services.discovery.DiscoverQuery;
+import org.dspace.services.discovery.DiscoverResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Controller;
@@ -71,9 +72,18 @@ public class SearchController {
     	}
     	
     	try {
-    		map.addAttribute("items", search.search(itemQuery));
-    		map.addAttribute("collections", search.search(collectionQuery));
-    		map.addAttribute("communities", search.search(communityQuery));
+    		DiscoverResult items = search.search(itemQuery);
+    		DiscoverResult collections = search.search(collectionQuery);
+    		DiscoverResult communities = search.search(communityQuery);
+    		
+    		if (items.isEmpty() && 
+    			collections.isEmpty() &&
+    			communities.isEmpty())
+    			return "search/nothing";
+    		
+    		map.addAttribute("items", items);
+    		map.addAttribute("collections", collections);
+    		map.addAttribute("communities", communities);
 			
 	        return "search/index";	
 		} catch (DiscoverException e) {

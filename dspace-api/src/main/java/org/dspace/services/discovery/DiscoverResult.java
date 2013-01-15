@@ -187,6 +187,10 @@ public class DiscoverResult {
         searchDocuments.put(dsoString, docs);
     }
 
+    public boolean isEmpty () {
+    	return this.getTotalSearchResults() <= 0;
+    }
+
     /**
      * Returns all the sought after search document values 
      * @param dso the dspace object we want our search documents for
@@ -235,5 +239,6 @@ public class DiscoverResult {
         public static String getDspaceObjectStringRepresentation(DSpaceObject dso){
             return dso.getType() + ":" + dso.getID();
         }
+        
     }
 }

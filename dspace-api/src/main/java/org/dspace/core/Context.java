@@ -80,6 +80,9 @@ public class Context
     /** Event dispatcher name */
     private String dispName = null;
 
+    protected Context (boolean nullinitializer) {
+    	
+    }
     /**
      * Construct a new context object. A database connection is opened. No user
      * is authenticated.

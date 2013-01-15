@@ -7,8 +7,6 @@
  */
 package org.dspace.services.context;
 
-import java.sql.SQLException;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.dspace.core.DSpaceContext;
@@ -35,29 +33,23 @@ public class DSpaceContextService implements ContextService {
 
 	@Override
 	public DSpaceContext newContext() {
+		log.debug("New session created");
 		Session session = sessionFactory.getCurrentSession();
 		if (session == null) session = sessionFactory.openSession();
 		if (!session.isOpen() || session.getTransaction() == null || !session.getTransaction().isActive())
 			session.beginTransaction();
-		DSpaceContext ctx;
-		try {
-			ctx = new DSpaceContext(session);
+		DSpaceContext ctx = new DSpaceContext(session);
 
-			if (requestService != null) {
-				Request r = requestService.getCurrentRequest();
-				if (r != null)  {// There is one request running on this thread!
-					String userID = r.getSession().getUserId();
-					if (userID != null && epersonDao != null)  
-						ctx.setCurrentEperson(epersonDao.selectById(Integer.parseInt(userID)));
-					r.setAttribute(CONTEXT_ATTR, ctx);
-				}
+		if (requestService != null) {
+			Request r = requestService.getCurrentRequest();
+			if (r != null)  {// There is one request running on this thread!
+				String userID = r.getSession().getUserId();
+				if (userID != null && epersonDao != null)  
+					ctx.setCurrentEperson(epersonDao.selectById(Integer.parseInt(userID)));
+				r.setAttribute(CONTEXT_ATTR, ctx);
 			}
-			return ctx;
-		} catch (SQLException e) {
-			log.error(e.getMessage(), e);
-			// IMPORTANT! This never happens because ContextV2 in fact, do not throw any exception!
-			return null;
 		}
+		return ctx;
 	}
 	
 	@Override

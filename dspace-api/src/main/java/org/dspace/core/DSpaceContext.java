@@ -91,8 +91,10 @@ public class DSpaceContext extends Context {
      * Construct a new context object. No user
      * is authenticated.
      */
-    public DSpaceContext(Session session) throws SQLException //FIXME: remove this exception
+    public DSpaceContext(Session session) //FIXME: remove this exception
     {
+    	super(true);
+    	
     	this.session = session;
     	
         currentUser = null;
