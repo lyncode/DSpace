@@ -9,6 +9,8 @@ package org.dspace.services.context;
 
 import java.sql.SQLException;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.dspace.core.DSpaceContext;
 import org.dspace.orm.dao.api.IEpersonDao;
 import org.dspace.services.ContextService;
@@ -24,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author João Melo <jmelo@lyncode.com>
  */
 public class DSpaceContextService implements ContextService {
+	private static Logger log = LogManager.getLogger(DSpaceContextService.class);
 	private static final String CONTEXT_ATTR = "dspace.context";
 	
 	private SessionFactory sessionFactory;
@@ -32,8 +35,10 @@ public class DSpaceContextService implements ContextService {
 
 	@Override
 	public DSpaceContext newContext() {
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
+		Session session = sessionFactory.getCurrentSession();
+		if (session == null) session = sessionFactory.openSession();
+		if (!session.isOpen() || session.getTransaction() == null || session.getTransaction().isActive())
+			session.beginTransaction();
 		DSpaceContext ctx;
 		try {
 			ctx = new DSpaceContext(session);
@@ -49,6 +54,7 @@ public class DSpaceContextService implements ContextService {
 			}
 			return ctx;
 		} catch (SQLException e) {
+			log.error(e.getMessage(), e);
 			// IMPORTANT! This never happens because ContextV2 in fact, do not throw any exception!
 			return null;
 		}
