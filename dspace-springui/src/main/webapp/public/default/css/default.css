@@ -49,7 +49,7 @@ form.search {
 	text-align: center;
 }
 
-form.search input {
+form.search input.size {
 	font-size: 30px;
 	height: 34px;
 }

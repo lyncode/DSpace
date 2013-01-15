@@ -21,14 +21,27 @@
 </ul>
 <div class="row-fluid">
 	<div class="span9">
-		{#
-		<div class="alert alert-info">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			{{ '<strong>Results:</strong> Showing results from <b>%1$d</b> to <b>%2$d</b>' | trans (results.start, results.getTotalSearchResults) }}
+		
+		<div class="well remove-bottom-padding">
+			<form class="search" method="POST" action="{{ path '/search' }}">
+				{% if object %}
+				<input type="hidden" name="handle" value="{{ object.handle }}" />
+				{% endif %}
+				<div class="input-append">
+				  <input name="query" class="size input-xxlarge" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text" value="{{ request.parameter('query') }}" />
+				  <button class="btn btn-large">{{ 'Search' | trans }}</button>
+				</div>
+			</form>
 		</div>
-		#}
 		<ul class="nav nav-tabs" id="myTab">
+			{% set shown = false %}
+			{% set itemsShow = '' %}
+			{% set communitiesShow = '' %}
+			{% set collectionsShow = '' %}
+  			{% if items.getTotalSearchResults > 0 %}
+  			{% set shown = true %}
   			<li class="active">
+  				{% set itemsShow = 'active' %}
   				<a data-toggle="tab" href="#items">
   				{{ 'Items' | trans }} 
   				{% if items.getTotalSearchResults > 0 %}
@@ -36,8 +49,21 @@
   				{% endif %}
   				</a>
   			</li>
+  			{% else %}
+  			<li class="disabled">
+  				<a href="#items" title="{{ 'No items found' | trans }}">
+  				{{ 'Items' | trans }}
+  				</a>
+  			</li>
+  			{% endif %}
   			{% if communities.getTotalSearchResults > 0 %}
+  			{% if shown %}
   			<li>
+  			{% else %}
+  			<li class="active">
+  			{% set shown = true %}
+  			{% set communitiesShow = 'active' %}
+  			{% endif %}
   				<a data-toggle="tab" href="#communities">
   				{{ 'Communities' | trans }}
   				<span class="badge badge-info">{{ communities.getTotalSearchResults }}
@@ -45,13 +71,19 @@
   			</li>
   			{% else %}
   			<li class="disabled">
-  				<a href="#communities">
+  				<a href="#communities" title="{{ 'No communities found' | trans }}">
   				{{ 'Communities' | trans }}
   				</a>
   			</li>
   			{% endif %}
   			{% if collections.getTotalSearchResults > 0 %}
+  			{% if shown %}
   			<li>
+  			{% else %}
+  			<li class="active">
+  			{% set shown = true %}
+  			{% set collectionsShow = 'active' %}
+  			{% endif %}
   				<a data-toggle="tab" href="#collections">
   				{{ 'Collections' | trans }} 
   				<span class="badge badge-info">{{ collections.getTotalSearchResults }}
@@ -59,17 +91,17 @@
   			</li>
   			{% else %}
   			<li class="disabled">
-  				<a href="#collections">
+  				<a href="#collections" title="{{ 'No collections found' | trans }}">
   				{{ 'Collections' | trans }} 
   				</a>
   			</li>
   			{% endif %}
 		</ul>
 		<div id="tab" class="tab-content">
-  			<div class="tab-pane active" id="items">
+  			<div class="tab-pane {{ itemsShow }}" id="items">
   				{% for item in items.dspaceObjects %}
   				<div>
-					<a href="">
+					<a href="{{ concat('/handle/', item.handle) | path}}">
 					<strong>{{ item.firstMetadata('dc.title').textValue }}</strong>
 					{% for md in item.metadata('dc.contributor.author') %}
 					{% if last %}
@@ -82,19 +114,19 @@
 				</div>
   				{% endfor %}
   			</div>
-  			<div class="tab-pane" id="communities">
+  			<div class="tab-pane {{ communitiesShow }}" id="communities">
   				{% for item in communities.dspaceObjects %}
   				<div>
-					<a href="">
+					<a href="{{ concat('/handle/', item.handle) | path}}">
 					<strong>{{ item.name }}</strong>
 					</a>
 				</div>
   				{% endfor %}
   			</div>
-  			<div class="tab-pane" id="collections">
+  			<div class="tab-pane {{ collectionsShow }}" id="collections">
   				{% for item in collections.dspaceObjects %}
   				<div>
-					<a href="">
+					<a href="{{ concat('/handle/', item.handle) | path}}">
 					<strong>{{ item.name }}</strong>
 					</a>
 				</div>

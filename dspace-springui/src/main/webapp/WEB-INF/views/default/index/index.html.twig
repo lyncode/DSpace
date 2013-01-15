@@ -11,9 +11,9 @@
 {% block content %}
 <div class="image-head" src="{{ asset 'img/books.jpg' }}"></div>
 <div class="well remove-bottom-padding">
-	<form class="search" action="{{ path '/search' }}">
+	<form class="search" method="post" action="{{ path '/search' }}">
 		<div class="input-append">
-		  <input name="query" class="span9" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
+		  <input name="query" class="size span9" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
 		  <button class="btn btn-large" type="button">{{ 'Search' | trans }}</button>
 		</div>
 	</form>
