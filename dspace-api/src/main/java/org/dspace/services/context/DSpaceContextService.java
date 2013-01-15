@@ -37,7 +37,7 @@ public class DSpaceContextService implements ContextService {
 	public DSpaceContext newContext() {
 		Session session = sessionFactory.getCurrentSession();
 		if (session == null) session = sessionFactory.openSession();
-		if (!session.isOpen() || session.getTransaction() == null || session.getTransaction().isActive())
+		if (!session.isOpen() || session.getTransaction() == null || !session.getTransaction().isActive())
 			session.beginTransaction();
 		DSpaceContext ctx;
 		try {
