@@ -179,6 +179,55 @@ p.block-heading, a.block-heading, .block-heading a {
 	text-align: justify;
 	color: #999;
 }
+
+
+.item {
+	position: relative;
+	margin: 15px 0;
+	background-color: white;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+.item:hover {
+	text-decoration: none;
+	border: 1px solid #AAA;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.5);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.item p.title {
+	margin: 0;
+	display: block;
+	top: -1px;
+	left: -1px;
+	padding: 3px 7px;
+	font-size: 16px;
+	font-weight: 200;
+	text-align: center;
+	background-color: whiteSmoke;
+	border-bottom: 1px solid #DDD;
+	color: #9DA0A4;
+	width: 100%;
+	-webkit-border-radius: 4px 4px 0px 0px;
+	-moz-border-radius: 4px 4px 0px 0px;
+	border-radius: 4px 4px 0px 0px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.item p.description {
+	margin: 0;
+	padding: 13px;
+	border-top: 1px solid #DDD;
+	text-align: justify;
+	color: #999;
+}
+
+
 /* Github banner */
 #github-banner {
 		position: fixed;
@@ -278,4 +327,4 @@ p.block-heading, a.block-heading, .block-heading a {
 
 .collapse.in.height {
   height: auto;
-}​
+}���
