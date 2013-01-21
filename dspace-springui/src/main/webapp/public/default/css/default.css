@@ -219,7 +219,7 @@ p.block-heading, a.block-heading, .block-heading a {
 	box-sizing: border-box;
 }
 
-.item p.description {
+.item p.description{
 	margin: 0;
 	padding: 13px;
 	border-top: 1px solid #DDD;

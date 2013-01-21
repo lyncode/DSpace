@@ -7,8 +7,11 @@
  */
 package org.dspace.orm.dao.database;
 
+import java.util.List;
+
 import org.dspace.orm.dao.api.IItemDao;
 
+import org.dspace.orm.entity.Bitstream;
 import org.dspace.orm.entity.Item;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,4 +27,10 @@ public class ItemDao extends DSpaceDao<Item> implements IItemDao {
 	public ItemDao() {
 		super(Item.class);
 	}
+	
+	public List<Bitstream> getBitStreams()
+	{
+		return null;
+	}
 }
+
