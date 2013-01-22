@@ -11,8 +11,10 @@ import java.util.List;
 
 import org.dspace.orm.dao.api.IItemDao;
 
-import org.dspace.orm.entity.Bitstream;
+import org.dspace.orm.entity.Collection;
 import org.dspace.orm.entity.Item;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +30,15 @@ public class ItemDao extends DSpaceDao<Item> implements IItemDao {
 		super(Item.class);
 	}
 	
-	public List<Bitstream> getBitStreams()
-	{
-		return null;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Item> selectLastItems(Collection collection, int max) {
+		return (List<Item>) super.getSession().createCriteria(Item.class)
+				.add(Restrictions.eq("owningCollection", collection))
+				.addOrder(Order.desc("lastModified"))
+				.setMaxResults(max)
+				.list();
 	}
 }
 

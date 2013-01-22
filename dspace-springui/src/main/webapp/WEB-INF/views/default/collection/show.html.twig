@@ -25,7 +25,7 @@
 			<form class="search" method="POST" action="{{ path '/search' }}">
 				<input type="hidden" name="handle" value="{{ collection.handle }}" />
 				<div class="input-append">
-				  <input name="query" class="span6 size" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
+				  <input name="query" class="input-xxlarge size" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
 				  <button class="btn btn-large">{{ 'Search' | trans }}</button>
 				</div>
 			</form>
@@ -54,7 +54,7 @@
 	<hr />
 		<h2>{{ 'Items' | trans }}</h2>
 		<div class="items-collection">
-			{% for item in collection.items %}
+			{% for item in collection.getLastItems(3) %}
 		
 			{% if (position % 4) == 0 %}
 			<div class="row-fluid">

@@ -73,7 +73,7 @@
 		{% for bund in item.getbundles %}
 			{% if bund.getname == 'ORIGINAL' %}
 				{% for bit in bund.getbitstreams %}
-					<a  class="item span3" href='#'>
+					<a  class="item span3" href='{{ bit.source }}'>
 						<p class="title">{{ bit.name }}</p>
 						<p class="muted"><strong>{{'Size' | trans}}{{': '}}</strong>{{ bit.size }}{{ ' Kb' }}</p>
 						{% if bit.format.shortDescription == 'Adobe PDF' %}

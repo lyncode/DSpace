@@ -25,7 +25,7 @@
 			<form class="search" method="POST" action="{{ path '/search' }}">
 				<input type="hidden" name="handle" value="{{ community.handle }}" />
 				<div class="input-append">
-				  <input name="query" class="size span6" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
+				  <input name="query" class="input-xxlarge size" placeholder="{{ 'Type some text to search...' | trans }}" id="appendedInputButtons" type="text">
 				  <button class="btn btn-large">{{ 'Search' | trans }}</button>
 				</div>
 			</form>
