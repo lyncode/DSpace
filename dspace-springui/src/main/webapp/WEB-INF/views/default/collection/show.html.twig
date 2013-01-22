@@ -55,7 +55,7 @@
 		<h2>{{ 'Items' | trans }}</h2>
 		<div class="items-collection">
 			{% for item in collection.items %}
-			{{item.id}}
+		
 			{% if (position % 4) == 0 %}
 			<div class="row-fluid">
 			{% endif %}
@@ -67,7 +67,7 @@
 					{% if item.submitter.email %}
 					<p class="description">{{ item.getFirstMetadata('dc.description.abstract') }}</p>
 					{% endif %}
-				</a>#}
+				</a>
 			{% if ((position % 4) == 3) || last %}
 			</div>
 			{% endif %}
