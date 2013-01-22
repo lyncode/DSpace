@@ -79,6 +79,24 @@
 						{% if bit.format.shortDescription == 'Adobe PDF' %}
 							<button"><i class="cus-page-white-acrobat"></i> {{ bit.format.shortDescription }}</button>
 						{% endif %}
+						{% if bit.format.shortDescription == 'Microsoft Word' %}
+							<button"><i class="cus-report-word"></i> {{ bit.format.shortDescription }}</button>
+						{% endif %}
+						{% if bit.format.shortDescription == 'Microsoft Excel' %}
+							<button"><i class="cus-page-excel"></i> {{ bit.format.shortDescription }}</button>
+						{% endif %}
+						{% if bit.format.shortDescription == 'Microsoft Powerpoint' %}
+							<button"><i class="cus-page-white-powerpoint"></i> {{ bit.format.shortDescription }}</button>
+						{% endif %}
+						{% if bit.format.shortDescription == 'JPEG' %}
+							<button"><i class="cus-images"></i> {{ bit.format.shortDescription }}</button>
+						{% endif %}
+						{% if bit.format.shortDescription == 'GIF' %}
+							<button"><i class="cus-images"></i> {{ bit.format.shortDescription }}</button>
+						{% endif %}
+						{% if bit.format.shortDescription == 'image/png' %}
+							<button"><i class="cus-images"></i> {{ bit.format.shortDescription }}</button>
+						{% endif %}
 					</a>
 			{% endfor %}
 			{% endif %}
