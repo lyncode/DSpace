@@ -62,9 +62,9 @@ public class Community extends DSpaceObject implements Serializable {
     }
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinTable(name = "community2community", joinColumns = { @JoinColumn(name = "child_comm_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "parent_comm_id", nullable = false) })
+    @JoinTable(name = "communities2item", joinColumns = { @JoinColumn(name = "community_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "item_id", nullable = false) })
     public List<Item> getItems() {
-		return items;
+		return items; // FIXME: RESOLVER ISTO
 	}
 
 	public void setItems(List<Item> items) {
