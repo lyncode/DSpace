@@ -7,8 +7,6 @@
  */
 package org.dspace.orm.entity;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +48,7 @@ public class Item extends DSpaceObject {
     private Collection owningCollection;
     private List<Bundle> bundles;
     private List<Collection> collections;
+    private List<Community> communities;
     private List<Collection> templateItemCollections;
     
     @Id
@@ -276,5 +275,15 @@ public class Item extends DSpaceObject {
 
 	public void setTemplateItemCollections(List<Collection> templateItemCollections) {
 		this.templateItemCollections = templateItemCollections;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
+	@JoinTable(name = "communities2item", joinColumns = { @JoinColumn(name = "item_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "community_id", nullable = false) })
+	public List<Community> getCommunities() {
+		return communities;
+	}
+
+	public void setCommunities(List<Community> communities) {
+		this.communities = communities;
 	}
 }

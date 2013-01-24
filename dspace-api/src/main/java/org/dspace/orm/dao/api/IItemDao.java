@@ -10,8 +10,11 @@ package org.dspace.orm.dao.api;
 import java.util.List;
 
 import org.dspace.orm.entity.Collection;
+import org.dspace.orm.entity.Community;
 import org.dspace.orm.entity.Item;
 
 public interface IItemDao extends IDSpaceDao<Item>{
 	List<Item> selectLastItems(Collection collection, int max);
+	
+	List<Item> selectLastItemsFromCommutity(Community community, int max);
 }

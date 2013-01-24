@@ -7,11 +7,8 @@
  */
 package org.dspace.orm.dao.api;
 
-import java.util.List;
 
 import org.dspace.orm.entity.Collection;
-import org.dspace.orm.entity.Community;
 
 public interface ICollectionDao extends IDSpaceDao<Collection> {
-	List<Collection> selectLastCollection(Community community, int max);
 }

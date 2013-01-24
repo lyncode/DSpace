@@ -7,13 +7,8 @@
  */
 package org.dspace.orm.dao.database;
 
-import java.util.List;
-
 import org.dspace.orm.dao.api.ICollectionDao;
 import org.dspace.orm.entity.Collection;
-import org.dspace.orm.entity.Community;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,14 +24,4 @@ public class CollectionDao extends DSpaceDao<Collection> implements ICollectionD
     public CollectionDao () {
     	super(Collection.class);
     }
-    
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Collection> selectLastCollection(Community community, int max) {
-		return (List<Collection>) super.getSession().createCriteria(Community.class)
-				.add(Restrictions.eq("owningCollection", community))
-				.addOrder(Order.desc("lastModified"))
-				.setMaxResults(max)
-				.list();
-	}
 }

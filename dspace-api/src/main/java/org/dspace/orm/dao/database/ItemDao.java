@@ -12,6 +12,7 @@ import java.util.List;
 import org.dspace.orm.dao.api.IItemDao;
 
 import org.dspace.orm.entity.Collection;
+import org.dspace.orm.entity.Community;
 import org.dspace.orm.entity.Item;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -36,6 +37,16 @@ public class ItemDao extends DSpaceDao<Item> implements IItemDao {
 	public List<Item> selectLastItems(Collection collection, int max) {
 		return (List<Item>) super.getSession().createCriteria(Item.class)
 				.add(Restrictions.eq("owningCollection", collection))
+				.addOrder(Order.desc("lastModified"))
+				.setMaxResults(max)
+				.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Item> selectLastItemsFromCommutity(Community community, int max) {
+		return (List<Item>) super.getSession().createCriteria(Item.class)
+				.add(Restrictions.eq("communities", community))
 				.addOrder(Order.desc("lastModified"))
 				.setMaxResults(max)
 				.list();

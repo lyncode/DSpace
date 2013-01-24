@@ -27,6 +27,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.dspace.orm.dao.api.IItemDao;
 import org.dspace.orm.entity.content.DSpaceObjectType;
 import org.dspace.services.AuthorizationService;
 import org.dspace.services.auth.Action;
@@ -41,6 +42,8 @@ public class Community extends DSpaceObject implements Serializable {
     private static final long serialVersionUID = 6681512980782299861L;
     
     @Autowired AuthorizationService authService;
+    @Autowired IItemDao itemDao;
+    
     private String name;
     private String shortDescription;
     private String introductoryText;
@@ -258,4 +261,8 @@ public class Community extends DSpaceObject implements Serializable {
     {
         return this.getParent();      
     }
+	
+	 public List<Item> getLastItems (int max) {
+	    	return itemDao.selectLastItemsFromCommutity(this, max);
+	    }
 }
