@@ -43,7 +43,8 @@
 		loading the services (that require them).
 		-->
 		<param-value>
-			/WEB-INF/springui-servlet.xml
+			/WEB-INF/springui-servlet.xml,
+			/WEB-INF/security.xml
 		</param-value>
 	</context-param>
 	
@@ -58,8 +59,20 @@
 		<filter-name>dspace.request</filter-name>
 		<filter-class>org.dspace.utils.servlet.DSpaceWebappServletFilter</filter-class>
 	</filter>
+	
+	<!-- Spring Security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>
+				org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
 
 	<!-- Filter mappings -->
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<filter-mapping>
 		<filter-name>sessionFilter</filter-name>
 		<url-pattern>/*</url-pattern>

@@ -22,7 +22,7 @@
 	<script src="{{ asset 'js/jquery.min.js' }}"></script>
 	<script src="{{ asset 'js/bootstrap.min.js' }}"></script>
 	{% block javascripts %}{% endblock %}
-	
+	{% block styles %}{% endblock %}
 </head>
 <body>
 	<div id="github-banner"><a target="_blank" href="https://github.com/lyncode/DSpace/tree/springui">Fork us on Github</a></div>
@@ -44,16 +44,16 @@
 					<div class="nav-collapse collapse">
 						<ul class="nav pull-right">
 						{% call UserRelated getUserInfo  %}
-						{% if user.isGuest %}
-							<li><a class="btn-header" href="{{ path '/user/login' }}">{{ translate 'Login' }}</a></li>
-							<li><a class="btn-header" href="{{ path '/user/register' }}">{{ translate 'Register' }}</a></li>
+						{% if not(user) || user.isGuest %}
+							<li><a class="btn-header" href="{{ path '/login' }}">{{ translate 'Login' }}</a></li>
+							<li><a class="btn-header" href="{{ path '/register' }}">{{ translate 'Register' }}</a></li>
 						{% else %}
 							<li class="dropdown">
-			                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ translate ('Hi {0}!', user.name) }} <b class="caret"></b></a>
+			                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ translate ('Hi %0$s!', user.person.firstname) }} <b class="caret"></b></a>
 			                  <ul class="dropdown-menu">
 			                    <li><a href="{{ path '/user/edit' }}">{{ 'Edit Profile' | translate }}</a></li>
 			                    <li class="divider"></li>
-			                    <li class="nav-header"><a href="{{ path '/user/logout' }}">{{ 'Logout' | translate }}</a></li>
+			                    <li><a href="{{ path '/j_spring_security_logout' }}">{{ 'Logout' | translate }}</a></li>
 			                  </ul>
 			                </li>
 						{% endif %}

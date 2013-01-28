@@ -1,0 +1,45 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<http auto-config="true">
+		<intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+		<intercept-url pattern="/logout" access="ROLE_MEMBER,ROLE_ADMIN"/>
+		<intercept-url pattern="/admin/*" access="ROLE_ADMIN" />
+		<form-login login-page="/login" default-target-url="/member/index" authentication-failure-url="/loginfailed" />
+		<logout logout-success-url="/logout" />
+		<access-denied-handler error-page="/error/denied" />
+		<custom-filter ref="usernamePasswordFilter" before="FORM_LOGIN_FILTER" />
+	</http>
+	
+	<beans:bean id="usernamePasswordFilter" class="org.dspace.springui.security.filters.UsernamePasswordFilter">
+		<beans:property name="authenticationManager">
+			<beans:ref bean="authenticationManager" />	
+		</beans:property>
+		<beans:property name="authenticationFailureHandler">
+				<beans:ref bean="failureHandler" />
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="failureHandler" class="org.dspace.springui.security.handler.DSpaceAuthenticationFailedHandler">
+		<beans:property name="redirectUrl" value="/login" />
+	</beans:bean>
+	
+	<beans:bean id="passwordAuthenticator" class="org.dspace.springui.security.authenticators.PasswordAuthenticator" />
+	
+	<beans:bean id="dspaceAuthenticationService" class="org.dspace.springui.security.DSpaceAuthenticationService">
+		<beans:property name="providers">
+			<beans:list>
+				<beans:ref bean="passwordAuthenticator" />
+			</beans:list>	
+		</beans:property>
+	</beans:bean>
+	
+	<authentication-manager alias="authenticationManager">
+	  <authentication-provider ref="dspaceAuthenticationService" />
+	</authentication-manager>
+
+</beans:beans>

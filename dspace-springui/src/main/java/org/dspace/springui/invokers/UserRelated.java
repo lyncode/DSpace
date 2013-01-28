@@ -11,15 +11,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.dspace.springui.utils.RequestUtils;
+import org.dspace.springui.security.DSpaceUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class UserRelated {
     @Autowired
     HttpServletRequest request;
 
     public void getUserInfo(Map<String, Object> model) {
-        model.put("user", RequestUtils.getCurrentUser(request));
+    	DSpaceUser user = (DSpaceUser) SecurityContextHolder.getContext().getAuthentication();
+    	model.put("user", user);
     }
 
 }
