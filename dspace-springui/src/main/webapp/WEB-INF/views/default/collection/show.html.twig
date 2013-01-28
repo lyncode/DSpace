@@ -53,25 +53,34 @@
 
 	<hr />
 		<h2>{{ 'Items' | trans }}</h2>
+
 		<div class="items-collection">
-			{% for item in collection.getLastItems(3) %}
-		
-			{% if (position % 4) == 0 %}
-			<div class="row-fluid">
-			{% endif %}
-				<a href="{{ concat ('/handle/', item.handle) | path }}" class="item span3">
-					<p class="title">{{ item.getFirstMetadata('dc.title') }}</p>
-					<p class="logo">
-						<img src="{{ concat('/logo/', 5 ) | path  }}" />
-					</p>
-					{% if item.submitter.email %}
-					<p class="description">{{ item.getFirstMetadata('dc.description.abstract') }}</p>
-					{% endif %}
-				</a>
-			{% if ((position % 4) == 3) || last %}
+			{% for item in collection.getLastItems(6) %}
+			<div class="span5">
+			<a href="{{ concat ('/handle/', item.handle) | path }}" class="row-fluid">
+				
+								<div class="accordion" id="accordion2">
+								  <div class="accordion-group">
+								    <div class="accordion-heading">
+								       <div class="row-fluid"> 
+								       		<div class="span2"><img src="{{ asset('img/defult_doc.png')  }}" class="img-circle"></div> 
+								       		<div class="span9">
+								       				<div class="row-fluid"><blockquote>
+  															<p>{{ item.getFirstMetadata('dc.title') }}</p>
+  															<small>{{ item.getFirstMetadata('dc.description.abstract') }}</small>
+  														</blockquote>
+													</div>
+								       		</div>
+								    		</div>
+								      
+								    </div>
+								  </div>
+								</div>
+								
+			</a>
 			</div>
-			{% endif %}
 			{% endfor %}
+			
 		</div>
 	{% endif %}
 {% endblock %}
