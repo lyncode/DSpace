@@ -19,6 +19,8 @@
   {% endif %}
   <li class="active">{{ 'Search results' | trans }}</li>
 </ul>
+
+
 <div class="row-fluid">
 	<div class="span9">
 		
@@ -134,8 +136,34 @@
   			</div>
 		</div>
 	</div>
-	<div class="span2">
-	teste
+	<div class="span3">
+	
+	<form>
+  	<fieldset>
+	    <legend>Filter your search</legend>
+	    <blockquote><label><strong>Author</strong></label>
+	    {% for author in items.getFacetResult('author') %}
+	    <label class="checkbox">
+	      <input type="checkbox">{{ author.getDisplayedValue }} ({{ author.count }})</input>
+	    </label>
+	    {% endfor %}
+	   
+	 
+	 </blockquote>
+	    <blockquote><label><strong>Date</strong></label>
+	   	
+	   	{% for dt in items.getFacetResult('dateIssued') %}
+		    <label class="checkbox">
+		      <input type="checkbox">{{ dt.getDisplayedValue }} ({{ dt.count }})</input>
+		    </label>
+	    {% endfor %}
+	    
+	    </blockquote>
+	</fieldset>
+</form>
+
+	
+	
 	</div>
 </div>
 {% endblock %}

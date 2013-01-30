@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.util.ClientUtils;
+import org.dspace.discovery.DiscoverFacetField;
+import org.dspace.discovery.configuration.DiscoveryConfigurationParameters;
+import org.dspace.discovery.configuration.DiscoveryConfigurationParameters.SORT;
 import org.dspace.orm.dao.api.IHandleDao;
 import org.dspace.orm.entity.DSpaceObject;
 import org.dspace.orm.entity.Handle;
@@ -30,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Controller to search
  * 
- * @author João Melo <jmelo@lyncode.com>
+ * @author João Melo <jmelo@lyncode.com> and Miguel Pinto <mpinto@lyncode.com>
  */
 @Controller
 @DependsOn("dspaceServices")
@@ -44,7 +47,15 @@ public class SearchController {
     	String query = request.getParameter("query");
     	String handle = request.getParameter("handle");
 
+    	DiscoverFacetField authorField = new DiscoverFacetField("author", DiscoveryConfigurationParameters.TYPE_TEXT, 5, SORT.COUNT);
     	DiscoverQuery itemQuery = new DiscoverQuery();
+    	itemQuery.addFacetField(authorField);
+    	
+    	DiscoverFacetField dtField = new DiscoverFacetField("dateIssued", DiscoveryConfigurationParameters.TYPE_DATE, 5, SORT.COUNT);
+    	
+    	itemQuery.addFacetField(dtField);
+    
+    	
     	DiscoverQuery communityQuery = new DiscoverQuery();
     	DiscoverQuery collectionQuery = new DiscoverQuery();
     	if (query != null) {
