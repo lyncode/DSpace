@@ -46,7 +46,12 @@ public class SearchController {
     public String searchAction(HttpServletRequest request, ModelMap map) {
     	String query = request.getParameter("query");
     	String handle = request.getParameter("handle");
+    	
+    	String[] authors = request.getParameterValues("author");
+    	String[] dates = request.getParameterValues("date");
 
+    	
+    	
     	DiscoverFacetField authorField = new DiscoverFacetField("author", DiscoveryConfigurationParameters.TYPE_TEXT, 5, SORT.COUNT);
     	DiscoverQuery itemQuery = new DiscoverQuery();
     	itemQuery.addFacetField(authorField);
@@ -59,7 +64,35 @@ public class SearchController {
     	DiscoverQuery communityQuery = new DiscoverQuery();
     	DiscoverQuery collectionQuery = new DiscoverQuery();
     	if (query != null) {
-    		itemQuery.setQuery(ClientUtils.escapeQueryChars(query)+" AND search.resourcetype:"+DSpaceObjectType.ITEM.getId());
+    		
+    		if(authors==null)
+        	{
+    			itemQuery.setQuery(ClientUtils.escapeQueryChars(query)+" AND search.resourcetype:"+DSpaceObjectType.ITEM.getId());
+        	}
+    		else
+    		{
+    			String queryItems = ClientUtils.escapeQueryChars(query)+" AND search.resourcetype:"+DSpaceObjectType.ITEM.getId();
+    			
+    			queryItems = queryItems + " AND";
+    			
+    			if(authors.length > 1)
+    			{
+    				queryItems = queryItems + " (";
+    			}
+    			
+    			for (String author : authors)
+    	        {
+    				queryItems = queryItems + " author:\""+author+"\"";
+    	        }
+    			
+    			if(authors.length > 1)
+    			{
+    				queryItems = queryItems + " )";
+    			}
+    			
+    			itemQuery.setQuery(queryItems);
+    		}
+    		
     		communityQuery.setQuery(ClientUtils.escapeQueryChars(query)+" AND search.resourcetype:"+DSpaceObjectType.COMMUNITY.getId());
     		collectionQuery.setQuery(ClientUtils.escapeQueryChars(query)+" AND search.resourcetype:"+DSpaceObjectType.COLLECTION.getId());
     	}

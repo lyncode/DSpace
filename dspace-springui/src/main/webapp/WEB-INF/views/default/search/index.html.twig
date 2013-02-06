@@ -138,13 +138,13 @@
 	</div>
 	<div class="span3">
 	
-	<form>
+	<form method="POST" action="{{ path '/search' }}">
   	<fieldset>
 	    <legend>Filter your search</legend>
 	    <blockquote><label><strong>Author</strong></label>
 	    {% for author in items.getFacetResult('author') %}
 	    <label class="checkbox">
-	      <input type="checkbox">{{ author.getDisplayedValue }} ({{ author.count }})</input>
+	      <input type="checkbox" name="author" value="{{ author.getDisplayedValue }}">{{ author.getDisplayedValue }} ({{ author.count }})</input>
 	    </label>
 	    {% endfor %}
 	   
@@ -154,13 +154,19 @@
 	   	
 	   	{% for dt in items.getFacetResult('dateIssued') %}
 		    <label class="checkbox">
-		      <input type="checkbox">{{ dt.getDisplayedValue }} ({{ dt.count }})</input>
+		      <input type="checkbox" name="author" value="{{ dt.getDisplayedValue }}">{{ dt.getDisplayedValue }} ({{ dt.count }})</input>
 		    </label>
 	    {% endfor %}
 	    
 	    </blockquote>
+	    <div class="controls">
+		    <div class="input-prepend">
+		    	<button class="btn" type="button"><i class="icon-search"></i></button>
+		     	<input id="queryFilter" name="query" type="text" value="{{ request.parameter('query') }}">
+		    </div>
+		</div>
 	</fieldset>
-</form>
+	</form>
 
 	
 	
