@@ -65,30 +65,29 @@ public class SearchController {
     	DiscoverQuery collectionQuery = new DiscoverQuery();
     	if (query != null) {
     		
-    		if(authors==null)
+    		if(authors==null && dates==null)
         	{
     			itemQuery.setQuery(ClientUtils.escapeQueryChars(query)+" AND search.resourcetype:"+DSpaceObjectType.ITEM.getId());
         	}
     		else
     		{
-    			String queryItems = ClientUtils.escapeQueryChars(query)+" AND search.resourcetype:"+DSpaceObjectType.ITEM.getId();
-    			
-    			queryItems = queryItems + " AND";
-    			
-    			if(authors.length > 1)
+				String queryItems = ClientUtils.escapeQueryChars(query)+" AND search.resourcetype:"+DSpaceObjectType.ITEM.getId();
+				
+    			if(authors != null && authors.length>0)
     			{
-    				queryItems = queryItems + " (";
+    				System.out.print("Estou no autor!");
+    				queryItems = queryItems + " AND";
+    			
+    				queryItems = queryItems +  insertFilters(authors, itemQuery, "author");
     			}
     			
-    			for (String author : authors)
-    	        {
-    				queryItems = queryItems + " author:\""+author+"\"";
-    	        }
-    			
-    			if(authors.length > 1)
+    			if(dates!=null && dates.length>0)
     			{
-    				queryItems = queryItems + " )";
-    			}
+    				System.out.print("Estou no dates!");
+	    			queryItems = queryItems + " AND";
+	    			
+	    			queryItems = queryItems +  insertFilters(dates, itemQuery, "dateIssued.year");
+	    		}
     			
     			itemQuery.setQuery(queryItems);
     		}
@@ -135,4 +134,27 @@ public class SearchController {
 			return "error/search";
 		}
     }
+
+	private String insertFilters(String[] items,
+			DiscoverQuery itemQuery, String filter) {
+		
+		String queryItems = new String();
+		System.out.print("Filtro"+filter);
+		if(items.length > 1)
+		{
+			queryItems = queryItems + " (";
+		}
+		
+		for (String item : items)
+		{
+			queryItems = queryItems + " "+filter+":\""+item+"\"";
+		}
+		
+		if(items.length > 1)
+		{
+			queryItems = queryItems + " )";
+		}
+		
+		return queryItems;
+	}
 }

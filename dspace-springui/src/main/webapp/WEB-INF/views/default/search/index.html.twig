@@ -154,7 +154,7 @@
 	   	
 	   	{% for dt in items.getFacetResult('dateIssued') %}
 		    <label class="checkbox">
-		      <input type="checkbox" name="author" value="{{ dt.getDisplayedValue }}">{{ dt.getDisplayedValue }} ({{ dt.count }})</input>
+		      <input type="checkbox" name="date" value="{{ dt.getDisplayedValue }}">{{ dt.getDisplayedValue }} ({{ dt.count }})</input>
 		    </label>
 	    {% endfor %}
 	    
