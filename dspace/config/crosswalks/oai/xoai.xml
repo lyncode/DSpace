@@ -11,9 +11,7 @@
  -->
 <Configuration indentation="false" maxListIdentifiersSize="100" maxListRecordsSize="100"
 	maxListSetsSize="100" stylesheet="static/style.xsl" 
-	xmlns="http://www.lyncode.com/XOAIConfiguration" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.lyncode.com/XOAIConfiguration XOAIConfiguration.xsd ">
+	xmlns="http://www.lyncode.com/XOAIConfiguration">
 
 	<Contexts>
 		<Context baseurl="request">
