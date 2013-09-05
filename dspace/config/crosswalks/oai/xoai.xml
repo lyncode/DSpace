@@ -9,9 +9,11 @@
 
 	Developed by DSpace @ Lyncode <dspace@lyncode.com>
  -->
-<Configuration xmlns="http://www.lyncode.com/XOAIConfiguration"
-	identation="false" maxListIdentifiersSize="100" maxListRecordsSize="100"
-	maxListSetsSize="100" stylesheet="static/style.xsl">
+<Configuration indentation="false" maxListIdentifiersSize="100" maxListRecordsSize="100"
+	maxListSetsSize="100" stylesheet="static/style.xsl" 
+	xmlns="http://www.lyncode.com/XOAIConfiguration" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.lyncode.com/XOAIConfiguration XOAIConfiguration.xsd ">
 
 	<Contexts>
 		<Context baseurl="request">
@@ -173,21 +175,19 @@
 	
 
 	<Filters>
-		<Filter id="authorexistsFilter">
+		<CustomFilter id="authorexistsCondition">
 			<Class>org.dspace.xoai.filter.DSpaceMetadataExistsFilter</Class>
 			<Parameter key="fields">
 				<Value>dc.contributor.author</Value>
 			</Parameter>
-		</Filter>
-		
-		<Filter id="titleexistsFilter">
+		</CustomFilter>
+		<CustomFilter id="titleexistsCondition">
 			<Class>org.dspace.xoai.filter.DSpaceMetadataExistsFilter</Class>
 			<Parameter key="fields">
 				<Value>dc.title</Value>
 			</Parameter>
-		</Filter>
-		
-		<Filter id="driverdocumenttypeFilter">
+		</CustomFilter>
+		<CustomFilter id="driverdocumenttypeCondition">
 			<Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
 			<Parameter key="field">
 				<Value>dc.type</Value>
@@ -213,8 +213,8 @@
 				<Value>patent</Value>
 				<Value>other</Value>
 			</Parameter>
-		</Filter>
-		<Filter id="driveraccessFilter">
+		</CustomFilter>
+		<CustomFilter id="driveraccessCondition">
 			<Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
 			<Parameter key="field">
 				<Value>dc.rights</Value>
@@ -226,11 +226,11 @@
 				<Value>open access</Value>
 				<Value>openAccess</Value>
 			</Parameter>
-		</Filter>
-		<Filter id="bitstreamaccessFilter">
+		</CustomFilter>
+		<CustomFilter id="bitstreamaccessCondition">
 			<Class>org.dspace.xoai.filter.DSpaceAuthorizationFilter</Class>
-		</Filter>
-		<Filter id="openairerelationFilter">
+		</CustomFilter>
+		<CustomFilter id="openairerelationCondition">
 			<Class>org.dspace.xoai.filter.DSpaceAtLeastOneMetadataFilter</Class>
 			<Parameter key="field">
 				<Value>dc.relation</Value>
@@ -241,6 +241,40 @@
 			<Parameter key="value">
 				<Value>info:eu-repo/grantAgreement/EC/FP</Value>
 			</Parameter>
+		</CustomFilter>
+		
+		<Filter id="authorexistsFilter">
+			<definition>
+				<Custom refid="authorexistsCondition" />
+			</definition>
+		</Filter>
+		
+		<Filter id="titleexistsFilter">
+			<definition>
+				<Custom refid="titleexistsCondition"/>
+			</definition>
+		</Filter>
+		
+		<Filter id="driverdocumenttypeFilter">
+			<definition>
+				<Custom refid="driverdocumenttypeCondition"/>
+			</definition>
+		</Filter>
+		
+		<Filter id="driveraccessFilter">
+			<definition>
+				<Custom refid="driveraccessCondition"/>
+			</definition>
+		</Filter>
+		<Filter id="bitstreamaccessFilter">
+			<definition>
+				<Custom refid="bitstreamaccessCondition"/>
+			</definition>
+		</Filter>
+		<Filter id="openairerelationFilter">
+			<definition>
+				<Custom refid="openairerelationCondition"/>
+			</definition>
 		</Filter>
 	</Filters>
 	
