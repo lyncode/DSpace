@@ -109,7 +109,7 @@ public class DSpaceSetRepository extends AbstractSetRepository
     {
         List<Set> array = new ArrayList<Set>();
         StringBuffer query = new StringBuffer("SELECT collection_id, name, handle FROM collection c, handle h WHERE h.resource_id=collection_id AND h.resource_type_id=? ORDER BY collection_id");
-        List params = new ArrayList();
+        List<Serializable> params = new ArrayList<Serializable>();
         params.add(Constants.COLLECTION);
 
         DatabaseManager.applyOffsetAndLimit(query,params,offset,length);

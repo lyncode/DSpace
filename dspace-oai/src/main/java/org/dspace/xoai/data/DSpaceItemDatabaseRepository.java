@@ -12,8 +12,13 @@ import com.lyncode.xoai.dataprovider.core.ListItemsResults;
 import com.lyncode.xoai.dataprovider.data.AbstractItem;
 import com.lyncode.xoai.dataprovider.data.AbstractItemIdentifier;
 import com.lyncode.xoai.dataprovider.exceptions.IdDoesNotExistException;
-import com.lyncode.xoai.dataprovider.filter.Filter;
 import com.lyncode.xoai.dataprovider.filter.FilterScope;
+import com.lyncode.xoai.dataprovider.filter.ScopedFilter;
+import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.AndCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.NotCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.OrCondition;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -152,35 +157,55 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
         }
         return new ListItemsResults(hasMore, list, count);
     }
+    
+    private String buildQuery (FilterScope scope, AbstractCondition condition, List<Object> parameters) {
+        if (condition instanceof DSpaceFilter) {
+            DSpaceFilter filter = (DSpaceFilter) condition;
+            DatabaseFilterResult result = filter.getWhere(_context);
+            if (result.hasResult())
+            {
+                parameters.addAll(result.getParameters());
+                if (scope == FilterScope.MetadataFormat)
+                    return "(i.withdrawn=TRUE OR ("
+                            + result.getWhere() + "))";
+                else
+                    return "(" + result.getWhere() + ")";
+                
+                //countParameters.addAll(result.getParameters());
+            }
+        } else if (condition instanceof AndCondition) {
+            AndCondition and = (AndCondition) condition;
+            return  "("+buildQuery(scope, and.getLeft(), parameters)+") AND ("+buildQuery(scope, and.getRight(), parameters)+")";
+        } else if (condition instanceof OrCondition) {
+            OrCondition or = (OrCondition) condition;
+            return "("+buildQuery(scope, or.getLeft(), parameters)+") AND ("+buildQuery(scope, or.getRight(), parameters)+")";
+        } else if (condition instanceof NotCondition) {
+            NotCondition not = (NotCondition) condition;
+            return "NOT ("+buildQuery(scope, not.getCondition(), parameters)+")";
+        }
+        return "true";
+    }
+    
+    private String buildCondition (List<ScopedFilter> filters, int offset, int length, List<Object> parameters) {
+        List<String> whereCond = new ArrayList<String>();
+        for (ScopedFilter filter : filters)
+            whereCond.add(this.buildQuery(filter.getScope(), filter.getCondition(), parameters));
+
+        return StringUtils.join(whereCond.iterator(), " AND ");
+    }
 
     @Override
-    public ListItemsResults getItems(List<Filter> filters, int offset,
+    public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
             int length)
     {
         List<Object> parameters = new ArrayList<Object>();
         List<Object> countParameters = new ArrayList<Object>();
         String query = "SELECT i.* FROM item i ";
         String countQuery = "SELECT COUNT(*) as count FROM item i";
-        List<String> whereCond = new ArrayList<String>();
-        for (Filter filter : filters)
-        {
-            if (filter.getFilter() instanceof DSpaceFilter)
-            {
-                DSpaceFilter dspaceFilter = (DSpaceFilter) filter.getFilter();
-                DatabaseFilterResult result = dspaceFilter.getWhere(_context);
-                if (result.hasResult())
-                {
-                    if (filter.getScope() == FilterScope.MetadataFormat)
-                        whereCond.add("(i.withdrawn=TRUE OR ("
-                                + result.getWhere() + "))");
-                    else
-                        whereCond.add("(" + result.getWhere() + ")");
-                    parameters.addAll(result.getParameters());
-                    countParameters.addAll(result.getParameters());
-                }
-            }
-        }
-        String where = StringUtils.join(whereCond.iterator(), " AND ");
+        
+        String where = this.buildCondition(filters, offset, length, parameters);
+        countParameters.addAll(parameters);
+
         if (!where.equals("")) {
             query += " WHERE " + where;
             countQuery += " WHERE " + where;
@@ -190,8 +215,7 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
         String db = ConfigurationManager.getProperty("db.name");
         boolean postgres = true;
         // Assuming Postgres as default
-        if ("oracle".equals(db))
-            postgres = false;
+        if ("oracle".equals(db))  postgres = false;
         if (postgres)
         {
             query += " OFFSET ? LIMIT ?";
@@ -204,37 +228,22 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
             length = length + offset;
         }
         parameters.add(offset);
+        parameters.add(length);
         return this.getResult(query, countQuery, countParameters, parameters, length);
     }
 
     @Override
     public ListItemIdentifiersResult getItemIdentifiers(
-            List<Filter> filters, int offset, int length)
+            List<ScopedFilter> filters, int offset, int length)
     {
         List<Object> parameters = new ArrayList<Object>();
         List<Object> countParameters = new ArrayList<Object>();
         String query = "SELECT i.* FROM item i ";
         String countQuery = "SELECT COUNT(*) as count FROM item i";
-        List<String> whereCond = new ArrayList<String>();
-        for (Filter filter : filters)
-        {
-            if (filter.getFilter() instanceof DSpaceFilter)
-            {
-                DSpaceFilter dspaceFilter = (DSpaceFilter) filter.getFilter();
-                DatabaseFilterResult result = dspaceFilter.getWhere(_context);
-                if (result.hasResult())
-                {
-                    if (filter.getScope() == FilterScope.MetadataFormat)
-                        whereCond.add("(i.withdrawn=TRUE OR ("
-                                + result.getWhere() + "))");
-                    else
-                        whereCond.add("(" + result.getWhere() + ")");
-                    parameters.addAll(result.getParameters());
-                    countParameters.addAll(result.getParameters());
-                }
-            }
-        }
-        String where = StringUtils.join(whereCond.iterator(), " AND ");
+        
+        String where = this.buildCondition(filters, offset, length, parameters);
+        countParameters.addAll(parameters);
+        
         if (!where.equals("")) {
             query += " WHERE " + where;
             countQuery += " WHERE "+ where;
@@ -257,6 +266,7 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
             length = length + offset;
         }
         parameters.add(offset);
+        parameters.add(length);
         return this.getIdentifierResult(query, countQuery, countParameters, parameters, length);
     }
 }

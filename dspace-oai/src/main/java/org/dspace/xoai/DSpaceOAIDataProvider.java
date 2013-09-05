@@ -30,6 +30,7 @@ import org.dspace.xoai.data.DSpaceIdentify;
 import org.dspace.xoai.data.DSpaceItemDatabaseRepository;
 import org.dspace.xoai.data.DSpaceItemRepository;
 import org.dspace.xoai.data.DSpaceItemSolrRepository;
+import org.dspace.xoai.data.DSpaceResumptionTokenFormat;
 import org.dspace.xoai.data.DSpaceSetRepository;
 import org.dspace.xoai.filter.DSpaceFilter;
 import org.dspace.xoai.solr.DSpaceSolrServer;
@@ -39,7 +40,7 @@ import com.lyncode.xoai.dataprovider.OAIDataProvider;
 import com.lyncode.xoai.dataprovider.OAIRequestParameters;
 import com.lyncode.xoai.dataprovider.core.XOAIManager;
 import com.lyncode.xoai.dataprovider.exceptions.InvalidContextException;
-import com.lyncode.xoai.dataprovider.filter.AbstractFilter;
+import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
 
 /**
  * 
@@ -99,8 +100,8 @@ public class DSpaceOAIDataProvider extends HttpServlet
             	throw new ServletException("OAI 2.0 wasn't correctly initialized, please check the log for previous errors");
             
             // Filters require database connection -> dependency injection?
-            for (AbstractFilter filter : XOAIManager.getManager()
-                    .getFilterManager().getFilters())
+            for (AbstractCondition filter : XOAIManager.getManager()
+                    .getFilterManager().getConditions())
                 if (filter instanceof DSpaceFilter)
                     ((DSpaceFilter) filter).initialize(context);
 
@@ -123,7 +124,7 @@ public class DSpaceOAIDataProvider extends HttpServlet
             OAIDataProvider dataProvider = new OAIDataProvider(request
                     .getPathInfo().replace("/", ""), new DSpaceIdentify(
                     context, request), new DSpaceSetRepository(context),
-                    repository);
+                    repository, new DSpaceResumptionTokenFormat());
 
             log.debug("Reading parameters from request");
 

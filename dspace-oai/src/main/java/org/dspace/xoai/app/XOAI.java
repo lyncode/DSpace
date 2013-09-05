@@ -17,6 +17,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
@@ -29,6 +33,7 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
+import org.codehaus.stax2.XMLOutputFactory2;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Bitstream;
@@ -55,7 +60,7 @@ import org.dspace.xoai.util.XOAICacheManager;
 import org.dspace.xoai.util.XOAIDatabaseManager;
 
 import com.lyncode.xoai.dataprovider.exceptions.MetadataBindException;
-import com.lyncode.xoai.dataprovider.util.MarshallingUtils;
+import com.lyncode.xoai.dataprovider.exceptions.WrittingXmlException;
 
 /**
  * 
@@ -65,6 +70,8 @@ import com.lyncode.xoai.dataprovider.util.MarshallingUtils;
 public class XOAI
 {
     private static Logger log = LogManager.getLogger(XOAI.class);
+    
+    private static XMLOutputFactory factory = XMLOutputFactory2.newFactory();
 
     private Context _context;
 
@@ -241,7 +248,11 @@ public class XOAI
                 } catch (ParseException e) 
                 {
                     log.error(e.getMessage(), e);
-				}
+				} catch (XMLStreamException e) {
+                    log.error(e.getMessage(), e);
+                } catch (WrittingXmlException e) {
+                    log.error(e.getMessage(), e);
+                }
                 i++;
                 if (i % 100 == 0) System.out.println(i+" items imported so far...");
             }
@@ -263,7 +274,7 @@ public class XOAI
         }
     }
     
-    private SolrInputDocument index(Item item) throws SQLException, MetadataBindException, ParseException
+    private SolrInputDocument index(Item item) throws SQLException, MetadataBindException, ParseException, XMLStreamException, WrittingXmlException
     {
         SolrInputDocument doc = new SolrInputDocument();
         doc.addField("item.id", item.getID());
@@ -303,7 +314,10 @@ public class XOAI
         }
         
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            MarshallingUtils.writeMetadata(out, ItemUtils.retrieveMetadata(item));
+            XMLStreamWriter writer = factory.createXMLStreamWriter(out);
+            ItemUtils.retrieveMetadata(item).write(writer);
+            writer.flush();
+            writer.close();
             doc.addField("item.compile", out.toString());
 
         if (_verbose)

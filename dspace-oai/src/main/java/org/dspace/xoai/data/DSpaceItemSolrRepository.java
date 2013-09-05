@@ -28,8 +28,12 @@ import com.lyncode.xoai.dataprovider.core.ListItemsResults;
 import com.lyncode.xoai.dataprovider.data.AbstractItem;
 import com.lyncode.xoai.dataprovider.data.AbstractItemIdentifier;
 import com.lyncode.xoai.dataprovider.exceptions.IdDoesNotExistException;
-import com.lyncode.xoai.dataprovider.filter.Filter;
+import com.lyncode.xoai.dataprovider.filter.ScopedFilter;
 import com.lyncode.xoai.dataprovider.filter.FilterScope;
+import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.AndCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.NotCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.OrCondition;
 
 /**
  * 
@@ -65,53 +69,54 @@ public class DSpaceItemSolrRepository extends DSpaceItemRepository
 
     @Override
     public ListItemIdentifiersResult getItemIdentifiers(
-            List<Filter> filters, int offset, int length)
+            List<ScopedFilter> filters, int offset, int length)
     {
         List<String> whereCond = new ArrayList<String>();
-        for (Filter filter : filters)
-        {
-            if (filter.getFilter() instanceof DSpaceFilter)
-            {
-                DSpaceFilter dspaceFilter = (DSpaceFilter) filter.getFilter();
-                SolrFilterResult result = dspaceFilter.getQuery();
-                if (result.hasResult())
-                {
-                    if (filter.getScope() == FilterScope.MetadataFormat)
-                        whereCond.add("(item.deleted:true OR ("
-                                + result.getQuery() + "))");
-                    else
-                        whereCond.add("(" + result.getQuery() + ")");
-                }
-            }
-        }
+        for (ScopedFilter filter : filters)
+            whereCond.add(this.buildQuery(filter.getScope(), filter.getCondition()));
+        
         if (whereCond.isEmpty())
             whereCond.add("*:*");
         String where = "(" + StringUtils.join(whereCond.iterator(), ") AND (")
                 + ")";
         return this.getIdentifierResult(where, offset, length);
     }
+    
+    private String buildQuery (FilterScope scope, AbstractCondition condition) {
+        if (condition instanceof DSpaceFilter) {
+            DSpaceFilter filter = (DSpaceFilter) condition;
+            SolrFilterResult result = filter.getQuery();
+            if (result.hasResult())
+            {
+                if (scope == FilterScope.MetadataFormat)
+                    return "(item.deleted:true OR ("
+                                + result.getQuery() + "))";
+                else
+                    return "(" + result.getQuery() + ")";
+                
+                //countParameters.addAll(result.getParameters());
+            }
+        } else if (condition instanceof AndCondition) {
+            AndCondition and = (AndCondition) condition;
+            return  "("+buildQuery(scope, and.getLeft())+") AND ("+buildQuery(scope, and.getRight())+")";
+        } else if (condition instanceof OrCondition) {
+            OrCondition or = (OrCondition) condition;
+            return "("+buildQuery(scope, or.getLeft())+") AND ("+buildQuery(scope, or.getRight())+")";
+        } else if (condition instanceof NotCondition) {
+            NotCondition not = (NotCondition) condition;
+            return "NOT ("+buildQuery(scope, not.getCondition())+")";
+        }
+        return "true";
+    }
 
     @Override
-    public ListItemsResults getItems(List<Filter> filters, int offset,
+    public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
             int length)
     {
         List<String> whereCond = new ArrayList<String>();
-        for (Filter filter : filters)
-        {
-            if (filter.getFilter() instanceof DSpaceFilter)
-            {
-                DSpaceFilter dspaceFilter = (DSpaceFilter) filter.getFilter();
-                SolrFilterResult result = dspaceFilter.getQuery();
-                if (result.hasResult())
-                {
-                    if (filter.getScope() == FilterScope.MetadataFormat)
-                        whereCond.add("(item.deleted:true OR ("
-                                + result.getQuery() + "))");
-                    else
-                        whereCond.add("(" + result.getQuery() + ")");
-                }
-            }
-        }
+        for (ScopedFilter filter : filters)
+            whereCond.add(this.buildQuery(filter.getScope(), filter.getCondition()));
+        
         if (whereCond.isEmpty())
             whereCond.add("*:*");
         String where = "(" + StringUtils.join(whereCond.iterator(), ") AND (")

@@ -112,38 +112,39 @@ public class DSpaceAtLeastOneMetadataFilter extends DSpaceFilter
             {
                 switch (this.getOperator())
                 {
-                case CONTAINS:
-                    if (praticalValue.contains(theoreticValue))
-                        return true;
-                    break;
-                case STARTS_WITH:
-                    if (praticalValue.startsWith(theoreticValue))
-                        return true;
-                    break;
-                case ENDS_WITH:
-                    if (praticalValue.endsWith(theoreticValue))
-                        return true;
-                    break;
-                case EQUAL:
-                    if (praticalValue.equals(theoreticValue))
-                        return true;
-                    break;
-                case GREATER:
-                    if (praticalValue.compareTo(theoreticValue) > 0)
-                        return true;
-                    break;
-                case GREATER_OR_EQUAL:
-                    if (praticalValue.compareTo(theoreticValue) >= 0)
-                        return true;
-                    break;
-                case LOWER:
-                    if (praticalValue.compareTo(theoreticValue) < 0)
-                        return true;
-                    break;
-                case LOWER_OR_EQUAL:
-                    if (praticalValue.compareTo(theoreticValue) <= 0)
-                        return true;
-                    break;
+                    case STARTS_WITH:
+                        if (praticalValue.startsWith(theoreticValue))
+                            return true;
+                        break;
+                    case ENDS_WITH:
+                        if (praticalValue.endsWith(theoreticValue))
+                            return true;
+                        break;
+                    case EQUAL:
+                        if (praticalValue.equals(theoreticValue))
+                            return true;
+                        break;
+                    case GREATER:
+                        if (praticalValue.compareTo(theoreticValue) > 0)
+                            return true;
+                        break;
+                    case GREATER_OR_EQUAL:
+                        if (praticalValue.compareTo(theoreticValue) >= 0)
+                            return true;
+                        break;
+                    case LOWER:
+                        if (praticalValue.compareTo(theoreticValue) < 0)
+                            return true;
+                        break;
+                    case LOWER_OR_EQUAL:
+                        if (praticalValue.compareTo(theoreticValue) <= 0)
+                            return true;
+                        break;
+                    case CONTAINS:
+                    default:
+                        if (praticalValue.contains(theoreticValue))
+                            return true;
+                        break;
                 }
             }
         }
@@ -173,10 +174,6 @@ public class DSpaceAtLeastOneMetadataFilter extends DSpaceFilter
     {
         switch (this.getOperator())
         {
-        case CONTAINS:
-            parts.add("(tmp.text_value LIKE ?)");
-            params.add("%" + value + "%");
-            break;
         case ENDS_WITH:
             parts.add("(tmp.text_value LIKE ?)");
             params.add("%" + value);
@@ -205,6 +202,11 @@ public class DSpaceAtLeastOneMetadataFilter extends DSpaceFilter
             parts.add("(tmp.text_value >= ?)");
             params.add(value);
             break;
+        case CONTAINS:
+            default:
+            parts.add("(tmp.text_value LIKE ?)");
+            params.add("%" + value + "%");
+            break;
         }
     }
 
@@ -231,9 +233,6 @@ public class DSpaceAtLeastOneMetadataFilter extends DSpaceFilter
     {
         switch (this.getOperator())
         {
-        case CONTAINS:
-            parts.add("(" + field + ":*" + value + "*)");
-            break;
         case ENDS_WITH:
             parts.add("(" + field + ":*" + value + ")");
             break;
@@ -254,6 +253,10 @@ public class DSpaceAtLeastOneMetadataFilter extends DSpaceFilter
             break;
         case GREATER_OR_EQUAL:
             parts.add("(-(" + field + ":[* TO " + value + "]))");
+            break;
+        case CONTAINS:
+        default:
+            parts.add("(" + field + ":*" + value + "*)");
             break;
         }
     }

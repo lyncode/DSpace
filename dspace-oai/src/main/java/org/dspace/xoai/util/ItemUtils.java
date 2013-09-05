@@ -26,10 +26,9 @@ import org.dspace.core.Constants;
 import org.dspace.core.Utils;
 import org.dspace.xoai.data.DSpaceDatabaseItem;
 
-import com.lyncode.xoai.dataprovider.util.Base64Utils;
+import com.lyncode.xoai.util.Base64Utils;
 import com.lyncode.xoai.dataprovider.xml.xoai.Element;
 import com.lyncode.xoai.dataprovider.xml.xoai.Metadata;
-import com.lyncode.xoai.dataprovider.xml.xoai.ObjectFactory;
 
 /**
  * 
@@ -49,17 +48,17 @@ public class ItemUtils
 
         return null;
     }
-    private static Element create(ObjectFactory factory, String name)
+    private static Element create(String name)
     {
-        Element e = factory.createElement();
+        Element e = new Element();
         e.setName(name);
         return e;
     }
 
-    private static Element.Field createValue(ObjectFactory factory,
+    private static Element.Field createValue(
             String name, String value)
     {
-        Element.Field e = factory.createElementField();
+        Element.Field e = new Element.Field();
         e.setValue(value);
         e.setName(name);
         return e;
@@ -70,8 +69,7 @@ public class ItemUtils
         DSpaceDatabaseItem dspaceItem = new DSpaceDatabaseItem(item);
         
         // read all metadata into Metadata Object
-        ObjectFactory factory = new ObjectFactory();
-        metadata = factory.createMetadata();
+        metadata = new Metadata();
         DCValue[] vals = item.getMetadata(Item.ANY, Item.ANY, Item.ANY, Item.ANY);
         for (DCValue val : vals)
         {
@@ -79,7 +77,7 @@ public class ItemUtils
             Element schema = getElement(metadata.getElement(), val.schema);
             if (schema == null)
             {
-                schema = create(factory, val.schema);
+                schema = create(val.schema);
                 metadata.getElement().add(schema);
             }
             valueElem = schema;
@@ -91,7 +89,7 @@ public class ItemUtils
                         val.element);
                 if (element == null)
                 {
-                    element = create(factory, val.element);
+                    element = create(val.element);
                     schema.getElement().add(element);
                 }
                 valueElem = element;
@@ -103,7 +101,7 @@ public class ItemUtils
                             val.qualifier);
                     if (qualifier == null)
                     {
-                        qualifier = create(factory, val.qualifier);
+                        qualifier = create(val.qualifier);
                         element.getElement().add(qualifier);
                     }
                     valueElem = qualifier;
@@ -117,7 +115,7 @@ public class ItemUtils
                         val.language);
                 if (language == null)
                 {
-                    language = create(factory, val.language);
+                    language = create(val.language);
                     valueElem.getElement().add(language);
                 }
                 valueElem = language;
@@ -128,22 +126,22 @@ public class ItemUtils
                         "none");
                 if (language == null)
                 {
-                    language = create(factory, "none");
+                    language = create("none");
                     valueElem.getElement().add(language);
                 }
                 valueElem = language;
             }
 
-            valueElem.getField().add(createValue(factory, "value", val.value));
+            valueElem.getField().add(createValue("value", val.value));
             if (val.authority != null) {
-                valueElem.getField().add(createValue(factory, "authority", val.authority));
+                valueElem.getField().add(createValue("authority", val.authority));
                 if (val.confidence != Choices.CF_NOVALUE)
-                    valueElem.getField().add(createValue(factory, "confidence", val.confidence + ""));
+                    valueElem.getField().add(createValue("confidence", val.confidence + ""));
             }
         }
         // Done! Metadata has been read!
         // Now adding bitstream info
-        Element bundles = create(factory, "bundles");
+        Element bundles = create("bundles");
         metadata.getElement().add(bundles);
 
         Bundle[] bs;
@@ -152,17 +150,17 @@ public class ItemUtils
             bs = item.getBundles();
             for (Bundle b : bs)
             {
-                Element bundle = create(factory, "bundle");
+                Element bundle = create("bundle");
                 bundles.getElement().add(bundle);
                 bundle.getField()
-                        .add(createValue(factory, "name", b.getName()));
+                        .add(createValue("name", b.getName()));
 
-                Element bitstreams = create(factory, "bitstreams");
+                Element bitstreams = create("bitstreams");
                 bundle.getElement().add(bitstreams);
                 Bitstream[] bits = b.getBitstreams();
                 for (Bitstream bit : bits)
                 {
-                    Element bitstream = create(factory, "bitstream");
+                    Element bitstream = create("bitstream");
                     bitstreams.getElement().add(bitstream);
                     String url = "";
                     String bsName = bit.getName();
@@ -206,22 +204,22 @@ public class ItemUtils
 
                     if (name != null)
                         bitstream.getField().add(
-                                createValue(factory, "name", name));
+                                createValue("name", name));
                     if (oname != null)
                         bitstream.getField().add(
-                                createValue(factory, "originalName", name));
+                                createValue("originalName", name));
                     bitstream.getField().add(
-                            createValue(factory, "format", bit.getFormat()
+                            createValue("format", bit.getFormat()
                                     .getMIMEType()));
                     bitstream.getField().add(
-                            createValue(factory, "size", "" + bit.getSize()));
-                    bitstream.getField().add(createValue(factory, "url", url));
+                            createValue("size", "" + bit.getSize()));
+                    bitstream.getField().add(createValue("url", url));
                     bitstream.getField().add(
-                            createValue(factory, "checksum", cks));
+                            createValue("checksum", cks));
                     bitstream.getField().add(
-                            createValue(factory, "checksumAlgorithm", cka));
+                            createValue("checksumAlgorithm", cka));
                     bitstream.getField().add(
-                            createValue(factory, "sid", bit.getSequenceID()
+                            createValue("sid", bit.getSequenceID()
                                     + ""));
                 }
             }
@@ -233,29 +231,29 @@ public class ItemUtils
         
 
         // Other info
-        Element other = create(factory, "others");
+        Element other = create("others");
 
         other.getField().add(
-                createValue(factory, "handle", item.getHandle()));
+                createValue("handle", item.getHandle()));
         other.getField().add(
-                createValue(factory, "identifier", dspaceItem.getIdentifier()));
+                createValue("identifier", dspaceItem.getIdentifier()));
         other.getField().add(
-                createValue(factory, "lastModifyDate", item
+                createValue("lastModifyDate", item
                         .getLastModified().toString()));
         metadata.getElement().add(other);
 
         // Repository Info
-        Element repository = create(factory, "repository");
+        Element repository = create("repository");
         repository.getField().add(
-                createValue(factory, "name",
+                createValue("name",
                         ConfigurationManager.getProperty("dspace.name")));
         repository.getField().add(
-                createValue(factory, "mail",
+                createValue("mail",
                         ConfigurationManager.getProperty("mail.admin")));
         metadata.getElement().add(repository);
 
         // Licensing info
-        Element license = create(factory, "license");
+        Element license = create("license");
         Bundle[] licBundles;
         try
         {
@@ -274,7 +272,7 @@ public class ItemUtils
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
                         Utils.bufferedCopy(in, out);
                         license.getField().add(
-                                createValue(factory, "bin",
+                                createValue("bin",
                                         Base64Utils.encode(out.toString())));
                         metadata.getElement().add(license);
                     }

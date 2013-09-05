@@ -20,8 +20,13 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.codehaus.stax2.XMLOutputFactory2;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Utils;
@@ -32,8 +37,9 @@ import com.lyncode.xoai.dataprovider.OAIRequestParameters;
 import com.lyncode.xoai.dataprovider.core.XOAIManager;
 import com.lyncode.xoai.dataprovider.exceptions.MetadataBindException;
 import com.lyncode.xoai.dataprovider.exceptions.OAIException;
-import com.lyncode.xoai.dataprovider.util.Base64Utils;
-import com.lyncode.xoai.dataprovider.util.MarshallingUtils;
+import com.lyncode.xoai.dataprovider.exceptions.WrittingXmlException;
+import com.lyncode.xoai.util.Base64Utils;
+import com.lyncode.xoai.util.MarshallingUtils;
 import com.lyncode.xoai.dataprovider.xml.xoai.Metadata;
 
 /**
@@ -49,6 +55,8 @@ public class XOAICacheManager
     private static final String REQUESTDIR = File.separator + "requests";
 
     private static final String DATEFILE = File.separator + "date.file";
+    
+    private static XMLOutputFactory factory = XMLOutputFactory2.newFactory();
 
     private static String baseDir = null;
 
@@ -95,29 +103,34 @@ public class XOAICacheManager
     {
         log.debug("Trying to find compiled item");
         File metadataCache = getMetadataCache(item.getItem());
-        Metadata metadata;
         String compiled;
         if (!metadataCache.exists())
         {
             log.debug("This is not a compiled item");
-            // generate cache
-            metadata = ItemUtils.retrieveMetadata(item.getItem());
             FileOutputStream output;
             try
             {
                 output = new FileOutputStream(metadataCache);
-                MarshallingUtils.writeMetadata(output, metadata);
+                XMLStreamWriter writer;
+                try {
+                    writer = factory.createXMLStreamWriter(output);
+                    ItemUtils.retrieveMetadata(item.getItem()).write(writer);
+                    writer.flush();
+                    writer.close();
+                    compiled = output.toString();
+                } catch (XMLStreamException e1) {
+                    throw new MetadataBindException("Unable to export in-memory metadata into file: "
+                                    + metadataCache.getPath(), e1);
+                } catch (WrittingXmlException e1) {
+                    throw new MetadataBindException("Unable to export in-memory metadata into file: "
+                                    + metadataCache.getPath(), e1);
+                }
             }
             catch (FileNotFoundException e)
             {
                 log.warn(
                         "Could not open file for writing: "
                                 + metadataCache.getPath(), e);
-            }
-            catch (MetadataBindException e)
-            {
-                log.warn("Unable to export in-memory metadata into file: "
-                        + metadataCache.getPath(), e);
             }
         }
         log.debug("This is a compiled item!");
@@ -134,11 +147,20 @@ public class XOAICacheManager
         }
         catch (Exception e)
         {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
             log.warn(e.getMessage(), e);
-            MarshallingUtils.writeMetadata(output,
-                    ItemUtils.retrieveMetadata(item.getItem()));
-            compiled = output.toString();
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            XMLStreamWriter writer;
+            try {
+                writer = factory.createXMLStreamWriter(output);
+                ItemUtils.retrieveMetadata(item.getItem()).write(writer);
+                writer.flush();
+                writer.close();
+                compiled = output.toString();
+            } catch (XMLStreamException e1) {
+                throw new MetadataBindException(e1);
+            } catch (WrittingXmlException e1) {
+                throw new MetadataBindException(e1);
+            }
         }
         return compiled;
     }
@@ -157,7 +179,16 @@ public class XOAICacheManager
             try
             {
                 output = new FileOutputStream(metadataCache);
-                MarshallingUtils.writeMetadata(output, metadata);
+                try {
+                    XMLStreamWriter writer = factory.createXMLStreamWriter(output);
+                    metadata.write(writer);
+                    writer.flush();
+                    writer.close();
+                } catch (XMLStreamException e1) {
+                    throw new MetadataBindException(e1);
+                } catch (WrittingXmlException e1) {
+                    throw new MetadataBindException(e1);
+                }
             }
             catch (FileNotFoundException e)
             {
@@ -216,7 +247,13 @@ public class XOAICacheManager
                 // XOAI response facade
                 // This in-memory buffer will be used to store the XOAI response
                 ByteArrayOutputStream intermediate = new ByteArrayOutputStream();
-                dataProvider.handle(parameters, intermediate);
+                try {
+                    dataProvider.handle(parameters, intermediate);
+                } catch (XMLStreamException e) {
+                    throw new IOException(e);
+                } catch (WrittingXmlException e) {
+                    throw new IOException(e);
+                }
                 String xoaiResponse = intermediate.toString();
 
                 // Cutting the header (to allow one to change the response time)
@@ -265,6 +302,7 @@ public class XOAICacheManager
     public static Date getLastCompilationDate()
     {
         FileInputStream fstream;
+        Date d = null;
 
         try
         {
@@ -274,8 +312,7 @@ public class XOAICacheManager
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             try
             {
-                Date d = format.parse(br.readLine());
-                return d;
+                d = format.parse(br.readLine());
             }
             catch (Exception e)
             {
@@ -283,20 +320,19 @@ public class XOAICacheManager
                 try
                 {
                     fstream.close();
-                    return null;
                 }
                 catch (Exception e1)
                 {
                     log.debug(e1.getMessage(), e1);
-                    return null;
                 }
             }
         }
         catch (FileNotFoundException e)
         {
             log.debug(e.getMessage(), e);
-            return null;
         }
+        
+        return d;
     }
 
     public static void main(String... args)
