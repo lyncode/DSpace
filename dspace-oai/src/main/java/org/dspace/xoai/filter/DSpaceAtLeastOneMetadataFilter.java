@@ -37,8 +37,6 @@ public class DSpaceAtLeastOneMetadataFilter extends DSpaceFilter
 
     private List<String> _values;
 
-    private String _value;
-
     private String getField()
     {
         if (_field == null)
@@ -46,16 +44,6 @@ public class DSpaceAtLeastOneMetadataFilter extends DSpaceFilter
             _field = super.getParameter("field");
         }
         return _field;
-    }
-
-    @SuppressWarnings("unused")
-    private String getValue()
-    {
-        if (_value == null)
-        {
-            _value = super.getParameter("value");
-        }
-        return _value;
     }
 
     private List<String> getValues()

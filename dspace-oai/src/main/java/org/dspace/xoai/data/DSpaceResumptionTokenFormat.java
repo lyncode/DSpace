@@ -26,6 +26,7 @@ public class DSpaceResumptionTokenFormat extends AbstractResumptionTokenFormat {
 
     @Override
     public ResumptionToken parse(String resumptionToken) throws BadResumptionToken {
+        if (resumptionToken == null) return new ResumptionToken();
         String[] res = resumptionToken.split("/", -1);
         if (res.length != 5) throw new BadResumptionToken();
         else {

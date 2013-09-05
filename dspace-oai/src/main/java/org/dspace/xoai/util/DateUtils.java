@@ -34,7 +34,7 @@ public class DateUtils
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.'000Z'");
     	if (!init) sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.'999Z'");
         String ret = sdf.format(date);
-        System.out.println(ret);
+        // System.out.println(ret);
         return ret;
     }
 

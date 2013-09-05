@@ -176,17 +176,21 @@ public class DSpaceIdentify extends AbstractIdentify
 			
 			for (String path : descriptionFiles) {
 				try {
-					result.add(FileUtils.readFileToString(new File(path)));
+				    File f = new File(path);
+				    if (f.exists())
+				        result.add(FileUtils.readFileToString(f));
 				} catch (IOException e) {
-					log.error(e.getMessage(), e);
+					log.debug(e.getMessage(), e);
 				}
 			}
 			
 		} else {
 			try {
-				result.add(FileUtils.readFileToString(new File(descriptionFile)));
+			    File f = new File(descriptionFile);
+			    if (f.exists())
+			        result.add(FileUtils.readFileToString(f));
 			} catch (IOException e) {
-				log.error(e.getMessage(), e);
+				log.debug(e.getMessage(), e);
 			}
 		}
 		return result;

@@ -61,15 +61,15 @@ public class DSpaceAuthorizationFilter extends DSpaceFilter
         }
         catch (AuthorizeException ex)
         {
-            log.debug(ex.getMessage());
+            log.error(ex.getMessage(), ex);
         }
         catch (SQLException ex)
         {
-            log.error(ex.getMessage());
+            log.error(ex.getMessage(), ex);
         }
         catch (Exception ex)
         {
-            log.error(ex.getMessage());
+            log.error(ex.getMessage(), ex);
         }
         return false;
     }
