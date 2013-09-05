@@ -40,6 +40,7 @@ import com.lyncode.xoai.dataprovider.OAIDataProvider;
 import com.lyncode.xoai.dataprovider.OAIRequestParameters;
 import com.lyncode.xoai.dataprovider.core.XOAIManager;
 import com.lyncode.xoai.dataprovider.exceptions.InvalidContextException;
+import com.lyncode.xoai.dataprovider.exceptions.OAIException;
 import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
 
 /**
@@ -159,6 +160,12 @@ public class DSpaceOAIDataProvider extends HttpServlet
                     "Requested OAI context \""
                     + request.getPathInfo().replace("/", "")
                     + "\" does not exist");
+        } catch (OAIException e) {
+            log.error(e.getMessage(), e);
+            if (context != null)
+                context.abort();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Unexpected error. For more information visit the log files.");
         }
 
     }

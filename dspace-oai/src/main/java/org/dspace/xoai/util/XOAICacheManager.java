@@ -234,12 +234,22 @@ public class XOAICacheManager
 
     public static void handle(String identification,
             OAIDataProvider dataProvider, OAIRequestParameters parameters,
-            OutputStream out) throws IOException
+            OutputStream out) throws IOException, OAIException
     {
         
         boolean caching = ConfigurationManager.getBooleanProperty("oai", "cache.enabled", true);
+        if (!caching) {
+            try {
+                dataProvider.handle(parameters, out);
+                return;
+            } catch (XMLStreamException e) {
+                throw new IOException(e);
+            } catch (WrittingXmlException e) {
+                throw new IOException(e);
+            }
+        }
         File cachedResponse = getCachedResponseFile(identification);
-        if (!caching || !cachedResponse.exists())
+        if (!cachedResponse.exists())
         {
             log.debug("[XOAI] Result not cached");
             try
