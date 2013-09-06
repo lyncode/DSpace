@@ -13,13 +13,13 @@ import org.dspace.core.Context;
 import org.dspace.xoai.data.DSpaceItem;
 
 import com.lyncode.xoai.dataprovider.data.AbstractItemIdentifier;
-import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.CustomCondition;
 
 /**
  * 
  * @author Lyncode Development Team <dspace@lyncode.com>
  */
-public abstract class DSpaceFilter extends AbstractCondition
+public abstract class DSpaceFilter extends CustomCondition
 {
     private static Logger log = LogManager.getLogger(DSpaceFilter.class);
     private Context _ctx = null;
