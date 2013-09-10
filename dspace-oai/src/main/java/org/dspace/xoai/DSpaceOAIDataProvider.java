@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.stream.XMLStreamException;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -33,14 +34,16 @@ import org.dspace.xoai.data.DSpaceItemSolrRepository;
 import org.dspace.xoai.data.DSpaceResumptionTokenFormat;
 import org.dspace.xoai.data.DSpaceSetRepository;
 import org.dspace.xoai.filter.DSpaceFilter;
+import org.dspace.xoai.services.api.cache.XOAICacheService;
+import org.dspace.xoai.services.impl.cache.DSpaceXOAICacheService;
 import org.dspace.xoai.solr.DSpaceSolrServer;
-import org.dspace.xoai.util.XOAICacheManager;
 
 import com.lyncode.xoai.dataprovider.OAIDataProvider;
 import com.lyncode.xoai.dataprovider.OAIRequestParameters;
 import com.lyncode.xoai.dataprovider.core.XOAIManager;
 import com.lyncode.xoai.dataprovider.exceptions.InvalidContextException;
 import com.lyncode.xoai.dataprovider.exceptions.OAIException;
+import com.lyncode.xoai.dataprovider.exceptions.WrittingXmlException;
 import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
 
 /**
@@ -52,6 +55,9 @@ public class DSpaceOAIDataProvider extends HttpServlet
 {
     private static Logger log = LogManager
             .getLogger(DSpaceOAIDataProvider.class);
+    
+    private XOAICacheService cacheService;
+    private boolean useCache;
 
     @Override
     public void init()
@@ -63,6 +69,11 @@ public class DSpaceOAIDataProvider extends HttpServlet
             if (!"database".equals(ConfigurationManager.getProperty("oai", "storage"))) {
                 DSpaceSolrServer.getServer();
             }
+            
+            cacheService = new DSpaceXOAICacheService();
+            
+            useCache = ConfigurationManager.getBooleanProperty("oai", "cache.enabled", true);
+            
             System.out.println("[OAI 2.0] Initialized");
         }
         catch (com.lyncode.xoai.dataprovider.exceptions.ConfigurationException e)
@@ -138,7 +149,13 @@ public class DSpaceOAIDataProvider extends HttpServlet
                     + parameters.requestID();
 
             log.debug("Handling OAI request");
-            XOAICacheManager.handle(identification, dataProvider, parameters, out);
+            
+            if (this.useCache) {
+                if (!cacheService.hasCache(identification)) 
+                    cacheService.store(identification, dataProvider.handle(parameters));
+                    
+                cacheService.handle(identification, out);
+            } else dataProvider.handle(parameters, out);
             
             out.flush();
             out.close();
@@ -166,6 +183,18 @@ public class DSpaceOAIDataProvider extends HttpServlet
                 context.abort();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Unexpected error. For more information visit the log files.");
+        } catch (XMLStreamException e) {
+            log.error(e.getMessage(), e);
+            if (context != null)
+                context.abort();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Unexpected error while writing the output. For more information visit the log files.");
+        } catch (WrittingXmlException e) {
+            log.error(e.getMessage(), e);
+            if (context != null)
+                context.abort();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Unexpected error while writing the output. For more information visit the log files.");
         }
 
     }

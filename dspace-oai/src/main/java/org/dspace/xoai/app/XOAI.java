@@ -48,15 +48,19 @@ import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRowIterator;
-import org.dspace.xoai.data.DSpaceDatabaseItem;
 import org.dspace.xoai.exceptions.CompilingException;
+import org.dspace.xoai.services.api.cache.XOAICacheService;
+import org.dspace.xoai.services.api.cache.XOAIItemCacheService;
+import org.dspace.xoai.services.api.cache.XOAILastCompilationCacheService;
+import org.dspace.xoai.services.impl.cache.DSpaceXOAICacheService;
+import org.dspace.xoai.services.impl.cache.DSpaceXOAIItemCacheService;
+import org.dspace.xoai.services.impl.cache.DSpaceXOAILastCompilationCacheService;
 import org.dspace.xoai.solr.DSpaceSolrSearch;
 import org.dspace.xoai.solr.DSpaceSolrServer;
 import org.dspace.xoai.solr.exceptions.DSpaceSolrException;
 import org.dspace.xoai.solr.exceptions.DSpaceSolrIndexerException;
 import org.dspace.xoai.util.DateUtils;
 import org.dspace.xoai.util.ItemUtils;
-import org.dspace.xoai.util.XOAICacheManager;
 import org.dspace.xoai.util.XOAIDatabaseManager;
 
 import com.lyncode.xoai.dataprovider.exceptions.MetadataBindException;
@@ -72,6 +76,12 @@ public class XOAI
     private static Logger log = LogManager.getLogger(XOAI.class);
     
     private static XMLOutputFactory factory = XMLOutputFactory2.newFactory();
+    
+    private static XOAIItemCacheService itemCacheService;
+    
+    private static XOAILastCompilationCacheService lastCompCacheService;
+    
+    private static XOAICacheService cacheService;
 
     private Context _context;
 
@@ -80,6 +90,7 @@ public class XOAI
     private boolean _verbose;
     
     private boolean _clean;
+    
 
     private static List<String> getFileFormats(Item item)
     {
@@ -159,7 +170,7 @@ public class XOAI
             }
             
             // Set last compilation date
-            XOAICacheManager.setLastCompilationDate(new Date());
+            lastCompCacheService.put(new Date());
             return result;
         }
         catch (DSpaceSolrException ex)
@@ -394,7 +405,8 @@ public class XOAI
     private static void cleanCache()
     {
         System.out.println("Purging cached OAI responses.");
-        XOAICacheManager.deleteCachedResponses();
+        itemCacheService.deleteAll();
+        cacheService.deleteAll();
     }
 
     private static final String COMMAND_IMPORT = "import";
@@ -404,6 +416,10 @@ public class XOAI
     
     public static void main(String[] argv)
     {
+        cacheService = new DSpaceXOAICacheService();
+        itemCacheService = new DSpaceXOAIItemCacheService();
+        lastCompCacheService = new DSpaceXOAILastCompilationCacheService();
+        
         try
         {
             CommandLineParser parser = new PosixParser();
@@ -491,7 +507,7 @@ public class XOAI
     private static void cleanCompiledItems()
     {
         System.out.println("Purging compiled items");
-        XOAICacheManager.deleteCompiledItems();
+        itemCacheService.deleteAll();
     }
 
     private void compile() throws CompilingException
@@ -499,7 +515,7 @@ public class XOAI
         ItemIterator iterator;
         try
         {
-            Date last = XOAICacheManager.getLastCompilationDate();
+            Date last = lastCompCacheService.get();
             
             if (last == null) {
                 System.out.println("Retrieving all items to be compiled");
@@ -513,14 +529,16 @@ public class XOAI
             while (iterator.hasNext()) {
                 Item item = iterator.next();
                 if (_verbose) System.out.println("Compiling item with handle: "+ item.getHandle());
-                XOAICacheManager.compileItem(new DSpaceDatabaseItem(item));
+                itemCacheService.put(item, ItemUtils.retrieveMetadata(item));
                 _context.clearCache();
             }
             
-            XOAICacheManager.setLastCompilationDate(new Date());
+            lastCompCacheService.put(new Date());
         }
         catch (SQLException e)
         {
+            throw new CompilingException(e);
+        } catch (IOException e) {
             throw new CompilingException(e);
         }
         System.out.println("Items compiled");

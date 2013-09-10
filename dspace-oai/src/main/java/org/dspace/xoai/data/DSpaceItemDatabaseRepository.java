@@ -12,13 +12,16 @@ import com.lyncode.xoai.dataprovider.core.ListItemsResults;
 import com.lyncode.xoai.dataprovider.data.AbstractItem;
 import com.lyncode.xoai.dataprovider.data.AbstractItemIdentifier;
 import com.lyncode.xoai.dataprovider.exceptions.IdDoesNotExistException;
+import com.lyncode.xoai.dataprovider.exceptions.OAIException;
 import com.lyncode.xoai.dataprovider.filter.FilterScope;
 import com.lyncode.xoai.dataprovider.filter.ScopedFilter;
 import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
 import com.lyncode.xoai.dataprovider.filter.conditions.AndCondition;
 import com.lyncode.xoai.dataprovider.filter.conditions.NotCondition;
 import com.lyncode.xoai.dataprovider.filter.conditions.OrCondition;
+import com.lyncode.xoai.dataprovider.xml.xoai.Metadata;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,9 @@ import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRowIterator;
 import org.dspace.xoai.filter.DSpaceFilter;
 import org.dspace.xoai.filter.DatabaseFilterResult;
+import org.dspace.xoai.services.api.cache.XOAIItemCacheService;
+import org.dspace.xoai.services.impl.cache.DSpaceXOAIItemCacheService;
+import org.dspace.xoai.util.ItemUtils;
 
 /**
  * 
@@ -45,18 +51,30 @@ import org.dspace.xoai.filter.DatabaseFilterResult;
 public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
 {
 
-    private static Logger log = LogManager
-            .getLogger(DSpaceItemDatabaseRepository.class);
+    private static Logger log = LogManager.getLogger(DSpaceItemDatabaseRepository.class);
+    private XOAIItemCacheService cacheService;
+    private boolean useCache;
 
     private Context _context;
 
     public DSpaceItemDatabaseRepository(Context context)
     {
         _context = context;
+        cacheService = new DSpaceXOAIItemCacheService();
+        useCache = ConfigurationManager.getBooleanProperty("oai", "cache.enabled", true);
+    }
+    
+    private Metadata getMetadata (Item item) throws IOException {
+        if (this.useCache) {
+            if (!cacheService.hasCache(item))
+                cacheService.put(item, ItemUtils.retrieveMetadata(item));
+            
+            return cacheService.get(item);
+        } else return ItemUtils.retrieveMetadata(item);
     }
 
     @Override
-    public AbstractItem getItem(String id) throws IdDoesNotExistException
+    public AbstractItem getItem(String id) throws IdDoesNotExistException, OAIException
     {
         try
         {
@@ -69,7 +87,7 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
                     throw new IdDoesNotExistException();
                 if (!(obj instanceof Item))
                     throw new IdDoesNotExistException();
-                return new DSpaceDatabaseItem((Item) obj);
+                return new DSpaceDatabaseItem((Item) obj, this.getMetadata((Item) obj));
             }
         }
         catch (NumberFormatException e)
@@ -79,15 +97,16 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
         }
         catch (SQLException e)
         {
-            log.error(e.getMessage(), e);
-            throw new IdDoesNotExistException();
+            throw new OAIException(e);
+        } catch (IOException e) {
+            throw new OAIException(e);
         }
         throw new IdDoesNotExistException();
     }
 
     private ListItemIdentifiersResult getIdentifierResult(String query, String countQuery, 
             List<Object> countParameters,
-            List<Object> parameters, int length)
+            List<Object> parameters, int length) throws IOException
     {
         boolean hasMore = false;
         List<AbstractItemIdentifier> list = new ArrayList<AbstractItemIdentifier>();
@@ -110,7 +129,8 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
             int i = 0;
             while (iterator.hasNext() && i < length)
             {
-                list.add(new DSpaceDatabaseItem(iterator.next()));
+                Item it = iterator.next();
+                list.add(new DSpaceDatabaseItem(it, this.getMetadata(it)));
                 i++;
             }
             hasMore = iterator.hasNext();
@@ -122,7 +142,7 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
         return new ListItemIdentifiersResult(hasMore, list, count);
     }
 
-    private ListItemsResults getResult(String query, String countQuery, List<Object> countParameters, List<Object> parameters, int length)
+    private ListItemsResults getResult(String query, String countQuery, List<Object> countParameters, List<Object> parameters, int length) throws IOException
     {
         boolean hasMore = false;
         List<AbstractItem> list = new ArrayList<AbstractItem>();
@@ -146,7 +166,8 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
             int i = 0;
             while (iterator.hasNext() && i < length)
             {
-                list.add(new DSpaceDatabaseItem(iterator.next()));
+                Item it = iterator.next();
+                list.add(new DSpaceDatabaseItem(it, this.getMetadata(it)));
                 i++;
             }
             hasMore = iterator.hasNext();
@@ -196,7 +217,7 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-            int length)
+            int length) throws OAIException
     {
         List<Object> parameters = new ArrayList<Object>();
         List<Object> countParameters = new ArrayList<Object>();
@@ -229,12 +250,16 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
         }
         parameters.add(offset);
         parameters.add(length);
-        return this.getResult(query, countQuery, countParameters, parameters, length);
+        try {
+            return this.getResult(query, countQuery, countParameters, parameters, length);
+        } catch (IOException e) {
+            throw new OAIException(e);
+        }
     }
 
     @Override
     public ListItemIdentifiersResult getItemIdentifiers(
-            List<ScopedFilter> filters, int offset, int length)
+            List<ScopedFilter> filters, int offset, int length) throws OAIException
     {
         List<Object> parameters = new ArrayList<Object>();
         List<Object> countParameters = new ArrayList<Object>();
@@ -267,6 +292,10 @@ public class DSpaceItemDatabaseRepository extends DSpaceItemRepository
         }
         parameters.add(offset);
         parameters.add(length);
-        return this.getIdentifierResult(query, countQuery, countParameters, parameters, length);
+        try {
+            return this.getIdentifierResult(query, countQuery, countParameters, parameters, length);
+        } catch (IOException e) {
+            throw new OAIException(e);
+        }
     }
 }

@@ -17,6 +17,7 @@ import org.dspace.xoai.filter.DspaceSetSpecFilter;
 import com.lyncode.xoai.dataprovider.core.ListItemIdentifiersResult;
 import com.lyncode.xoai.dataprovider.core.ListItemsResults;
 import com.lyncode.xoai.dataprovider.data.AbstractItemRepository;
+import com.lyncode.xoai.dataprovider.exceptions.OAIException;
 import com.lyncode.xoai.dataprovider.filter.FilterScope;
 import com.lyncode.xoai.dataprovider.filter.ScopedFilter;
 
@@ -31,7 +32,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
     // LogManager.getLogger(DSpaceItemRepository.class);
     @Override
     public ListItemIdentifiersResult getItemIdentifiers(
-            List<ScopedFilter> filters, int offset, int length, Date from)
+            List<ScopedFilter> filters, int offset, int length, Date from) throws OAIException
     {
         filters.add(new ScopedFilter(new DateFromFilter(from), FilterScope.Query));
         return this.getItemIdentifiers(filters, offset, length);
@@ -39,7 +40,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
     public ListItemIdentifiersResult getItemIdentifiers(
-            List<ScopedFilter> filters, int offset, int length, String setSpec)
+            List<ScopedFilter> filters, int offset, int length, String setSpec) throws OAIException
     {
         filters.add(new ScopedFilter(new DspaceSetSpecFilter(setSpec),
                 FilterScope.Query));
@@ -48,7 +49,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
 	public ListItemIdentifiersResult getItemIdentifiers(
-            List<ScopedFilter> filters, int offset, int length, Date from, Date until)
+            List<ScopedFilter> filters, int offset, int length, Date from, Date until) throws OAIException
     {
         filters.add(new ScopedFilter(new DateFromFilter(from), FilterScope.Query));
         filters.add(new ScopedFilter(new DateUntilFilter(until), FilterScope.Query));
@@ -58,7 +59,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
     @Override
     public ListItemIdentifiersResult getItemIdentifiers(
             List<ScopedFilter> filters, int offset, int length, String setSpec,
-            Date from)
+            Date from) throws OAIException
     {
         filters.add(new ScopedFilter(new DateFromFilter(from), FilterScope.Query));
         filters.add(new ScopedFilter(new DspaceSetSpecFilter(setSpec),
@@ -69,7 +70,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
     @Override
     public ListItemIdentifiersResult getItemIdentifiers(
             List<ScopedFilter> filters, int offset, int length, String setSpec,
-            Date from, Date until)
+            Date from, Date until) throws OAIException
     {
         filters.add(new ScopedFilter(new DateFromFilter(from), FilterScope.Query));
         filters.add(new ScopedFilter(new DateUntilFilter(until), FilterScope.Query));
@@ -80,7 +81,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
     public ListItemIdentifiersResult getItemIdentifiersUntil(
-            List<ScopedFilter> filters, int offset, int length, Date until)
+            List<ScopedFilter> filters, int offset, int length, Date until) throws OAIException
     {
         filters.add(new ScopedFilter(new DateUntilFilter(until), FilterScope.Query));
         return this.getItemIdentifiers(filters, offset, length);
@@ -89,7 +90,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
     @Override
     public ListItemIdentifiersResult getItemIdentifiersUntil(
             List<ScopedFilter> filters, int offset, int length, String setSpec,
-            Date until)
+            Date until) throws OAIException
     {
         filters.add(new ScopedFilter(new DateUntilFilter(until), FilterScope.Query));
         filters.add(new ScopedFilter(new DspaceSetSpecFilter(setSpec),
@@ -99,7 +100,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-            int length, Date from)
+            int length, Date from) throws OAIException
     {
         filters.add(new ScopedFilter(new DateFromFilter(from), FilterScope.Query));
         return this.getItems(filters, offset, length);
@@ -107,7 +108,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-            int length, String setSpec)
+            int length, String setSpec) throws OAIException
     {
         filters.add(new ScopedFilter(new DspaceSetSpecFilter(setSpec),
                 FilterScope.Query));
@@ -116,7 +117,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-            int length, Date from, Date until)
+            int length, Date from, Date until) throws OAIException
     {
         filters.add(new ScopedFilter(new DateFromFilter(from), FilterScope.Query));
         filters.add(new ScopedFilter(new DateUntilFilter(until), FilterScope.Query));
@@ -125,7 +126,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-            int length, String setSpec, Date from)
+            int length, String setSpec, Date from) throws OAIException
     {
         filters.add(new ScopedFilter(new DateFromFilter(from), FilterScope.Query));
         filters.add(new ScopedFilter(new DspaceSetSpecFilter(setSpec),
@@ -135,7 +136,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
     public ListItemsResults getItems(List<ScopedFilter> filters, int offset,
-            int length, String setSpec, Date from, Date until)
+            int length, String setSpec, Date from, Date until) throws OAIException
     {
         filters.add(new ScopedFilter(new DateFromFilter(from), FilterScope.Query));
         filters.add(new ScopedFilter(new DateUntilFilter(until), FilterScope.Query));
@@ -146,7 +147,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
     public ListItemsResults getItemsUntil(List<ScopedFilter> filters, int offset,
-            int length, Date until)
+            int length, Date until) throws OAIException
     {
         filters.add(new ScopedFilter(new DateUntilFilter(until), FilterScope.Query));
         return this.getItems(filters, offset, length);
@@ -154,7 +155,7 @@ public abstract class DSpaceItemRepository extends AbstractItemRepository
 
     @Override
     public ListItemsResults getItemsUntil(List<ScopedFilter> filters, int offset,
-            int length, String setSpec, Date from)
+            int length, String setSpec, Date from) throws OAIException
     {
         filters.add(new ScopedFilter(new DateUntilFilter(from), FilterScope.Query));
         filters.add(new ScopedFilter(new DspaceSetSpecFilter(setSpec),

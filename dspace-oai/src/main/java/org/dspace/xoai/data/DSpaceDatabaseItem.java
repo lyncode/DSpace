@@ -17,13 +17,12 @@ import org.apache.log4j.Logger;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.content.Item;
-import org.dspace.xoai.util.XOAICacheManager;
 import org.dspace.xoai.util.XOAIDatabaseManager;
 
 import com.lyncode.xoai.dataprovider.core.ItemMetadata;
 import com.lyncode.xoai.dataprovider.core.ReferenceSet;
 import com.lyncode.xoai.dataprovider.data.AbstractAbout;
-import com.lyncode.xoai.dataprovider.exceptions.MetadataBindException;
+import com.lyncode.xoai.dataprovider.xml.xoai.Metadata;
 
 /**
  * 
@@ -67,9 +66,10 @@ public class DSpaceDatabaseItem extends DSpaceItem
     private Item item;
     private List<ReferenceSet> sets;
 
-    public DSpaceDatabaseItem(Item item)
+    public DSpaceDatabaseItem(Item item, Metadata metadata)
     {
         this.item = item;
+        this.metadata = new ItemMetadata(metadata);
         this.sets = getSets(item);
     }
 
@@ -102,18 +102,6 @@ public class DSpaceDatabaseItem extends DSpaceItem
     @Override
     public ItemMetadata getMetadata()
     {
-        if (metadata == null)
-        {
-            try
-            {
-                metadata = new ItemMetadata(XOAICacheManager.getCompiledMetadata(this));
-            }
-            catch (MetadataBindException e)
-            {
-                log.warn(e.getMessage(), e);
-                metadata = new ItemMetadata(XOAICacheManager.getMetadata(this));
-            }
-        }
         return metadata;
     }
 
@@ -126,5 +114,11 @@ public class DSpaceDatabaseItem extends DSpaceItem
     protected String getHandle()
     {
         return item.getHandle();
+    }
+
+    public static String getIdentifier(Item item2) {
+
+        // TODO Auto-generated method stub
+        return null;
     }
 }
