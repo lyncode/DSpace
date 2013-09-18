@@ -24,14 +24,9 @@
 
 <dspace:layout titlekey="jsp.error.internal.title">
     <%-- <h1>Internal System Error</h1> --%>
-    <h1><fmt:message key="jsp.error.internal.title"/></h1>
-    <%-- <p>Oops!  The system has experienced an internal error.  This is our fault,
-    please pardon our dust during these early stages of the DSpace system!</p> --%>
+  	<h1 class="text-danger"><fmt:message key="jsp.error.internal.title"/></h1>
     <p><fmt:message key="jsp.error.internal.text1"/></p>
-    <%-- <p>The system has logged this error.  Please try to do what you were doing
-    again, and if the problem persists, please contact us so we can fix the
-    problem.</p> --%>
-
+    
     <dspace:include page="/components/contact-info.jsp" />
 
     <p align="center">

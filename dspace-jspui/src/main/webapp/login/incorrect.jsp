@@ -22,8 +22,7 @@
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 
 
-<dspace:layout navbar="off"
-               locbar="nolink"
+<dspace:layout 
                titlekey="jsp.login.incorrect.title">
 
     <table border="0" width="90%">

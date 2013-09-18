@@ -34,7 +34,7 @@
 
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
 
-<dspace:layout navbar="off" locbar="off" titlekey="jsp.login.chooser.title" nocache="true">
+<dspace:layout titlekey="jsp.login.chooser.title" nocache="true">
 
     <table border="0" width="90%">
         <tr>

@@ -44,86 +44,75 @@
                parentlink="/mydspace"
                parenttitlekey="jsp.mydspace"
                titlekey="jsp.workspace.ws-main.title">
-
-    <table width="100%" border="0">
-        <tr>
-            <td align="left">
-                <h1>
-                    <fmt:message key="jsp.workspace.ws-main.wsitem"/>
-                </h1>
-            </td>
-            <td align="right" class="standard">
-                <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#mydspace\"%>"><fmt:message key="jsp.help"/></dspace:popup>
-            </td>
-        </tr>
-    </table>
+               
+    <div class="row">
+    	<div class="col-lg-12">
+    		<div class="pull-right">
+    			<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#mydspace\"%>"><fmt:message key="jsp.help"/></dspace:popup>
+    		</div>
+    		<h2><fmt:message key="jsp.workspace.ws-main.wsitem"/></h2>
+    	</div>
+    </div>
+    
 
 <%--    <h2><%= title %></h2> --%>
 <%
 		if (titleArray.length > 0)
 		{
 %>
-			<h2><%= titleArray[0].value %></h2>
+			<h3><%= titleArray[0].value %> <small><fmt:message key="jsp.dspace-admin.supervise-link.submittedby" /> <strong><a href="mailto:<%= submitter.getEmail() %>"><%= Utils.addEntities(submitter.getFullName()) %></a></strong></small></h3>
 <%
 		}
 		else
 		{
 %>
-			<h2><fmt:message key="jsp.general.untitled"/></h2>
+			<h3><fmt:message key="jsp.general.untitled"/> <small><fmt:message key="jsp.dspace-admin.supervise-link.submittedby" /> <strong><a href="mailto:<%= submitter.getEmail() %>"><%= Utils.addEntities(submitter.getFullName()) %></a></strong></small></h3>
 <%
 		}
 %>
 
-    <p><strong><a href="mailto:<%= submitter.getEmail() %>"><%= Utils.addEntities(submitter.getFullName()) %></a></strong></p>
+	<hr />
 
+	<div class="alert alert-info">
 	<p><fmt:message key="jsp.workspace.ws-main.submitmsg"/> 
-    <%= workspaceItem.getCollection().getMetadata("name") %></p>
+    	<strong><%= workspaceItem.getCollection().getMetadata("name") %></strong></p>
+	</div>
 
-    <table class="miscTable" align="center">
-        <tr>
-            <th class="oddRowOddCol"><fmt:message key="jsp.workspace.ws-main.optionheading"/></th>
-            <th class="oddRowEvenCol"><fmt:message key="jsp.workspace.ws-main.descheading"/></th>
-        </tr>
-        <tr>
-            <td class="evenRowOddCol" align="center">
-                <form action="<%= request.getContextPath() %>/mydspace" method="post">
+	<div class="row">
+		<div class="col-lg-3"></div>
+		<div class="col-lg-6">
+                <form name="editMSG" action="<%= request.getContextPath() %>/mydspace" method="post">
                     <input type="hidden" name="step" value="<%= MyDSpaceServlet.MAIN_PAGE %>"/>
                     <input type="hidden" name="workspace_id" value="<%= workspaceItem.getID() %>"/>
                     <input type="hidden" name="resume" value="<%= workspaceItem.getID() %>"/>
-                    <input type="submit" name="submit_resume" value="<fmt:message key="jsp.workspace.ws-main.button.edit"/>"/>
+                    <input type="hidden" name="submit_resume" value="<fmt:message key="jsp.workspace.ws-main.button.edit"/>"/>
                 </form>
-            </td>
-            <td class="evenRowEvenCol">
-                <fmt:message key="jsp.workspace.ws-main.editmsg"/>
-            </td>
-        </tr>
-        
-        <tr>
-            <td class="oddRowOddCol" align="center">
-                <form action="<%= request.getContextPath() %>/view-workspaceitem" method="post">
+                <form name="viewITEM" action="<%= request.getContextPath() %>/view-workspaceitem" method="post">
                    <input type="hidden" name="workspace_id" value="<%= workspaceItem.getID() %>"/>
-                   <input type="submit" name="submit_view" value="<fmt:message key="jsp.workspace.ws-main.button.view"/>"/>
+                   <input type="hidden" name="submit_view" value="<fmt:message key="jsp.workspace.ws-main.button.view"/>"/>
                 </form>
-            </td>
-            <td class="oddRowEvenCol">
-                <fmt:message key="jsp.workspace.ws-main.viewmsg"/>
-            </td>
-        </tr>
-        
-        <tr>
-            <td class="evenRowOddCol" align="center">
-                <form action="<%= request.getContextPath() %>/mydspace" method="post">
+                <form name="removeITEM" action="<%= request.getContextPath() %>/mydspace" method="post">
                     <input type="hidden" name="step" value="<%= MyDSpaceServlet.MAIN_PAGE %>"/>
                     <input type="hidden" name="workspace_id" value="<%= workspaceItem.getID() %>"/>
-                    <input type="submit" name="submit_delete" value="<fmt:message key="jsp.workspace.ws-main.button.remove"/>"/>
+                    <input type="hidden" name="submit_delete" value="<fmt:message key="jsp.workspace.ws-main.button.remove"/>"/>
                 </form>
-            </td>
-            <td class="evenRowEvenCol">
-                <fmt:message key="jsp.workspace.ws-main.removemsg"/>
-            </td>
-        </tr>
-
-    </table>
+			<div class="list-group">
+				<a class="list-group-item" href="#" onclick="document.editMSG.submit();">
+					<h4><fmt:message key="jsp.workspace.ws-main.button.edit"/></h4>
+                	<p><fmt:message key="jsp.workspace.ws-main.editmsg"/></p>
+                </a>
+				<a class="list-group-item" href="#" onclick="document.viewITEM.submit();">
+					<h4 ><fmt:message key="jsp.workspace.ws-main.button.view"/></h4>
+                	<p><fmt:message key="jsp.workspace.ws-main.viewmsg"/></p>
+                </a>
+				<a class="list-group-item" href="#" onclick="document.removeITEM.submit();">
+					<h4 class="text-danger"><fmt:message key="jsp.workspace.ws-main.button.remove"/></h4>
+                	<p class="text-danger"><fmt:message key="jsp.workspace.ws-main.removemsg"/></p>
+                </a>
+			</div>
+		</div>
+		<div class="col-lg-3"></div>
+	</div>
 
 <p><a href="<%= request.getContextPath() %>/mydspace"><fmt:message key="jsp.mydspace.general.returnto-mydspace"/></a></p>
 

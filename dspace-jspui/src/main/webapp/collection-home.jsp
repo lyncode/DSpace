@@ -64,6 +64,10 @@
     Boolean submit_b      = (Boolean)request.getAttribute("can_submit_button");
     boolean submit_button = (submit_b == null ? false : submit_b.booleanValue());
 
+
+    String query = request.getParameter("query");
+    if (query == null) query = "";
+    
 	// get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
@@ -106,120 +110,69 @@
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <dspace:layout locbar="commLink" title="<%= name %>" feedData="<%= feedData %>">
 
-  <table border="0" cellpadding="5" width="100%">
-    <tr>
-      <td width="100%">
-        <h1><%= name %>
-<%
-            if(ConfigurationManager.getBooleanProperty("webui.strengths.show"))
-            {
-%>
-                : [<%= ic.getCount(collection) %>]
-<%
-            }
-%>
-		</h1>
-		<h3><fmt:message key="jsp.collection-home.heading1"/></h3>
-      </td>
-      <td valign="top">
-<%  if (logo != null) { %>
-        <img alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
-<% } %></td>
-    </tr>
-  </table>
 
-  <%-- Search/Browse --%>
-    <table class="miscTable" align="center" summary="This table allows you to search through all collections in the repository">
-      <tr>
-        <td class="evenRowEvenCol" colspan="2">
-        <form method="get" action="">
-          <table>
-            <tr>
-              <td class="standard" align="center">
-	        <label for="tlocation"><small><strong><fmt:message key="jsp.general.location"/></strong></small></label>&nbsp;
-                  <select name="location" id="tlocation">
-		    <option value="/"><fmt:message key="jsp.general.genericScope"/></option>
-                    <option selected="selected" value="<%= community.getHandle() %>"><%= communityName %></option>
-                    <option selected="selected" value="<%= collection.getHandle() %>"><%= name %></option>
-                  </select>
-              </td>
-            </tr>
-            <tr>
-              <td class="standard" align="center">
-				<label for="tquery"><small><fmt:message key="jsp.general.searchfor"/>&nbsp;</small></label><input type="text" name="query" id="tquery"/>&nbsp;
-				<input type="submit" name="submit_search" value="<fmt:message key="jsp.general.go"/>" />
-              </td>
-            </tr>
-          </table>
-        </form>
-        </td>
-       </tr>
-            <tr>
-              <td align="center" class="standard" valign="middle">
-                <small><fmt:message key="jsp.general.orbrowse"/>&nbsp;</small>
-				<%-- Insert the dynamic list of browse options --%>
-<%
-	for (int i = 0; i < bis.length; i++)
-	{
-		String key = "browse.menu." + bis[i].getName();
-%>
-	<div class="browse_buttons">
-	<form method="get" action="<%= request.getContextPath() %>/handle/<%= collection.getHandle() %>/browse">
-		<input type="hidden" name="type" value="<%= bis[i].getName() %>"/>
-		<%-- <input type="hidden" name="collection" value="<%= collection.getHandle() %>" /> --%>
-		<input type="submit" name="submit_browse" value="<fmt:message key="<%= key %>"/>"/>
-	</form>
+	<div class="row">
+		<div class="col-lg-6">
+			<h3>
+				<%= name %> 
+				<small>
+				<% if(ConfigurationManager.getBooleanProperty("webui.strengths.show")) { %>
+                <%= ic.getCount(collection) %>
+				<% } %>
+				</small>
+			</h3>
+		</div>
+		<div class="col-lg-6">
+			<%  if (logo != null) { %>
+        	<img alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" /> 
+			<% } %>
+		</div>
 	</div>
+	
+	
+	<div class="row">
+		<div class="col-lg-12">
+			<%= intro %>
+		</div>
+	</div>
+	
+	
+	<div class="row">
+		<div class="col-lg-12">
+			<div>
+	    		<form action="" method="get">
+	    			<input type="hidden" name="location" value="<%= collection.getHandle() %>" />
+	    			<div class="form-group">
+	                  <div class="input-group">
+	                    <span class="input-group-addon"><i class="icon-search"></i></span>
+	                    <input type="text" name="query" class="form-control" placeholder="<fmt:message key="jsp.search.title"/>" value="<%=query %>" />
+	                    <span class="input-group-btn">
+	                      <button type="submit" class="btn btn-default" name="submit_search" type="button"><fmt:message key="jsp.general.search.button"/></button>
+	                    </span>
+	                  </div>
+	                </div>
+	    		</form>
+    		</div>
+    		
+    		<div>
+    			<div class="browse-label"><fmt:message key="jsp.general.orbrowse"/></div>
+    			<div class="text-center">
+<%
+	for (int i = 0; i < bis.length; i++) { String key = "browse.menu." + bis[i].getName();
+%>
+	                <form class="browse-items" method="get" action="<%= request.getContextPath() %>/handle/<%= collection.getHandle() %>/browse">
+	                	<input type="hidden" name="type" value="<%= bis[i].getName() %>"/>
+						<%-- <input type="hidden" name="community" value="<%= community.getHandle() %>" /> --%>
+						<input type="submit" name="submit_browse" class="btn btn-link" value="<fmt:message key="<%= key %>"/>"/>
+					</form>
 <%	
 	}
 %>
-	      </td>
-            </tr>
-          </table>
-
-  <table width="100%" align="center" cellspacing="10">
-    <tr>
-      <td>
-<%-- HACK: <center> used for Netscape 4.x, which doesn't accept align="center"
-  for a paragraph with a button in it --%>
-<%  if (submit_button)
-    { %>
-        <center>
-          <form action="<%= request.getContextPath() %>/submit" method="post">
-            <input type="hidden" name="collection" value="<%= collection.getID() %>" />
-			<input type="submit" name="submit" value="<fmt:message key="jsp.collection-home.submit.button"/>" />
-          </form>
-        </center>
-<%  } %>
-      </td>
-      <td class="oddRowEvenCol">
-        <form method="get" action="">
-          <table>
-            <tr>
-              <td class="standard">
-<%  if (loggedIn && subscribed)
-    { %>
-                <small><fmt:message key="jsp.collection-home.subscribed"/> <a href="<%= request.getContextPath() %>/subscribe"><fmt:message key="jsp.collection-home.info"/></a></small>
-			  </td>
-              <td class="standard">
-            		<input type="submit" name="submit_unsubscribe" value="<fmt:message key="jsp.collection-home.unsub"/>" />
-<%  } else { %>
-                <small>
-            		  <fmt:message key="jsp.collection-home.subscribe.msg"/>
-                </small>
-              </td>
-              <td class="standard">
-				<input type="submit" name="submit_subscribe" value="<fmt:message key="jsp.collection-home.subscribe"/>" />
-<%  } %>
-              </td>
-            </tr>
-          </table>
-        </form>
-      </td>
-    </tr>
-  </table>
-
-  <%= intro %>
+				</div>
+				<div class="clearfix"></div>
+    		</div>
+		</div>
+	</div>
 
 <% if (show_items)
    {
@@ -245,37 +198,45 @@
         String bi_name_key = "browse.menu." + bi.getSortOption().getName();
         String so_name_key = "browse.order." + (bi.isAscending() ? "asc" : "desc");
 %>
-    <%-- give us the top report on what we are looking at --%>
-    <fmt:message var="bi_name" key="<%= bi_name_key %>"/>
-    <fmt:message var="so_name" key="<%= so_name_key %>"/>
-    <div align="center" class="browse_range">
-        <fmt:message key="jsp.collection-home.content.range">
-            <fmt:param value="${bi_name}"/>
-            <fmt:param value="${so_name}"/>
-            <fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
-            <fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
-            <fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
-        </fmt:message>
-    </div>
 
-    <%--  do the top previous and next page links --%>
-    <div align="center">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="well well-sm">
+		        <fmt:message key="jsp.collection-home.content.range">
+		            <fmt:param value="${bi_name}"/>
+		            <fmt:param value="${so_name}"/>
+		            <fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
+		            <fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
+		            <fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
+		        </fmt:message>
+		    </div>
+		</div>
+	</div>
+    <%-- give us the top report on what we are looking at
+    <fmt:message var="bi_name" key="<%= bi_name_key %>"/>
+    <fmt:message var="so_name" key="<%= so_name_key %>"/> --%>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<ul class="pager">
 <% 
       if (bi.hasPrevPage())
       {
 %>
-      <a href="<%= prev %>"><fmt:message key="browse.full.prev"/></a>&nbsp;
+                <li><a href="<%= prev %>"><fmt:message key="browse.full.prev"/></a></li>
 <%
       }
 
       if (bi.hasNextPage())
       {
 %>
-      &nbsp;<a href="<%= next %>"><fmt:message key="browse.full.next"/></a>
+                <li><a href="<%= next %>"><fmt:message key="browse.full.next"/></a></li>
 <%
       }
 %>
-    </div>
+            </ul>
+		</div>
+	</div>
 
 <%-- output the results using the browselist tag --%>
 <%
@@ -293,129 +254,133 @@
       }
 %>
 
-    <%-- give us the bottom report on what we are looking at --%>
-    <div align="center" class="browse_range">
-        <fmt:message key="jsp.collection-home.content.range">
-            <fmt:param value="${bi_name}"/>
-            <fmt:param value="${so_name}"/>
-            <fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
-            <fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
-            <fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
-        </fmt:message>
-    </div>
 
-    <%--  do the bottom previous and next page links --%>
-    <div align="center">
+	<div class="row">
+		<div class="col-lg-12">
+			<ul class="pager">
 <% 
       if (bi.hasPrevPage())
       {
 %>
-      <a href="<%= prev %>"><fmt:message key="browse.full.prev"/></a>&nbsp;
+                <li><a href="<%= prev %>"><fmt:message key="browse.full.prev"/></a></li>
 <%
       }
 
       if (bi.hasNextPage())
       {
 %>
-      &nbsp;<a href="<%= next %>"><fmt:message key="browse.full.next"/></a>
+                <li><a href="<%= next %>"><fmt:message key="browse.full.next"/></a></li>
 <%
       }
 %>
-    </div>
+            </ul>
+		</div>
+	</div>
 
 <%
    } // end of if (show_title)
 %>
 
-    <div align="center">
-      <a class="statisticsLink" href="<%= request.getContextPath() %>/handle/<%= collection.getHandle() %>/statistics"><fmt:message key="jsp.collection-home.display-statistics"/></a>
-    </div>
+	
 
-  <p class="copyrightText"><%= copyright %></p>
+<%  if (submit_button) { %>
+        		<form name="submitToCollection" class="form-inline text-center margin-top" method="post" action="<%= request.getContextPath() %>/submit">
+            		<input type="hidden" name="collection" value="<%= collection.getID() %>" />
+				</form>
+<% } %>
+<%  if (loggedIn && subscribed) { %>
+        		<form name="subscribe" class="form-inline text-center margin-top" method="get" action="">
+        			<input type="hidden" name="submit_unsubscribe" value="<fmt:message key="jsp.collection-home.unsub"/>" />
+				</form>
+<%  } else { %>
+        		<form name="subscribe" class="form-inline text-center margin-top" method="get" action="">
+        			<input type="hidden" name="submit_subscribe" value="<fmt:message key="jsp.collection-home.subscribe"/>" />
+				</form>
+<%  } %>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="alert alert-info text-center">
+<%  if (submit_button) { %>
+					<a class="btn btn-primary" href="#" onclick="document.submitToCollection.submit();">
+						<fmt:message key="jsp.collection-home.submit.button"/>
+					</a>
+<%  } %>
+					<a class="btn btn-primary" href="#" onclick="document.subscribe.submit();">
+					
+<%  if (loggedIn && subscribed) { %>
+						<fmt:message key="jsp.collection-home.unsub"/>
+<%  } else { %>
+						<fmt:message key="jsp.collection-home.subscribe"/>
+<%  } %>
+					</a>
+					<a class="btn btn-primary" href="<%= request.getContextPath() %>/handle/<%= collection.getHandle() %>/statistics"><fmt:message key="jsp.collection-home.display-statistics"/></a>
+			</div>
+		</div>
+	</div>
+    
+  	<p class="copyrightText"><%= copyright %></p>
 
   <dspace:sidebar>
 <% if(admin_button || editor_button ) { %>
-    <table class="miscTable" align="center">
-      <tr>
-	    <td class="evenRowEvenCol" colspan="2">
-	     <table>
-            <tr>
-              <th id="t1" class="standard">
-                 <strong><fmt:message key="jsp.admintools"/></strong>                
-              </th>
-            </tr>
 
-<% if( editor_button ) { %>
-            <tr>
-              <td headers="t1" class="standard" align="center">
-                <form method="post" action="<%=request.getContextPath()%>/tools/edit-communities">
+		<form name="editbutton" method="post" action="<%=request.getContextPath()%>/tools/edit-communities">
                   <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
                   <input type="hidden" name="community_id" value="<%= community.getID() %>" />
                   <input type="hidden" name="action" value="<%= EditCommunitiesServlet.START_EDIT_COLLECTION %>" />
-                  <input type="submit" value="<fmt:message key="jsp.general.edit.button"/>" />
-                </form>
-              </td>
-            </tr>
+		</form>
+		<form name="itemMap" method="post" action="<%=request.getContextPath()%>/tools/itemmap">
+                  <input type="hidden" name="cid" value="<%= collection.getID() %>" />
+				  <input type="hidden" value="<fmt:message key="jsp.collection-home.item.button"/>" />                  
+        </form>
+        <form name="editSubmitters" method="get" action="<%=request.getContextPath()%>/tools/group-edit">
+		        <input type="hidden" name="group_id" value="<%=submitters.getID()%>" />
+		        <input type="hidden" name="submit_edit" value="<fmt:message key="jsp.collection-home.editsub.button"/>" />
+		</form>
+	    <form name="exportColl" method="post" action="<%=request.getContextPath()%>/mydspace">
+                  <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
+                  <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_EXPORT_ARCHIVE %>" />
+        </form>
+        <form name="migrateArchive" method="post" action="<%=request.getContextPath()%>/mydspace">
+                  <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
+                  <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_EXPORT_ARCHIVE %>" />
+        </form>
+        <form name="metadataExport" method="post" action="<%=request.getContextPath()%>/dspace-admin/metadataexport">
+               <input type="hidden" name="handle" value="<%= collection.getHandle() %>" />
+        </form>
+        
+    	<h4><fmt:message key="jsp.admintools"/></h4>
+		<ul class="nav nav-pills nav-stacked">
+<% if( editor_button ) { %>
+            <li>
+                  <a href="#" onclick="document.editbutton.submit();"><fmt:message key="jsp.general.edit.button"/></a>
+            </li>
 <% } %>
 
 <% if( admin_button ) { %>
-            <tr>
-              <td headers="t1" class="standard" align="center">
-                 <form method="post" action="<%=request.getContextPath()%>/tools/itemmap">
-                  <input type="hidden" name="cid" value="<%= collection.getID() %>" />
-				  <input type="submit" value="<fmt:message key="jsp.collection-home.item.button"/>" />                  
-                </form>
-              </td>
-            </tr>
+			<li>
+				<a href="#" onclick="document.itemMap.submit();"><fmt:message key="jsp.collection-home.item.button"/></a>
+			</li>
 <% if(submitters != null) { %>
-            <tr>
-	         <td headers="t1" class="standard" align="center">
-		      <form method="get" action="<%=request.getContextPath()%>/tools/group-edit">
-		        <input type="hidden" name="group_id" value="<%=submitters.getID()%>" />
-		        <input type="submit" name="submit_edit" value="<fmt:message key="jsp.collection-home.editsub.button"/>" />
-		      </form>
-	         </td>
-           </tr>
+			<li>
+				<a href="#" onclick="document.editSubmitters.submit();"><fmt:message key="jsp.collection-home.editsub.button"/></a>
+			</li>
 <% } %>
 <% if( editor_button || admin_button) { %>
-            <tr>
-              <td headers="t1" class="standard" align="center">
-                <form method="post" action="<%=request.getContextPath()%>/mydspace">
-                  <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
-                  <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_EXPORT_ARCHIVE %>" />
-                  <input type="submit" value="<fmt:message key="jsp.mydspace.request.export.collection"/>" />
-                </form>
-              </td>
-            </tr>
-            <tr>
-             <td headers="t1" class="standard" align="center">
-               <form method="post" action="<%=request.getContextPath()%>/mydspace">
-                 <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
-                 <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_MIGRATE_ARCHIVE %>" />
-                 <input type="submit" value="<fmt:message key="jsp.mydspace.request.export.migratecollection"/>" />
-               </form>
-             </td>
-           </tr>
-           <tr>
-             <td headers="t1" class="standard" align="center">
-               <form method="post" action="<%=request.getContextPath()%>/dspace-admin/metadataexport">
-                 <input type="hidden" name="handle" value="<%= collection.getHandle() %>" />
-                 <input type="submit" value="<fmt:message key="jsp.general.metadataexport.button"/>" />
-               </form>
-             </td>
-           </tr>
+            <li>
+            	<a href="#" onclick="document.exportColl.submit();"><fmt:message key="jsp.mydspace.request.export.collection"/></a>
+            </li>
+            <li>
+            	<a href="#" onclick="document.migrateArchive.submit();"><fmt:message key="jsp.mydspace.request.export.migratecommunity"/></a>
+            </li>
+            <li>
+            	<a href="#" onclick="document.metadataExport.submit();"><fmt:message key="jsp.general.metadataexport.button"/></a>
+            </li>
 <% } %>
-            <tr>
-              <td headers="t1" class="standard" align="center">
-                 <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.collection-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup>
-              </td>
-            </tr>
+			<li>
+				<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.collection-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup>
+			</li>
 <% } %>
-
-	  </table>
-	</td>
-      </tr>
-    </table>
+		</ul>
 <%  } %>
 
 <%

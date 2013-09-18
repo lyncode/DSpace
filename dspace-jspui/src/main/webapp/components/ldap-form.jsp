@@ -14,29 +14,54 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"
     prefix="fmt" %>
 
-<table class="miscTable" align="center" width="70%">
-    <tr>
-        <td class="evenRowEvenCol">
-           <form method="post" action="<%= request.getContextPath() %>/ldap-login">
-	    <p><strong><a href="<%= request.getContextPath() %>/register"><fmt:message key="jsp.components.ldap-form.newuser"/></a></strong></p>            
-	    <p><fmt:message key="jsp.components.ldap-form.enter"/></p>
- 
-               <table border="0" cellpadding="5" align="center">
-                    <tr>
-                        <td class="standard" align="right"><strong><fmt:message key="jsp.components.ldap-form.username-or-email"/></strong></td>
-                        <td><input tabindex="1" type="text" name="login_netid"></td>
-                    </tr>
-                    <tr>
-            		<td class="standard" align="right"><strong><fmt:message key="jsp.components.ldap-form.password"/></strong></td>
-                        <td><input tabindex="2" type="password" name="login_password"></td>
-                    </tr>
-                    <tr>
-                        <td align="center" colspan="2">
-			                <input type="submit" tabindex="3" name="login_submit" value="<fmt:message key="jsp.components.ldap-form.login.button"/>">
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </td>
-    </tr>
-</table>
+
+<div class="row">
+	<div class="col-lg-2"></div>
+	<div class="col-lg-8">
+		<form name="loginform" id="loginform" method="post"
+			action="<%= request.getContextPath() %>/password-login"
+			class="form-horizontal">
+			<fieldset>
+				<legend>
+					<fmt:message key="jsp.login.password.heading" />
+				</legend>
+				<div class="form-group">
+					<label for="inputEmail" class="col-lg-4 control-label"><fmt:message key="jsp.components.ldap-form.username-or-email"/></label>
+					<div class="col-lg-8">
+						<input type="text" class="form-control" name="login_netid"
+							id="inputEmail" placeholder="<fmt:message key="jsp.components.ldap-form.username-or-email"/>" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputPassword" class="col-lg-4 control-label"><fmt:message
+							key="jsp.components.login-form.password" /></label>
+					<div class="col-lg-8">
+						<input type="password" class="form-control" name="login_password"
+							id="inputPassword" placeholder="<fmt:message key="jsp.components.ldap-form.password"/>" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-12">
+						<div class="pull-right">
+							<button type="submit" name="login_submit" class="btn btn-primary">
+								<fmt:message key="jsp.components.ldap-form.login.button"/>
+							</button>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+
+		<script type="text/javascript">
+		document.loginform.login_email.focus();
+	  </script>
+	  
+	  
+		<p class="text-center">
+			<strong><a href="<%= request.getContextPath() %>/register"><fmt:message
+						key="jsp.components.login-form.newuser" /></a></strong>
+		</p>
+
+	</div>
+	<div class="col-lg-2"></div>
+</div>

@@ -168,88 +168,80 @@
 <%@page import="java.util.Set"%>
 <dspace:layout titlekey="browse.page-title" navbar="<%=layoutNavbar %>">
 
-	<%-- Build the header (careful use of spacing) --%>
-	<h2>
-		<fmt:message key="browse.full.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/> <%= value %>
-	</h2>
-
-	<%-- Include the main navigation for all the browse pages --%>
-	<%-- This first part is where we render the standard bits required by both possibly navigations --%>
-	<div align="center" id="browse_navigation">
-	<form method="get" action="<%= formaction %>">
-			<input type="hidden" name="type" value="<%= bix.getName() %>"/>
-			<input type="hidden" name="sort_by" value="<%= so.getNumber() %>"/>
-			<input type="hidden" name="order" value="<%= direction %>"/>
-			<input type="hidden" name="rpp" value="<%= rpp %>"/>
-			<input type="hidden" name="etal" value="<%= bi.getEtAl() %>" />
+	<div class="row">
+		<div class="col-lg-12">
+			<%-- Build the header (careful use of spacing) --%>
+			<h3>
+				<fmt:message key="browse.full.header">
+					<fmt:param value="<%= scope %>"/>
+				</fmt:message> 
+				<small><fmt:message key="<%= typeKey %>"/></small>
+			</h3>
+		</div>
+	</div>
+	
+	<hr />
+	
+	<div class="row">
+		<div class="col-lg-12">
+			<form class="text-center" method="get" action="<%= formaction %>">
+				<input type="hidden" name="type" value="<%= bix.getName() %>"/>
+				<input type="hidden" name="sort_by" value="<%= so.getNumber() %>"/>
+				<input type="hidden" name="order" value="<%= direction %>"/>
+				<input type="hidden" name="rpp" value="<%= rpp %>"/>
+				<input type="hidden" name="etal" value="<%= bi.getEtAl() %>" />
 <%
-		if (bi.hasAuthority())
-		{
-		%><input type="hidden" name="authority" value="<%=bi.getAuthority() %>"/><%
-		}
-		else if (bi.hasValue())
-		{
-			%><input type="hidden" name="value" value="<%= bi.getValue() %>"/><%
+		if (bi.hasAuthority()) {
+%>
+				<input type="hidden" name="authority" value="<%=bi.getAuthority() %>"/>
+<%
+		} else if (bi.hasValue()) {
+%>
+				<input type="hidden" name="value" value="<%= bi.getValue() %>"/>
+<%
 		}
 %>
-	
-	<%-- If we are browsing by a date, or sorting by a date, render the date selection header --%>
 <%
 	if (so.isDate() || (bix.isDate() && so.isDefault()))
 	{
 %>
-	<table align="center" border="0" bgcolor="#CCCCCC" cellpadding="0" summary="Browsing by date">
-        <tr>
-            <td>
-                <table border="0" bgcolor="#EEEEEE" cellpadding="2">
-                    <tr>
-                        <td class="browseBar">
-							<span class="browseBarLabel"><fmt:message key="browse.nav.date.jump"/> </span>
-							<select name="year">
-                                <option selected="selected" value="-1"><fmt:message key="browse.nav.year"/></option>
+				<div class="form-inline">
+				 	<label><fmt:message key="browse.nav.date.jump"/></label>
+					<div class="form-group">
+						<select class="form-control" name="year">
+	                                <option selected="selected" value="-1"><fmt:message key="browse.nav.year"/></option>
 <%
-		int thisYear = DCDate.getCurrent().getYear();
-		for (int i = thisYear; i >= 1990; i--)
-		{
+			int thisYear = DCDate.getCurrent().getYear();
+			for (int i = thisYear; i >= 1990; i--)
+			{
 %>
-                                <option><%= i %></option>
+	                                <option><%= i %></option>
 <%
-		}
+			}
 %>
-                                <option>1985</option>
-                                <option>1980</option>
-                                <option>1975</option>
-                                <option>1970</option>
-                                <option>1960</option>
-                                <option>1950</option>
-                            </select>
-                            <select name="month">
-                                <option selected="selected" value="-1"><fmt:message key="browse.nav.month"/></option>
+	                                <option>1985</option>
+	                                <option>1980</option>
+	                                <option>1975</option>
+	                                <option>1970</option>
+	                                <option>1960</option>
+	                                <option>1950</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<select class="form-control" name="month">
+	                                <option selected="selected" value="-1"><fmt:message key="browse.nav.month"/></option>
 <%
-		for (int i = 1; i <= 12; i++)
-		{
+			for (int i = 1; i <= 12; i++)
+			{
 %>
-                                <option value="<%= i %>"><%= DCDate.getMonthName(i, UIUtil.getSessionLocale(request)) %></option>
+	                                <option value="<%= i %>"><%= DCDate.getMonthName(i, UIUtil.getSessionLocale(request)) %></option>
 <%
-		}
+			}
 %>
-                            </select>
-                        </td>
-                        <td class="browseBar" rowspan="2">
-                            <input type="submit" value="<fmt:message key="browse.nav.go"/>" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <%-- HACK:  Shouldn't use align here --%>
-                        <td class="browseBar" align="center">
-                            <span class="browseBarLabel"><fmt:message key="browse.nav.type-year"/></span>
-                            <input type="text" name="starts_with" size="4" maxlength="4"/>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+						</select>
+					</div>
+		            <button class="btn btn-default" type="submit"><fmt:message key="browse.nav.go"/></button>
+				</div>
 <%
 	}
 	
@@ -257,114 +249,93 @@
 	else
 	{
 %>	
-	<table align="center" border="0" bgcolor="#CCCCCC" cellpadding="0" summary="Browse the respository">
-		<tr>
-	    	<td>
-	        	<table border="0" bgcolor="#EEEEEE" cellpadding="2">
-	            	<tr>
-	                	<td class="browseBar">
-	    					<span class="browseBarLabel"><fmt:message key="browse.nav.jump"/></span>
-	                        <a href="<%= sharedLink %>&amp;starts_with=0">0-9</a>
+				<div>
+					<label><fmt:message key="browse.nav.jump"/></label>
+					<a href="<%= sharedLink %>&amp;starts_with=0">0-9</a>
 <%
 	    for (char c = 'A'; c <= 'Z'; c++)
 	    {
 %>
-	                        <a href="<%= sharedLink %>&amp;starts_with=<%= c %>"><%= c %></a>
+	                <a href="<%= sharedLink %>&amp;starts_with=<%= c %>"><%= c %></a>
 <%
 	    }
 %>
-	                    </td>
-	                </tr>
-	                <tr>
-	                	<td class="browseBar" align="center">
-	    					<span class="browseBarLabel"><fmt:message key="browse.nav.enter"/>&nbsp;</span>
-	    					<input type="text" name="starts_with"/>&nbsp;<input type="submit" value="<fmt:message key="browse.nav.go"/>" />
-	                    </td>
-	                </tr>
-	            </table>
-	        </td>
-	    </tr>
-	</table>
+					<div class="form-inline">
+	    				<label><fmt:message key="browse.nav.enter"/></label>
+	    				<div class="form-group">
+	    					<input class="form-control" type="text" name="starts_with">
+	    				</div>
+	    				<button class="btn btn-default" type="submit"><fmt:message key="browse.nav.go"/></button>
+					</div>
+				</div>
 <%
 	}
 %>
-	</form>
+
+			</form>
+		</div>
 	</div>
-	<%-- End of Navigation Headers --%>
+	
+	<hr />
 
-	<%-- Include a component for modifying sort by, order, results per page, and et-al limit --%>
-	<div align="center" id="browse_controls">
-	<form method="get" action="<%= formaction %>">
-		<input type="hidden" name="type" value="<%= bix.getName() %>"/>
-<%
-		if (bi.hasAuthority())
-		{
-		%><input type="hidden" name="authority" value="<%=bi.getAuthority() %>"/><%
-		}
-		else if (bi.hasValue())
-		{
-			%><input type="hidden" name="value" value="<%= bi.getValue() %>"/><%
-		}
-%>
-<%-- The following code can be used to force the browse around the current focus.  Without
-      it the browse will revert to page 1 of the results each time a change is made --%>
-<%--
-		if (!bi.hasItemFocus() && bi.hasFocus())
-		{
-			%><input type="hidden" name="vfocus" value="<%= bi.getFocus() %>"/><%
-		}
---%>
-
-<%--
-		if (bi.hasItemFocus())
-		{
-			%><input type="hidden" name="focus" value="<%= bi.getFocusItem() %>"/><%
-		}
---%>
+	<div class="row">
+		<div class="col-gl-12">
+			<form class="form-inline text-center" method="get" action="<%= formaction %>">
+				<input type="hidden" name="type" value="<%= bix.getName() %>"/>
+<% if (bi.hasAuthority()) { %>
+				<input type="hidden" name="authority" value="<%=bi.getAuthority() %>"/>
+<% } else if (bi.hasValue()) { %>
+				<input type="hidden" name="value" value="<%= bi.getValue() %>"/>
+<% } %>
 <%
 	Set<SortOption> sortOptions = SortOption.getSortOptions();
 	if (sortOptions.size() > 1) // && bi.getBrowseLevel() > 0
 	{
 %>
-		<fmt:message key="browse.full.sort-by"/>
-		<select name="sort_by">
+				<label><fmt:message key="browse.full.sort-by"/></label>
+				<div class="form-group">
+					<select class="form-control" name="sort_by">
 <%
 		for (SortOption sortBy : sortOptions)
 		{
             if (sortBy.isVisible())
             {
                 String selected = (sortBy.getName().equals(sortedBy) ? "selected=\"selected\"" : "");
-                String mKey = "browse.sort-by." + sortBy.getName();
-                %> <option value="<%= sortBy.getNumber() %>" <%= selected %>><fmt:message key="<%= mKey %>"/></option><%
+                String mKey = "browse.sort-by." + sortBy.getName(); %> 
+                		<option value="<%= sortBy.getNumber() %>" <%= selected %>><fmt:message key="<%= mKey %>"/></option>
+<%
             }
         }
 %>
-		</select>
+					</select>
+				</div>
+
 <%
 	}
 %>
+
+				<label><fmt:message key="browse.full.order"/></label>
+				<div class="form-group">
+					<select class="form-control" name="order">
+						<option value="ASC" <%= ascSelected %>><fmt:message key="browse.order.asc" /></option>
+						<option value="DESC" <%= descSelected %>><fmt:message key="browse.order.desc" /></option>
+					</select>
+				</div>
 		
-		<fmt:message key="browse.full.order"/>
-		<select name="order">
-			<option value="ASC" <%= ascSelected %>><fmt:message key="browse.order.asc" /></option>
-			<option value="DESC" <%= descSelected %>><fmt:message key="browse.order.desc" /></option>
-		</select>
-		
-		<fmt:message key="browse.full.rpp"/>
-		<select name="rpp">
-<%
-	for (int i = 5; i <= 100 ; i += 5)
-	{
-		String selected = (i == rpp ? "selected=\"selected\"" : "");
+				<label><fmt:message key="browse.full.rpp"/></label>
+				<div class="form-group">
+					<select class="form-control" name="rpp">
+<% for (int i = 5; i <= 100 ; i += 5) {
+					String selected = (i == rpp ? "selected=\"selected\"" : "");
 %>	
-			<option value="<%= i %>" <%= selected %>><%= i %></option>
-<%
-	}
-%>
-		</select>
-		
-		<fmt:message key="browse.full.etal" />
-		<select name="etal">
+						<option value="<%= i %>" <%= selected %>><%= i %></option>
+<% } %>
+					</select>
+				</div>
+				
+				<label><fmt:message key="browse.full.etal" /></label>
+				<div class="form-group">
+					<select class="form-control" name="etal">
 <%
 	String unlimitedSelect = "";
 	if (bi.getEtAl() == -1)
@@ -372,7 +343,7 @@
 		unlimitedSelect = "selected=\"selected\"";
 	}
 %>
-			<option value="0" <%= unlimitedSelect %>><fmt:message key="browse.full.etal.unlimited"/></option>
+						<option value="0" <%= unlimitedSelect %>><fmt:message key="browse.full.etal.unlimited"/></option>
 <%
 	int cfgd = ConfigurationManager.getIntProperty("webui.browse.author-limit");
 	boolean insertedCurrent = false;
@@ -383,14 +354,18 @@
 		if (i == 0)
 		{
 			String sel = (i + 1 == bi.getEtAl() ? "selected=\"selected\"" : "");
-			%><option value="1" <%= sel %>>1</option><%
+%>
+						<option value="1" <%= sel %>>1</option>
+<%
 		}
 		
 		// if the current i is greated than that configured by the user,
 		// insert the one specified in the right place in the list
 		if (i > bi.getEtAl() && !insertedCurrent && bi.getEtAl() != -1 && bi.getEtAl() != 0 && bi.getEtAl() != 1)
 		{
-			%><option value="<%= bi.getEtAl() %>" selected="selected"><%= bi.getEtAl() %></option><%
+%>
+						<option value="<%= bi.getEtAl() %>" selected="selected"><%= bi.getEtAl() %></option>
+<%
 			insertedCurrent = true;
 		}
 		
@@ -398,7 +373,9 @@
 		// insert the one specified in the right place in the list
 		if (i > cfgd && !insertedDefault && cfgd != -1 && cfgd != 0 && cfgd != 1 && bi.getEtAl() != cfgd)
 		{
-			%><option value="<%= cfgd %>"><%= cfgd %></option><%
+%>
+						<option value="<%= cfgd %>"><%= cfgd %></option>
+<%
 			insertedDefault = true;
 		}
 		
@@ -409,34 +386,45 @@
 		if (i != 0 && i != bi.getEtAl())
 		{
 %>	
-			<option value="<%= i %>" <%= selected %>><%= i %></option>
+						<option value="<%= i %>" <%= selected %>><%= i %></option>
 <%
 		}
 	}
 %>
-		</select>
+					</select>
+				</div>
 		
-		<input type="submit" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
+				<button class="btn btn-default" type="submit" name="submit_browse"><fmt:message key="jsp.general.update"/></button>
 
 <%
     if (admin_button && !withdrawn)
     {
-        %><input type="submit" name="submit_export_metadata" value="<fmt:message key="jsp.general.metadataexport.button"/>" /><%
+%>
+        		<button class="btn btn-primary" type="submit" name="submit_export_metadata"><fmt:message key="jsp.general.metadataexport.button"/></button>
+<%
     }
 %>
+			</form>
+		</div>
+	</div>
+	
+	<hr />
 
-	</form>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="well well-sm text-center">
+				<fmt:message key="browse.full.range">
+					<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
+					<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
+					<fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
+				</fmt:message>
+			</div>
+		</div>
 	</div>
 
 	<%-- give us the top report on what we are looking at --%>
-	<div align="center" class="browse_range">
-		<fmt:message key="browse.full.range">
-			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
-			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
-			<fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
-		</fmt:message>
-	</div>
 
+	
 	<%--  do the top previous and next page links --%>
 	<div align="center">
 <% 
@@ -479,14 +467,6 @@
 	<%
     	}
 	%>
-	<%-- give us the bottom report on what we are looking at --%>
-	<div align="center" class="browse_range">
-		<fmt:message key="browse.full.range">
-			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
-			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
-			<fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
-		</fmt:message>
-	</div>
 
 	<%--  do the bottom previous and next page links --%>
 	<div align="center">

@@ -141,6 +141,11 @@ public class LayoutTag extends TagSupport
         List<String> parents = new ArrayList<String>();
         List<String> parentLinks = new ArrayList<String>();
 
+        if (sidebar != null)
+        {
+            request.setAttribute("dspace.layout.sidebar", sidebar);
+        }
+
         if (locbar.equalsIgnoreCase("off"))
         {
             // No location bar

@@ -44,80 +44,79 @@
 %>
 
 <dspace:layout locbar="off"
-               navbar="off"
                titlekey="jsp.submit.select-collection.title"
                nocache="true">
 
-    <h1><fmt:message key="jsp.submit.select-collection.heading"/></h1>
-
-	
-<%  if (collections.length > 0)
-    {
-%>
-	<div><fmt:message key="jsp.submit.select-collection.info1"/>
-      <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#choosecollection\"%>"><fmt:message key="jsp.morehelp"/> </dspace:popup> 
+	<div class="row margin-top-2">
+		<div class="col-md-8 col-md-offset-2">
+		<%  if (collections.length > 0)
+		    {
+		%>
+			<form class="form-horizontal" action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
+				<%= SubmissionController.getSubmissionParameters(context, request) %>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3><fmt:message key="jsp.submit.select-collection.heading"/></h3>
+						<p>
+							<fmt:message key="jsp.submit.select-collection.info1"/>
+							<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#choosecollection\"%>"><fmt:message key="jsp.morehelp"/> </dspace:popup>
+						</p>
+					</div>
+					<div class="panel-body">
+						<div class="col-md-10 col-md-offset-1">
+		<%
+				//if no collection was selected, display an error
+				if((noCollection != null) && (noCollection.booleanValue()==true))
+				{
+		%>
+					    <div class="alert alert-danget">
+					    	<p><fmt:message key="jsp.submit.select-collection.no-collection"/></p>
+					    </div>
+		<%
+				}
+		%> 		
+			   			<div class="form-group">
+							<label><fmt:message key="jsp.submit.select-collection.collection"/></label>
+							<select class="form-control" name="collection" id="tcollection">
+			                   	<option value="-1"></option>
+		<%
+		        for (int i = 0; i < collections.length; i++)
+		        {
+		%>
+							<option value="<%= collections[i].getID() %>"><%= collections[i].getMetadata("name") %></option>
+		<%
+		        }
+		%>
+			            	</select>
+			            </div>
+			            </div>
+					</div>
+					<div class="panel-footer">
+						<div class="pull-right">
+							<button class="btn btn-primary" type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>"><fmt:message key="jsp.submit.general.next"/></button>
+							<button class="btn btn-default" type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>"><fmt:message key="jsp.submit.select-collection.cancel"/></button>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+		    </form>
+		<%  } else { %>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3><fmt:message key="jsp.submit.select-collection.heading"/></h3>
+					<p>
+						<fmt:message key="jsp.submit.select-collection.info1"/>
+						<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#choosecollection\"%>"><fmt:message key="jsp.morehelp"/> </dspace:popup>
+					</p>
+				</div>
+				<div class="panel-body">
+					<div class="alert alert-danger">
+						<p><fmt:message key="jsp.submit.select-collection.none-authorized"/></p>
+					</div>
+				</div>
+			</div>
+		<%  } %>
+		</div>
 	</div>
-
-    <form action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
-<%-- HACK: a <center> tag seems to be the only way to convince certain --%>
-<%--       browsers to center the table. --%>
-        <center>
-            <table summary="Select collection table">
-<%
-		//if no collection was selected, display an error
-		if((noCollection != null) && (noCollection.booleanValue()==true))
-		{
-%>
-                <tr>
-					<td colspan="2" class="submitFormWarn"><fmt:message key="jsp.submit.select-collection.no-collection"/></td>
-				</tr>
-<%
-		}
-%>            
-            
-                <tr>
-                    <%-- <td class="submitFormLabel"><label for="tcollection">Collection</label></td> --%>
-					<td class="submitFormLabel"><label for="tcollection"><fmt:message key="jsp.submit.select-collection.collection"/></label></td>
-                    <td>
-                        <select name="collection" id="tcollection">
-                        	<option value="-1"></option>
-<%
-        for (int i = 0; i < collections.length; i++)
-        {
-%>
-                            <option value="<%= collections[i].getID() %>"><%= collections[i].getMetadata("name") %></option>
-<%
-        }
-%>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-            <%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
-            <%= SubmissionController.getSubmissionParameters(context, request) %>
-            <br />
-
-            <table border="0" width="80%">
-                <tr>
-                    <td width="100%">&nbsp;</td>
-                    <td>
-                        <%-- <input type="submit" name="submit_next" value="Next &gt;"> --%>
-						<input type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>" value="<fmt:message key="jsp.submit.general.next"/>" />
-                    </td>
-                    <td>&nbsp;&nbsp;&nbsp;</td>
-                    <td align="right">
-                        <%-- <input type="submit" name="submit_cancel" value="Cancel/Save"> --%>
-						<input type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>" value="<fmt:message key="jsp.submit.select-collection.cancel"/>" />
-                    </td>
-                </tr>
-            </table>
-        </center>
-    </form>
-<%  } else { %>
-	<p class="submitFormWarn"><fmt:message key="jsp.submit.select-collection.none-authorized"/></p>
-<%  } %>	
-	   <p><fmt:message key="jsp.general.goto"/><br />
-	   <a href="<%= request.getContextPath() %>"><fmt:message key="jsp.general.home"/></a><br />
-	   <a href="<%= request.getContextPath() %>/mydspace"><fmt:message key="jsp.general.mydspace" /></a>
-	   </p>	
+	
 </dspace:layout>

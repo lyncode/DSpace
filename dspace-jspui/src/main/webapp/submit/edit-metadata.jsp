@@ -155,11 +155,11 @@
                   .append(" \" src=\"").append(contextPath).append("/image/confidence/invisible.gif\" />")
                   .append("<input type=\"text\" value=\"").append(authorityValue!=null?authorityValue:"")
                   .append("\" id=\"").append(authorityName)
-                  .append("\" name=\"").append(authorityName).append("\" class=\"ds-authority-value\"/>")
+                  .append("\" name=\"").append(authorityName).append("\" class=\"form-control ds-authority-value\"/>")
                   .append("<input type=\"hidden\" value=\"").append(confidenceSymbol)
                   .append("\" id=\"").append(confidenceName)
                   .append("\" name=\"").append(confidenceName)
-                  .append("\" class=\"ds-authority-confidence-input\"/>");
+                  .append("\" class=\"form-control ds-authority-confidence-input\"/>");
             }
 
             // suggest is not supported for name input type
@@ -186,7 +186,7 @@
             // put up a SELECT element containing all choices
             else if (isSelect)
             {
-                sb.append("<select id=\"").append(fieldInput)
+                sb.append("<select class=\"form-control\" id=\"").append(fieldInput)
                    .append("_id\" name=\"").append(fieldInput)
                    .append("\" size=\"").append(String.valueOf(repeatable ? 6 : 1))
                    .append(repeatable ? "\" multiple>\n" :"\">\n");
@@ -216,7 +216,7 @@
             {
                 if (inputBlock != null)
                     sb.insert(0, inputBlock);
-                sb.append("<input type=\"image\" name=\"").append(fieldInput).append("_lookup\" ")
+                sb.append("<input class=\"form-control\" type=\"image\" name=\"").append(fieldInput).append("_lookup\" ")
                   .append("onclick=\"javascript: return DSpaceChoiceLookup('")
                   .append(contextPath).append("/tools/lookup.jsp','")
                   .append(fieldName).append("','edit_metadata','")
@@ -301,7 +301,7 @@
             conf = unknownConfidence;
          }
          
-         sb.append("<td><input type=\"text\" name=\"")
+         sb.append("<td><input class=\"form-control\" type=\"text\" name=\"")
            .append(last.toString())
            .append("\" size=\"23\" ");
          if (readonly)
@@ -330,7 +330,7 @@
                 .append(' ')
                 .append(Utils.addEntities(dpn.getFirstNames()));
             // put a remove button next to filled in values
-            sb.append("<td><input type=\"submit\" name=\"submit_")
+            sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
               .append(fieldName)
               .append("_remove_")
               .append(i)
@@ -390,7 +390,7 @@
          sb.append("<td colspan=\"2\" nowrap=\"nowrap\" class=\"submitFormDateLabel\">")
 //          .append("Month:<select name=\"")
                 .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.month"))
-            .append("<select name=\"")
+            .append("<select class=\"form-control\" name=\"")
             .append(fieldName)
             .append("_month");
          if (repeatable && i>0)
@@ -421,7 +421,7 @@
          sb.append("</select>")
 //            .append("Day:<input type=text name=\"")
                 .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.day"))
-                .append("<input type=\"text\" name=\"")
+                .append("<input class=\"form-control\" type=\"text\" name=\"")
             .append(fieldName)
             .append("_day");
          if (repeatable && i>0)
@@ -436,7 +436,7 @@
 //          .append("\"/>Year:<input type=text name=\"")
                 .append("\"/>")
                 .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.year"))
-                .append("<input type=\"text\" name=\"")
+                .append("<input class=\"form-control\" type=\"text\" name=\"")
             .append(fieldName)
             .append("_year");
          if (repeatable && i>0)
@@ -453,7 +453,7 @@
          if (repeatable && !readonly && i < defaults.length)
          {
             // put a remove button next to filled in values
-            sb.append("<td><input type=\"submit\" name=\"submit_")
+            sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
               .append(fieldName)
               .append("_remove_")
               .append(i)
@@ -465,7 +465,7 @@
          else if (repeatable && !readonly && i == fieldCount - 1)
          {
             // put a 'more' button next to the last space
-            sb.append("<td><input type=\"submit\" name=\"submit_")
+            sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
               .append(fieldName)
 //            .append("_add\" value=\"Add More\"/> </td></tr>");
               .append("_add\" value=\"")
@@ -526,7 +526,7 @@
          else
            sn = new org.dspace.content.DCSeriesNumber();
 
-         sb.append("<td><input type=\"text\" name=\"")
+         sb.append("<td><input class=\"form-control\" type=\"text\" name=\"")
            .append(fieldName)
            .append("_series");
          if (repeatable && i!= fieldCount)
@@ -537,7 +537,7 @@
          }
          sb.append("\" size=\"23\" value=\"")
            .append(sn.getSeries().replaceAll("\"", "&quot;"))
-           .append("\"/></td>\n<td><input type=\"text\" name=\"")
+           .append("\"/></td>\n<td><input class=\"form-control\" type=\"text\" name=\"")
            .append(fieldName)
            .append("_number");
          if (repeatable && i!= fieldCount)
@@ -553,7 +553,7 @@
          if (repeatable && !readonly && i < defaults.length)
          {
             // put a remove button next to filled in values
-            sb.append("<td><input type=\"submit\" name=\"submit_")
+            sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
               .append(fieldName)
               .append("_remove_")
               .append(i)
@@ -619,7 +619,7 @@
          }
          sb.append("<td colspan=\"2\">\n");
          String fieldNameIdx = fieldName + ((repeatable && i != fieldCount-1)?"_" + (i+1):"");
-         StringBuffer inputBlock = new StringBuffer().append("<textarea name=\"").append(fieldNameIdx)
+         StringBuffer inputBlock = new StringBuffer().append("<textarea class=\"form-control\" name=\"").append(fieldNameIdx)
            .append("\" rows=\"4\" cols=\"45\" id=\"")
            .append(fieldNameIdx).append("_id\" ")
            .append((hasVocabulary(vocabulary)&&closedVocabulary)||readonly?" disabled=\"disabled\" ":"")
@@ -635,7 +635,7 @@
          if (repeatable && !readonly && i < defaults.length)
          {
             // put a remove button next to filled in values
-            sb.append("<td><input type=\"submit\" name=\"submit_")
+            sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
               .append(fieldName)
               .append("_remove_")
               .append(i)
@@ -703,7 +703,7 @@
 
            sb.append("<td colspan=\"2\">");
            String fieldNameIdx = fieldName + ((repeatable && i != fieldCount-1)?"_" + (i+1):"");
-           StringBuffer inputBlock = new StringBuffer("<input type=\"text\" name=\"")
+           StringBuffer inputBlock = new StringBuffer("<input class=\"form-control\" type=\"text\" name=\"")
              .append(fieldNameIdx)
              .append("\" id=\"")
              .append(fieldNameIdx).append("\" size=\"50\" value=\"")
@@ -720,7 +720,7 @@
           if (repeatable && !readonly && i < defaults.length)
           {
              // put a remove button next to filled in values
-             sb.append("<td><input type=\"submit\" name=\"submit_")
+             sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
                .append(fieldName)
                .append("_remove_")
                .append(i)
@@ -732,7 +732,7 @@
           else if (repeatable && !readonly && i == fieldCount - 1)
           {
              // put a 'more' button next to the last space
-             sb.append("<td><input type=\"submit\" name=\"submit_")
+             sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
                .append(fieldName)
 //             .append("_add\" value=\"Add More\"/> </td></tr>");
                .append("_add\" value=\"")
@@ -816,7 +816,7 @@
              .append("/>");
           if (!readonly)
           {
-                       sb.append("&nbsp;<input type=\"submit\" name=\"submit_")
+                       sb.append("&nbsp;<input class=\"form-control\" type=\"submit\" name=\"submit_")
                              .append(fieldName)
                              .append("_remove_")
                              .append(i)
@@ -829,7 +829,7 @@
          }
          else
                  {
-           sb.append("<td align=\"left\"><input type=\"text\" name=\"")
+           sb.append("<td align=\"left\"><input class=\"form-control\" type=\"text\" name=\"")
              .append(fieldParam)
              .append("\" size=\"15\"")
              .append((hasVocabulary(vocabulary)&&closedVocabulary) || readonly?" disabled=\"disabled\" ":"")
@@ -853,7 +853,7 @@
         
                  if (i < defaults.length)
                  {
-                   sb.append("<td align=\"left\"><input type=\"text\" name=\"")
+                   sb.append("<td align=\"left\"><input class=\"form-control\" type=\"text\" name=\"")
                      .append(fieldParam)
                      .append("\" size=\"15\" value=\"")
                      .append(defaults[i].value.replaceAll("\"", "&quot;"))
@@ -862,7 +862,7 @@
                          .append("/>");
                    if (!readonly)
                    {
-                               sb.append("&nbsp;<input type=\"submit\" name=\"submit_")
+                               sb.append("&nbsp;<input class=\"form-control\" type=\"submit\" name=\"submit_")
                                      .append(fieldName)
                                      .append("_remove_")
                                      .append(i)
@@ -876,7 +876,7 @@
                  }
                  else
                  {
-                   sb.append("<td align=\"left\"><input type=\"text\" name=\"")
+                   sb.append("<td align=\"left\"><input class=\"form-control\" type=\"text\" name=\"")
                      .append(fieldParam)
                      //.append("\" size=\"15\"/></td>");
                      .append("\" size=\"15\"")
@@ -887,7 +887,7 @@
         
                    if (i+1 >= fieldCount && !readonly)
                    {
-                     sb.append("<td><input type=\"submit\" name=\"submit_")
+                     sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
                        .append(fieldName)
                        .append("_add\" value=\"")
                        .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add"))
@@ -981,7 +981,7 @@
          }
       
          // do the input box
-         sb.append("</select>&nbsp;<input type=\"text\" name=\"")
+         sb.append("</select>&nbsp;<input class=\"form-control\" type=\"text\" name=\"")
            .append(fieldName)
            .append("_value");
          if (repeatable && j!= fieldCount-1)
@@ -997,7 +997,7 @@
          if (repeatable && !readonly && j < defaults.length)
          {
             // put a remove button next to filled in values
-            sb.append("<td><input type=\"submit\" name=\"submit_")
+            sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
               .append(fieldName)
               .append("_remove_")
               .append(j)
@@ -1009,7 +1009,7 @@
          else if (repeatable && !readonly && j == fieldCount - 1)
          {
             // put a 'more' button next to the last space
-            sb.append("<td><input type=\"submit\" name=\"submit_")
+            sb.append("<td><input class=\"form-control\" type=\"submit\" name=\"submit_")
               .append(fieldName)
 //            .append("_add\" value=\"Add More\"/> </td></tr>");
               .append("_add\" value=\"")
@@ -1042,7 +1042,7 @@
         .append("</td>");
 
       sb.append("<td colspan=\"2\">")
-        .append("<select name=\"")
+        .append("<select class=\"form-control\" name=\"")
         .append(fieldName)
         .append("\"");
       if (repeatable)
@@ -1143,7 +1143,7 @@
                }
            
                                 // print input field
-                       sb.append("<input type=\"");
+                       sb.append("<input class=\"form-control\" type=\"");
                    
                    //if repeatable, print a Checkbox, otherwise print Radio buttons
                    if(repeatable)

@@ -391,7 +391,7 @@ public class ItemTag extends TagSupport
             configLine = defaultFields;
         }
 
-        out.println("<center><table class=\"itemDisplayTable\">");
+        out.println("<center><table class=\"table table-striped table-bordered table-hover\">");
 
         /*
          * Break down the configuration into fields and display them
@@ -653,7 +653,7 @@ public class ItemTag extends TagSupport
                         "org.dspace.app.webui.jsptag.ItemTag.full") + "</p>");
 
         // Three column table - DC field, value, language
-        out.println("<center><table class=\"itemDisplayTable\">");
+        out.println("<center><table class=\"table table-striped table-bordered table-hover\">");
         out.println("<tr><th id=\"s1\" class=\"standard\">"
                 + LocaleSupport.getLocalizedMessage(pageContext,
                         "org.dspace.app.webui.jsptag.ItemTag.dcfield")
@@ -731,7 +731,7 @@ public class ItemTag extends TagSupport
                 out.print(LocaleSupport.getLocalizedMessage(pageContext,
                           "org.dspace.app.webui.jsptag.ItemTag.appears"));
             }
-            out.print("</td><td class=\"metadataFieldValue\">");
+            out.print("</td><td colspan=\"2\" class=\"metadataFieldValue\">");
 
             for (int i = 0; i < collections.length; i++)
             {
@@ -757,12 +757,12 @@ public class ItemTag extends TagSupport
         HttpServletRequest request = (HttpServletRequest) pageContext
                 .getRequest();
 
-        out.print("<table align=\"center\" class=\"miscTable\"><tr>");
-        out.println("<td class=\"evenRowEvenCol\"><p><strong>"
-                + LocaleSupport.getLocalizedMessage(pageContext,
-                        "org.dspace.app.webui.jsptag.ItemTag.files")
-                + "</strong></p>");
-
+        out.print("<div class=\"row\">");
+        out.print("<div class=\"col-lg-12\">");
+        out.println("<h6>"
+                        + LocaleSupport.getLocalizedMessage(pageContext,
+                                "org.dspace.app.webui.jsptag.ItemTag.files")
+                        + "</h6>");
         try
         {
         	Bundle[] bundles = item.getBundles("ORIGINAL");
@@ -824,7 +824,9 @@ public class ItemTag extends TagSupport
         		}
 
         		out
-                    .println("<table cellpadding=\"6\"><tr><th id=\"t1\" class=\"standard\">"
+                    .println("<table cellpadding=\"6\" class=\"table table-striped table-bordered table-hover\">" +
+                    		"<thead>" +
+                    		"<th id=\"t1\">"
                             + LocaleSupport.getLocalizedMessage(pageContext,
                                     "org.dspace.app.webui.jsptag.ItemTag.file")
                             + "</th>");
@@ -843,10 +845,16 @@ public class ItemTag extends TagSupport
         		out.println("<th id=\"t3\" class=\"standard\">"
                     + LocaleSupport.getLocalizedMessage(pageContext,
                             "org.dspace.app.webui.jsptag.ItemTag.filesize")
-                    + "</th><th id=\"t4\" class=\"standard\">"
+                    + "</th>" +
+                    "<th id=\"t4\" class=\"standard\">"
                     + LocaleSupport.getLocalizedMessage(pageContext,
                             "org.dspace.app.webui.jsptag.ItemTag.fileformat")
-                    + "</th></tr>");
+                    + "</th>" +
+                    "<th id=\"t5\" class=\"standard\">"
+                    + LocaleSupport.getLocalizedMessage(pageContext,
+                            "org.dspace.app.webui.jsptag.ItemTag.operations")
+                    + "</th>" +
+                    "</thead>");
 
             	// if primary bitstream is html, display a link for only that one to
             	// HTMLServlet
@@ -996,6 +1004,7 @@ public class ItemTag extends TagSupport
             		}
             	}
 
+                
             	out.println("</table>");
         	}
         }
@@ -1004,7 +1013,9 @@ public class ItemTag extends TagSupport
         	throw new IOException(sqle.getMessage(), sqle);
         }
 
-        out.println("</td></tr></table>");
+        
+        out.print("</div>");
+        out.print("</div>");
     }
 
     private void getThumbSettings()
@@ -1032,7 +1043,7 @@ public class ItemTag extends TagSupport
         	throw new IOException(sqle.getMessage(), sqle);
         }
 
-        out.println("<table align=\"center\" class=\"attentionTable\"><tr>");
+        out.println("<table class=\"table table-striped table-bordered table-hover\"><tr>");
 
         out.println("<td class=\"attentionCell\"><p><strong>"
                 + LocaleSupport.getLocalizedMessage(pageContext,

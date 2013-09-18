@@ -76,6 +76,9 @@
 			title = "Item " + handle;
 		}
 	}
+
+    String displayStyle = (displayAll ? "full" : "");
+    String locationLink = request.getContextPath() + "/handle/" + handle;
 %>
 
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
@@ -85,133 +88,151 @@
     if (handle != null)
     {
 %>
-
-    <table align="center" class="miscTable">
-        <tr>
-            <td class="evenRowEvenCol" align="center">
-                <%-- <strong>Please use this identifier to cite or link to this item:
-                <code><%= HandleManager.getCanonicalForm(handle) %></code></strong>--%>
-                <strong><fmt:message key="jsp.display-item.identifier"/>
-                <code><%= HandleManager.getCanonicalForm(handle) %></code></strong>
-            </td>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="alert alert-info">
+				<div class="row">
 <%
-        if (admin_button)  // admin edit button
-        { %>
-            <td class="evenRowEvenCol" align="center">
-                <form method="post" action="<%= request.getContextPath() %>/mydspace">
-                    <input type="hidden" name="item_id" value="<%= item.getID() %>" />
-                    <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_EXPORT_ARCHIVE %>" />
-                    <input type="submit" name="submit" value="<fmt:message key="jsp.mydspace.request.export.item"/>" />
-                </form>
-                <form method="post" action="<%= request.getContextPath() %>/mydspace">
-                    <input type="hidden" name="item_id" value="<%= item.getID() %>" />
-                    <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_MIGRATE_ARCHIVE %>" />
-                    <input type="submit" name="submit" value="<fmt:message key="jsp.mydspace.request.export.migrateitem"/>" />
-                </form>
-                <form method="post" action="<%= request.getContextPath() %>/dspace-admin/metadataexport">
-                    <input type="hidden" name="handle" value="<%= item.getHandle() %>" />
-                    <input type="submit" name="submit" value="<fmt:message key="jsp.general.metadataexport.button"/>" />
-                </form>
-
-            </td>
-            <td class="evenRowEvenCol" align="center">
-                <form method="get" action="<%= request.getContextPath() %>/tools/edit-item">
-                    <input type="hidden" name="item_id" value="<%= item.getID() %>" />
-                    <%--<input type="submit" name="submit" value="Edit...">--%>
-                    <input type="submit" name="submit" value="<fmt:message key="jsp.general.edit.button"/>" />
-                </form>
-            </td>
-<%      } %>
-        </tr>
-    </table>
-    <br />
+	int cols = 12;
+	if (admin_button) cols = 6;
+%>
+					<div class="col-lg-<%=cols%>">
+                		<fmt:message key="jsp.display-item.identifier"/>
+                		<code class="text-danger"><%= HandleManager.getCanonicalForm(handle) %></code>
+					</div>
+<% if (admin_button) { %>
+					<div class="col-lg-6">
+						<form method="post" action="<%= request.getContextPath() %>/mydspace">
+		                    <input type="hidden" name="item_id" value="<%= item.getID() %>" />
+		                    <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_EXPORT_ARCHIVE %>" />
+		                    <button class="btn" type="submit" name="submit"><fmt:message key="jsp.mydspace.request.export.item"/></button>
+		                </form>
+		                <form method="post" action="<%= request.getContextPath() %>/mydspace">
+		                    <input type="hidden" name="item_id" value="<%= item.getID() %>" />
+		                    <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_MIGRATE_ARCHIVE %>" />
+		                    <button class="btn" type="submit" name="submit"><fmt:message key="jsp.mydspace.request.export.migrateitem"/></button>
+		                </form>
+		                <form method="post" action="<%= request.getContextPath() %>/dspace-admin/metadataexport">
+		                    <input type="hidden" name="handle" value="<%= item.getHandle() %>" />
+		                    <button class="btn" type="submit" name="submit"><fmt:message key="jsp.general.metadataexport.button"/></button>
+		                </form>
+		                <form method="get" action="<%= request.getContextPath() %>/tools/edit-item">
+		                    <input type="hidden" name="item_id" value="<%= item.getID() %>" />
+		                    <%--<input type="submit" name="submit" value="Edit...">--%>
+		                    <button class="btn btn-primary" type="submit" name="submit"><fmt:message key="jsp.general.edit.button"/></button>
+		                </form>
+					</div>
+<% } %>
+				</div>
+			</div>
+		</div>
+	</div>
 <%
-    }
-
-    String displayStyle = (displayAll ? "full" : "");
+}
 %>
     <dspace:item-preview item="<%= item %>" />
     <dspace:item item="<%= item %>" collections="<%= collections %>" style="<%= displayStyle %>" />
 
 <%
-    String locationLink = request.getContextPath() + "/handle/" + handle;
 
     if (displayAll)
     {
 %>
 
-    <div align="center">
+
+<div class="row">
+	<div class="col-lg-12">
+		<ul class="nav nav-pills">
 <%
-        if (workspace_id != null)
-        {
+    if (workspace_id != null) {
 %>
-    <form method="post" action="<%= request.getContextPath() %>/view-workspaceitem">
-        <input type="hidden" name="workspace_id" value="<%= workspace_id.intValue() %>" />
-        <input type="submit" name="submit_simple" value="<fmt:message key="jsp.display-item.text1"/>" />
-    </form>
+			<li>
+			    <form class="text-center" method="post" action="<%= request.getContextPath() %>/view-workspaceitem">
+			        <input type="hidden" name="workspace_id" value="<%= workspace_id.intValue() %>" />
+			        <button class="btn btn-primary" type="submit" name="submit_simple">
+			        	<fmt:message key="jsp.display-item.text1"/>
+			        </button>
+			    </form>
+			</li>
 <%
-        }
-        else
-        {
+    } else {
 %>
-    <form method="get" action="<%=locationLink %>">
-        <input type="hidden" name="mode" value="simple"/>
-        <input type="submit" name="submit_simple" value="<fmt:message key="jsp.display-item.text1"/>" />
-    </form>
-<%
-        }
-%>
-    </div>
+			<li>
+			    <form class="text-center" method="get" action="<%=locationLink %>">
+			        <input type="hidden" name="mode" value="simple"/>
+			        <button class="btn btn-primary" type="submit" name="submit_simple">
+			        	<fmt:message key="jsp.display-item.text1"/>
+			        </button>
+			    </form>
+	    	</li>
 <%
     }
-    else
-    {
 %>
-    <div align="center">
+		</ul>
+	</div>
+</div>
+<%
+} else {
+%>
+
+<div class="row">
+	<div class="col-lg-12">
+		<ul class="nav nav-pills">
 <%
         if (workspace_id != null)
         {
 %>
-    <form method="post" action="<%= request.getContextPath() %>/view-workspaceitem">
-        <input type="hidden" name="workspace_id" value="<%= workspace_id.intValue() %>" />
-        <input type="submit" name="submit_full" value="<fmt:message key="jsp.display-item.text2"/>" />
-    </form>
+			<li>
+			    <form method="post" action="<%= request.getContextPath() %>/view-workspaceitem">
+			        <input type="hidden" name="workspace_id" value="<%= workspace_id.intValue() %>" />
+			        <button class="btn btn-primary" type="submit" name="submit_full">
+			        	<fmt:message key="jsp.display-item.text2"/>
+			        </button>
+			    </form>
+    		</li>
 <%
         }
         else
         {
 %>
-    <form method="get" action="<%=locationLink %>">
-        <input type="hidden" name="mode" value="full"/>
-        <input type="submit" name="submit_simple" value="<fmt:message key="jsp.display-item.text2"/>" />
-    </form>
+			<li>
+			    <form method="get" action="<%=locationLink %>">
+			        <input type="hidden" name="mode" value="full"/>
+			        <button class="btn btn-primary" type="submit" name="submit_simple">
+			        	<fmt:message key="jsp.display-item.text2"/>
+			        </button>
+			    </form>
+    		</li>
 <%
         }
+
         if (suggestLink)
         {
 %>
-    <a href="<%= request.getContextPath() %>/suggest?handle=<%= handle %>" target="new_window">
-       <fmt:message key="jsp.display-item.suggest"/></a>
+			<li>
+    			<a class="btn btn-primary" href="<%= request.getContextPath() %>/suggest?handle=<%= handle %>" target="new_window">
+       				<fmt:message key="jsp.display-item.suggest"/>
+       			</a>
+			</li>
 <%
         }
 %>
-    </div>
+		</ul>
+	</div>
+</div>
 <%
     }
 %>
-
-<div align="center">
-    <a class="statisticsLink" href="<%= request.getContextPath() %>/handle/<%= handle %>/statistics"><fmt:message key="jsp.display-item.display-statistics"/></a>
-</div>
 
 <%
     if (workspace_id != null)
     {
 %>
+	
 <div align="center">
    <form method="post" action="<%= request.getContextPath() %>/workspace">
         <input type="hidden" name="workspace_id" value="<%= workspace_id.intValue() %>"/>
-        <input type="submit" name="submit_open" value="<fmt:message key="jsp.display-item.back_to_workspace"/>"/>
+        <button class="btn btn-primary" type="submit" name="submit_open"><fmt:message key="jsp.display-item.back_to_workspace"/></button>
     </form>
 </div>
 <%
@@ -233,19 +254,31 @@
 <%
     }
 %>
-    <%-- Create Commons Link --%>
+	<div class="row margin-top">
+		<div class="col-lg-12">
+			<div class="alert alert-info">
 <%
     if (cc_url != null)
     {
 %>
-    <p class="submitFormHelp"><fmt:message key="jsp.display-item.text3"/> <a href="<%= cc_url %>"><fmt:message key="jsp.display-item.license"/></a><br/>
-    <a href="<%= cc_url %>"><img src="<%= request.getContextPath() %>/image/cc-somerights.gif" border="0" alt="Creative Commons" /></a>
-    </p>
+			    <p class="submitFormHelp"><fmt:message key="jsp.display-item.text3"/> <a href="<%= cc_url %>"><fmt:message key="jsp.display-item.license"/></a><br/>
+			    	<a href="<%= cc_url %>"><img src="<%= request.getContextPath() %>/image/cc-somerights.gif" border="0" alt="Creative Commons" /></a>
+			    </p>
     <!--
     <%= cc_rdf %>
     -->
 <%
     }
 %>
-    <p class="submitFormHelp"><fmt:message key="jsp.display-item.copyright"/></p>
+   				 <p class="submitFormHelp"><fmt:message key="jsp.display-item.copyright"/></p>
+			</div>
+		</div>
+	</div>
+	
+	
+
+	<div align="center">
+	    <a class="statisticsLink" href="<%= request.getContextPath() %>/handle/<%= handle %>/statistics"><fmt:message key="jsp.display-item.display-statistics"/></a>
+	</div>
+    <%-- Create Commons Link --%>
 </dspace:layout>

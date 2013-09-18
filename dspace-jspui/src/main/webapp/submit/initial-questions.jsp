@@ -46,123 +46,110 @@
 %>
 
 <dspace:layout locbar="off"
-               navbar="off"
                titlekey="jsp.submit.initial-questions.title"
                nocache="true">
 
-    <form action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
-
-        <jsp:include page="/submit/progressbar.jsp" />
-
-        <%-- <h1>Submit: Describe Your Item</h1> --%>
-		<h1><fmt:message key="jsp.submit.initial-questions.heading"/></h1>
-    
-        <%-- <p>Please check the boxes next to the statements that apply to your
-        submission.
-        <object><dspace:popup page="/help/index.html#describe1">(More Help...)</dspace:popup></object></p> --%>
-
-        <div><fmt:message key="jsp.submit.initial-questions.info" /> 
-        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#describe1\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></div>
-
-        <center>
-            <table class="miscTable">
+    <form class="margin-top" action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
+               
+		<div class="row margin-top-2">
+			<div class="col-lg-12">
+	        	<jsp:include page="/submit/progressbar.jsp" />
+			</div>
+		</div>
+		
+		<%= SubmissionController.getSubmissionParameters(context, request) %>
+        <div class="panel panel-default margin-top-2">
+			<div class="panel-heading">
+				<h3><fmt:message key="jsp.submit.initial-questions.heading"/></h3>
+				<p>
+					<fmt:message key="jsp.submit.initial-questions.info" /> 
+			        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#describe1\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup>
+				</p>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-offset-1 col-lg-10">
 <%
 	// Don't display MultipleTitles if no such form box defined
     if (inputSet.isDefinedMultTitles())
     {
 %>
-                <tr class="oddRowOddCol">
-                    <td class="oddRowOddCol" align="left">
-                        <table border="0">
-                            <tr>
-                                <td valign="top"><input type="checkbox" name="multiple_titles" value="true" <%= (subInfo.getSubmissionItem().hasMultipleTitles() ? "checked='checked'" : "") %> /></td>
-                                <%-- <td class="submitFormLabel" nowrap>The item has more than one title, e.g. a translated title</td> --%>
-								<td class="submitFormLabel" nowrap="nowrap"><fmt:message key="jsp.submit.initial-questions.elem1"/></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+					  <div class="form-group">
+					    <div class="col-lg-offset-2 col-lg-10">
+					      <div class="checkbox">
+					        <label>
+					          <input type="checkbox" name="multiple_titles" value="true" <%= (subInfo.getSubmissionItem().hasMultipleTitles() ? "checked='checked'" : "") %> />
+					          <fmt:message key="jsp.submit.initial-questions.elem1"/>
+					        </label>
+					      </div>
+					    </div>
+					  </div>
 <%
     }
     // Don't display PublishedBefore if no form boxes defined
     if (inputSet.isDefinedPubBefore())
     {
 %>
-                <tr class="evenRowOddCol">
-                    <td class="evenRowOddCol" align="left">
-                        <table border="0">
-                            <tr>
-                                <td valign="top"><input type="checkbox" name="published_before" value="true" <%= (subInfo.getSubmissionItem().isPublishedBefore() ? "checked='checked'" : "") %> /></td>
-                                <%-- <td class="submitFormLabel" nowrap>The item has been published or publicly distributed before</td> --%>
-								<td class="submitFormLabel" nowrap="nowrap"><fmt:message key="jsp.submit.initial-questions.elem2"/></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+					  <div class="form-group">
+					    <div class="col-lg-offset-2 col-lg-10">
+					      <div class="checkbox">
+					        <label>
+					          <input type="checkbox" name="published_before" value="true" <%= (subInfo.getSubmissionItem().isPublishedBefore() ? "checked='checked'" : "") %> />
+					          <fmt:message key="jsp.submit.initial-questions.elem2"/>
+					        </label>
+					      </div>
+					    </div>
+					  </div>
 <%
     }
     // Don't display file or thesis questions in workflow mode
     if (!subInfo.isInWorkflow())
     {
 %>
-                <tr class="oddRowOddCol">
-                    <td class="oddRowOddCol" align="left">
-                        <table border="0">
-                            <tr>
-                                <td valign="top"><input type="checkbox" name="multiple_files" value="true" <%= (subInfo.getSubmissionItem().hasMultipleFiles() ? "checked='checked'" : "") %> /></td>
-                                <%-- <td class="submitFormLabel" nowrap>The item consists of <em>more than one</em> file</td> --%>
-								<td class="submitFormLabel" nowrap="nowrap"><fmt:message key="jsp.submit.initial-questions.elem3"/></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+					  <div class="form-group">
+					    <div class="col-lg-offset-2 col-lg-10">
+					      <div class="checkbox">
+					        <label>
+					          <input type="checkbox" name="multiple_files" value="true" <%= (subInfo.getSubmissionItem().hasMultipleFiles() ? "checked='checked'" : "") %> />
+					          <fmt:message key="jsp.submit.initial-questions.elem3"/>
+					        </label>
+					      </div>
+					    </div>
+					  </div>
 <%
         if (ConfigurationManager.getBooleanProperty("webui.submit.blocktheses"))
         {
 %>
-                <tr class="evenRowOddCol">
-                    <td class="evenRowOddCol" align="left">
-                        <table border="0">
-                            <tr>
-                                <td valign="top"><input type="checkbox" name="is_thesis" value="true"></td>
-                                <%-- <td class="submitFormLabel" nowrap>The item is a thesis</td> --%>
-								<td class="submitFormLabel" nowrap="nowrap"><fmt:message key="jsp.submit.initial-questions.elem4"/></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+					  <div class="form-group">
+					    <div class="col-lg-offset-2 col-lg-10">
+					      <div class="checkbox">
+					        <label>
+					          <input type="checkbox" name="is_thesis" value="true" />
+					          <fmt:message key="jsp.submit.initial-questions.elem4"/>
+					        </label>
+					      </div>
+					    </div>
+					  </div>
 <%
         }
     }
 %>
-            </table>
-        </center>
-
-        <p>&nbsp;</p>
-
-		<%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
-        <%= SubmissionController.getSubmissionParameters(context, request) %>
-        <center>
-            <table border="0" width="80%">
-                <tr>
-					<td width="100%">&nbsp;</td>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer">
+				<div class="pull-right">
 				<%  //if not first step, show "Previous" button
 					if(!SubmissionController.isFirstStep(request, subInfo))
 					{ %>
-                    <td>
-                        <input type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>" value="<fmt:message key="jsp.submit.general.previous"/>" />
-                    </td>
+                        <button class="btn btn-default" type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>"><fmt:message key="jsp.submit.general.previous"/></button>
 				<%  } %>
-                    <td>
-                        <input type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>" value="<fmt:message key="jsp.submit.general.next"/>" />
-                    </td>
-                    <td>&nbsp;&nbsp;&nbsp;</td>
-                    <td align="right">
-                        <input type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>" value="<fmt:message key="jsp.submit.general.cancel-or-save.button"/>" />
-                    </td>
-                </tr>
-            </table>
-        </center>
+					<button class="btn btn-primary" type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>"><fmt:message key="jsp.submit.general.next"/></button>
+					<button class="btn btn-default" type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>"><fmt:message key="jsp.submit.general.cancel-or-save.button"/></button>
+				</div>	
+				<div class="clearfix"></div>
+			</div>
+		</div>
     </form>
 
 </dspace:layout>

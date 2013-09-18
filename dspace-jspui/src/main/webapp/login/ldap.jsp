@@ -18,8 +18,7 @@
 
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 
-<dspace:layout navbar="off"
-		locbar="off"
+<dspace:layout 
 		titlekey="jsp.login.ldap.title">
 		
     <table border="0" width="90%">

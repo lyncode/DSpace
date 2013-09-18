@@ -21,7 +21,7 @@
 
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 
-<dspace:layout navbar="off" locbar="nolink" titlekey="jsp.login.no-valid-cert.title">
+<dspace:layout titlekey="jsp.login.no-valid-cert.title">
 
 <table border="0" width="90%">
         <tr>

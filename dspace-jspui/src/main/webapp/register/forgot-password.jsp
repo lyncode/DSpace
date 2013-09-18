@@ -32,48 +32,46 @@
 
 <dspace:layout titlekey="jsp.register.forgot-password.title">
 
-    <%-- <h1>Forgotten Password</h1> --%>
-	<h1><fmt:message key="jsp.register.forgot-password.title"/></h1>
-    
-<%
-    if (retry)
-    {
-%>
-    <%-- <p><strong>The e-mail address you entered was not recognized.  Please
-    try again.</strong></p> --%>
-	<p><strong><fmt:message key="jsp.register.forgot-password.info1"/></strong></p>
-<%
-    }
-%>
-    <%-- <p>Please enter your e-mail
-    address in the box below and click "I Forgot My Password".  You'll be sent
-    an e-mail which will allow you to set a new password.</p> --%>
-	<p><fmt:message key="jsp.register.forgot-password.info2"/></p>
-    
-    <form action="<%= request.getContextPath() %>/forgot" method="post">
-        <input type="hidden" name="step" value="<%= RegisterServlet.ENTER_EMAIL_PAGE %>"/>
-
-        <center>
-            <table class="miscTable">
-                <tr>
-                    <td class="oddRowEvenCol">
-                        <table border="0" cellpadding="5">
-                            <tr>
-                                <%-- <td class="standard"><strong>E-mail Address:</strong></td> --%>
-								<td class="standard"><strong><label for="temail"><fmt:message key="jsp.register.forgot-password.email.field"/></strong></label></td>
-                                <td class="standard"><input type="text" name="email" id="temail" /></td>
-                            </tr>
-                            <tr>
-                                <td align="center" colspan="2">
-                                    <%-- <input type="submit" name="submit" value="I Forgot My Password"> --%>
-									<input type="submit" name="submit" value="<fmt:message key="jsp.register.forgot-password.forgot.button"/>" />
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </center>
-    </form>
+<div class="row">
+	<div class="col-lg-2"></div>
+	<div class="col-lg-8">
+		<form action="<%= request.getContextPath() %>/forgot" method="post"
+			class="form-horizontal">
+        	<input type="hidden" name="step" value="<%= RegisterServlet.ENTER_EMAIL_PAGE %>"/>
+			<fieldset>
+				<legend>
+					<fmt:message key="jsp.register.forgot-password.title"/>
+				</legend>
+				<% if (retry) { %>
+				<div class="alert alert-dismissable alert-danger">
+	              <button type="button" class="close" data-dismiss="alert">×</button>
+	              <fmt:message key="jsp.register.new-user.info1"/>
+	            </div>
+				<%  } %>
+				
+				<div class="form-group">
+					<label for="inputEmail" class="col-lg-2 control-label"><fmt:message key="jsp.register.forgot-password.email.field"/></label>
+					<div class="col-lg-10">
+						<input type="text" class="form-control" name="email"
+							id="inputEmail" placeholder="<fmt:message key="jsp.register.forgot-password.email.field"/>" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-12">
+						<div class="pull-right">
+							<button type="submit" name="submit" class="btn btn-primary">
+								<fmt:message key="jsp.register.forgot-password.forgot.button"/>
+							</button>
+						</div>
+					</div>
+				</div>
+				
+			</fieldset>
+			
+			
+		</form>
+	</div>
+	<div class="col-lg-2"></div>
+</div>
     
 </dspace:layout>

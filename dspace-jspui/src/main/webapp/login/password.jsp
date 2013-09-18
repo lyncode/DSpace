@@ -19,19 +19,16 @@
 
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 
-<dspace:layout navbar="off" locbar="off" titlekey="jsp.login.password.title" nocache="true">
+<dspace:layout titlekey="jsp.login.password.title" nocache="true">
 
-    <table border="0" width="90%">
-        <tr>
-            <td align="left">
-		<%-- <h1>Log In to DSpace</h1> --%>
-                <h1><fmt:message key="jsp.login.password.heading"/></h1>
-            </td>
-            <td align="right" class="standard">
-                <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#login\"%>"><fmt:message key="jsp.help"/></dspace:popup>
-            </td>
-        </tr>
-    </table>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="pull-right">
+				<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#login\"%>"><fmt:message key="jsp.help"/></dspace:popup>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
 
     <dspace:include page="/components/login-form.jsp" />
 </dspace:layout>

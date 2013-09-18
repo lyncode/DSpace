@@ -17,53 +17,53 @@
 
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
+<%@ page import="org.dspace.core.ConfigurationManager" %>
 
 <%
     String sidebar = (String) request.getAttribute("dspace.layout.sidebar");
-    int overallColSpan = 3;
-    if (sidebar == null)
-    {
-        overallColSpan = 2;
-    }
+	boolean feedEnabled = ConfigurationManager.getBooleanProperty("webui.feed.enable");
+	String feedData = "NONE";
+	if (feedEnabled)
+	{
+	    feedData = "ALL:" + ConfigurationManager.getProperty("webui.feed.formats");
+	}
 %>
-                    <%-- End of page content --%>
-                    <p>&nbsp;</p>
-                </td>
 
-            <%-- Right-hand side bar if appropriate --%>
-<%
-    if (sidebar != null)
-    {
-%>
-                <td class="sidebar">
-                    <%= sidebar %>
-                </td>
-<%
-    }
-%>
-            </tr>
+			</div>
+			<% if (sidebar != null) { %>
+			<div class="col-lg-3">
+			<%=sidebar %>
+			</div>
+			<% } %>
 
-            <%-- Page footer --%>
-             <tr class="pageFooterBar">
-                <td colspan="<%= overallColSpan %>" class="pageFootnote">
-                    <table class="pageFooterBar" width="100%">
-                        <tr>
-                            <td>
-                                <a href="http://validator.w3.org/check?uri=referer"><img
-                                    src="<%= request.getContextPath() %>/image/valid-xhtml10.png"
-                                    alt="Valid XHTML 1.0!" height="31" width="88" /></a>
-                            </td>
-                            <td class="pageFootnote">
-                                <fmt:message key="jsp.layout.footer-default.text"/>&nbsp;-
-                                <a target="_blank" href="<%= request.getContextPath() %>/feedback"><fmt:message key="jsp.layout.footer-default.feedback"/></a>
-                                <a href="<%= request.getContextPath() %>/htmlmap"></a>
-                            </td>
-                            <td nowrap="nowrap" valign="middle"> <%-- nowrap, valign for broken NS 4.x --%>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+			</div>
+			</div>
+        </div> <!-- End Container -->
+        
+        <footer class="container">
+        <hr />
+        <div class="row">
+          <div class="col-lg-12">
+            
+            <ul class="list-unstyled">
+              <li class="pull-right">
+              			<a href="#top">Back to top</a>
+              </li>
+              <li><a href="<%= request.getContextPath() %>/feedback"><fmt:message key="jsp.layout.footer-default.feedback"/></a></li>
+              <li><a href="<%= request.getContextPath() %>/subscribe"><fmt:message key="jsp.layout.navbar-default.receive"/></a></li>
+            </ul>
+            
+            <p><fmt:message key="jsp.layout.footer-default.text"/>
+                <a href="<%= request.getContextPath() %>/htmlmap"></a>
+            </p>
+            <p>&nbsp;</p>
+            <p>Design by <a href="http://www.lyncode.com"><img width="100" src="<%= request.getContextPath() %>/image/lyncode.png" /></a></p>
+            <p>Code licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
+            <p>Based on <a href="http://bootswatch.com/readable/">Readable</a> which uses <a href="http://getbootstrap.com">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>.
+            
+          </div>
+        </div>
+        
+      </footer>
     </body>
 </html>
