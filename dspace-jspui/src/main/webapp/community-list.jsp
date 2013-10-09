@@ -110,43 +110,23 @@
     {
 %>     
 
-<table class="miscTableNoColor" align="center">
-        <tr>
-        <td>
-			<h1><fmt:message key="jsp.community-list.title"/></h1>
-			<p><fmt:message key="jsp.community-list.text1"/></p>
-        </td>
-        <td>
-        <table class="miscTable" align="center">
-	    <tr>
-	        <td class="evenRowEvenCol" colspan="2">
-                <table>
-                    <tr>
-                        <th class="standard" id="t1">
-                            <strong><fmt:message key="jsp.admintools"/></strong>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td headers="t1" class="standard" align="center">
-	                        <form method="post" action="<%=request.getContextPath()%>/dspace-admin/edit-communities">
-		                        <input type="hidden" name="action" value="<%=EditCommunitiesServlet.START_CREATE_COMMUNITY%>" />
-                                    <%--<input type="submit" name="submit" value="Create Top-Level Community...">--%>
-									<input type="submit" name="submit" value="<fmt:message key="jsp.community-list.create.button"/>" />
-                            </form>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td headers="t1" class="standard" align="center">
-                            <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.site-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup>
-                        </td>
-                    </tr>
-               </table>
-            </td>
-        </tr>
-        </table>
-        </td>
-       </tr>
-      </table>
+<div class="row">
+	<div class="col-lg-9">
+		<h2><fmt:message key="jsp.community-list.title"/></h2>
+		<p><fmt:message key="jsp.community-list.text1"/></p>
+	</div>
+	<div class="col-lg-3">
+		<h3><fmt:message key="jsp.admintools"/></h3>
+		<form name="adminToolsForm" method="post" action="<%=request.getContextPath()%>/dspace-admin/edit-communities">
+			<input type="hidden" name="action" value="<%=EditCommunitiesServlet.START_CREATE_COMMUNITY%>" />
+        </form>
+		<ul class="nav nav-pills nav-stacked">
+			<li><a href="#" onclick="document.adminToolsForm.submit();"><fmt:message key="jsp.community-list.create.button"/></a></li>
+			<li><dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.site-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup></li>
+		</ul>
+	</div>
+</div>
+
 
 <%
     }

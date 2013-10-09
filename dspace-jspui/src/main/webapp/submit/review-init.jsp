@@ -61,7 +61,7 @@
                                    </table>
                                </td>
                                <td valign="middle">
-                                       <input type="submit" name="submit_jump_<%=stepJump%>" value="<fmt:message key="jsp.submit.review.button.correct"/>" />
+                                       <button class="btn btn-success" type="submit" name="submit_jump_<%=stepJump%>"><fmt:message key="jsp.submit.review.button.correct"/></button>
                                </td>
                            </tr>
                        </table>

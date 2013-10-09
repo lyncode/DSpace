@@ -43,31 +43,29 @@
 %>
 
 <dspace:layout locbar="off"
-               navbar="off"
                titlekey="jsp.submit.upload-error.title"
                nocache="true">
-
-    <form action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
-
-        <jsp:include page="/submit/progressbar.jsp"/>
-
-        <%-- <h1>Submit: Error Uploading File</h1> --%>
-		<h1><fmt:message key="jsp.submit.upload-error.heading"/></h1>
-
-        <%-- <p>There was a problem uploading your file.  Either the filename you entered
-        was incorrect, or there was a network problem which prevented the file from
-        reaching us correctly.  Please try again.</p> --%>
-		<p><fmt:message key="jsp.submit.upload-error.info"/></p>
-
-        <%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
-        <%= SubmissionController.getSubmissionParameters(context, request) %>
-
-<%-- HACK: <center> tag needed for broken Netscape 4.78 behaviour --%>
-        <center>
-            <p>
-                <input type="submit" name="submit_retry" value="<fmt:message key="jsp.submit.upload-error.retry.button"/>" />
-            </p>
-        </center>
+	<form class="margin-top" action="<%= request.getContextPath() %>/submit"  enctype="multipart/form-data" method="post" onkeydown="return disableEnterKey(event);">
+               
+		<div class="row margin-top-2">
+			<div class="col-lg-12">
+	        	<jsp:include page="/submit/progressbar.jsp" />
+			</div>
+		</div>
+		
+		
+		<%= SubmissionController.getSubmissionParameters(context, request) %>
+        <div class="panel panel-default margin-top-2">
+			<div class="panel-heading">
+				<h3 class="text-danger"><fmt:message key="jsp.submit.upload-error.heading"/></h3>
+				<p><fmt:message key="jsp.submit.upload-error.info"/></p>
+			</div>
+			<div class="panel-footer">
+				<center>
+                	<button type="submit" name="submit_retry" class="btn btn-default"><fmt:message key="jsp.submit.upload-error.retry.button"/></button>
+                </center>
+            </div>
+        </div>
     </form>
 
 </dspace:layout>

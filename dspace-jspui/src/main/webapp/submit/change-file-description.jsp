@@ -34,7 +34,6 @@
 %>
 
 <dspace:layout locbar="off"
-               navbar="off"
                titlekey="jsp.submit.change-file-description.title"
                nocache="true">
 

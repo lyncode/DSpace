@@ -85,6 +85,12 @@
 	<script type='text/javascript' src='<%= request.getContextPath() %>/static/bootstrap/js/bootstrap.min.js'></script>
 	<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/bootswatch.js'></script>
 
+	<script type="text/javascript" src="<%= request.getContextPath() %>/utils.js"></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/prototype.js"> </script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/effects.js"> </script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/builder.js"> </script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/controls.js"> </script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/choice-support.js"> </script>
     <%--Gooogle Analytics recording.--%>
     <%
     if (analyticsKey != null && analyticsKey.length() > 0)
@@ -121,7 +127,7 @@
     if (!navbar.equals("off"))
     {
 %>
-        <dspace:include page="<%= navbar %>" />
+        <dspace:include page="navbar-default.jsp" />
 <%
     }
 %>
@@ -139,11 +145,18 @@
 
         <%-- Page contents --%>
         <div class="container">
-        
+        	
         	<div class="row">
-        	<% if (sidebar != null) { %>
+        	<% if (navbar.contains("admin")) { %>
+        		<div class="col-lg-3">
+        			<dspace:include page="navbar-admin.jsp" />
+        		</div>
         		<div class="col-lg-9">
-        	<% } else { %>
-        		<div class="col-lg-12">
+        			<div class="row">
         	<% } %>
+		        	<% if (sidebar != null) { %>
+		        		<div class="col-lg-9">
+		        	<% } else { %>
+		        		<div class="col-lg-12">
+		        	<% } %>
         

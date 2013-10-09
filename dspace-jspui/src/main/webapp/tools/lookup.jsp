@@ -54,88 +54,70 @@
                parenttitlekey="jsp.administer"
                parentlink="/dspace-admin">
 
-        <h1><%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".title") %></h1>
+		<div class="container">
+			<h3><%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".title") %></h3>
+			<div class="well">
+				<form id="aspect_general_ChoiceLookupTransformer_div_lookup" class="form form-horizontal" action="" method="get">
+    				<input type="hidden" name="paramField"          value="<%= getDefaultedRequestParameter(request,"field", "") %>" />
+          			<input type="hidden" name="paramValue"          value="<%= getDefaultedRequestParameter(request,"value", "") %>" />
+			        <input type="hidden" name="paramIsName"         value="<%= isNameValue %>" />
+			        <input type="hidden" name="paramIsRepeating"    value="<%= isRepeatingValue %>" />
+			        <input type="hidden" name="paramValueInput"     value="<%= getDefaultedRequestParameter(request,"valueInput", "") %>" />
+			        <input type="hidden" name="paramAuthorityInput" value="<%= getDefaultedRequestParameter(request,"authorityInput", "") %>" />
+			        <input type="hidden" name="paramStart"          value="<%= getDefaultedRequestParameter(request,"start", "0") %>" />
+			        <input type="hidden" name="paramLimit"          value="<%= getDefaultedRequestParameter(request,"limit", "0") %>" />
+			        <input type="hidden" name="paramFormID"         value="<%= getDefaultedRequestParameter(request,"formID", "") %>" />
+			        <input type="hidden" name="paramIsClosed"       value="<%= getDefaultedRequestParameter(request,"isClosed", "false") %>" />
+			        <input type="hidden" name="paramConfIndicatorID" value="<%= getDefaultedRequestParameter(request,"confIndicatorID", "") %>" />
+			        <input type="hidden" name="paramCollection"      value="<%= getDefaultedRequestParameter(request,"collection", "-1") %>" />
+    				<input type="hidden" name="paramNonAuthority"   value="<%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".nonauthority") %>" />
+          			<input name="paramFail" type="hidden" value="<%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.fail") %>" />
+          			<input name="contextPath" type="hidden" value="<%= request.getContextPath() %>" />
+    				<fieldset id="aspect_general_ChoiceLookupTransformer_list_choicesList">
+    					<legend><fmt:message key="jsp.tools.lookup.results"/></legend>
+    					<div class="form-group">
+            				<img style="display:none;" alt="Loading..." id="lookup_indicator_id" class="choices-lookup"
+              					src="<%= request.getContextPath() %>/image/authority/load-indicator.gif" />
+    						<select onChange="javascript:DSpaceChoicesSelectOnChange();" id="aspect_general_ChoiceLookupTransformer_field_chooser" class="form-control" name="chooser"
+				             	size="<%= String.valueOf(ConfigurationManager.getIntProperty("webui.lookup.select.size", 12)) %>">
+				             <!--space filler because "unclosed" select annoys browsers-->
+				            </select>
+    					</div>
+    					<% if (isName) { %>
+    					<div class="form-inline">
+				          <%-- XXX get this from dspace config if available..?? --%>
+				            <% String help1 = LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".help.last"); %>
+				            <% String help2 = LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".help.first"); %>
+				            <div class="form-group">
+					            <label><%= help1 %></label>
+					            <input class="form-control" name="text1" type="text" value="" />
+					        </div>
+					        <div class="form-group">
+				            	<label><%= help2 %></label>
+				              	<input class="form-control" name="text2" type="text" value="" />
+					        </div>
+					    </div>
+				        <% } else { %>
+				        <div class="form-group">
+				          <%-- XXX get this from dspace config if available..?? --%>
+				            <% String help = LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".help"); %>
+				            <label><%= help %></label>
+				            
+				            <input class="form-control" name="text1" type="text" value=""
+				                  title="<%= help %>" />
+				        </div>
+				        <% } %>
+				        
+				        <div class="form-group">
+				        	<button name="accept"  onClick="javascript:DSpaceChoicesAcceptOnClick();" type="button" class="btn btn-primary"><%= LocaleSupport.getLocalizedMessage(pageContext, isRepeating ? "jsp.tools.lookup.add":"jsp.tools.lookup.accept") %></button>
+          					<button name="more"  onClick="javascript:DSpaceChoicesMoreOnClick();" type="button"   class="btn btn-default" disabled="disabled"><%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.more") %></button>
+          					<button name="cancel"  onClick="javascript:DSpaceChoicesCancelOnClick();" type="button" class="btn btn-danger"><%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.cancel") %></button>
+				        </div>
+  					</fieldset>
+				</form>
+			</div>
+		</div>
 
-  <form id="aspect_general_ChoiceLookupTransformer_div_lookup"
-        class="ds-interactive-div popup" action="" method="get">
-    <fieldset id="aspect_general_ChoiceLookupTransformer_list_choicesList"
-              class="ds-form-list choices-lookup">
-
-            <%-- Results @1@ to @2@ of @3@ for "@4@" --%>
-    <legend><fmt:message key="jsp.tools.lookup.results"/></legend>
-    <ol>
-      <li id="aspect_general_ChoiceLookupTransformer_item_select" class="ds-form-item choices-lookup"> 
-        <div class="ds-form-content">
-          <div>
-            <select onChange="javascript:DSpaceChoicesSelectOnChange();" id="aspect_general_ChoiceLookupTransformer_field_chooser" class="ds-select-field choices-lookup" name="chooser"
-             size="<%= String.valueOf(ConfigurationManager.getIntProperty("webui.lookup.select.size", 12)) %>">
-             <!--space filler because "unclosed" select annoys browsers-->
-            </select>
-            <img style="display:none;" alt="Loading..." id="lookup_indicator_id" class="choices-lookup"
-              src="<%= request.getContextPath() %>/image/authority/load-indicator.gif" />
-          </div>
-          <input type="hidden" name="paramField"          value="<%= getDefaultedRequestParameter(request,"field", "") %>" />
-          <input type="hidden" name="paramValue"          value="<%= getDefaultedRequestParameter(request,"value", "") %>" />
-          <input type="hidden" name="paramIsName"         value="<%= isNameValue %>" />
-          <input type="hidden" name="paramIsRepeating"    value="<%= isRepeatingValue %>" />
-          <input type="hidden" name="paramValueInput"     value="<%= getDefaultedRequestParameter(request,"valueInput", "") %>" />
-          <input type="hidden" name="paramAuthorityInput" value="<%= getDefaultedRequestParameter(request,"authorityInput", "") %>" />
-          <input type="hidden" name="paramStart"          value="<%= getDefaultedRequestParameter(request,"start", "0") %>" />
-          <input type="hidden" name="paramLimit"          value="<%= getDefaultedRequestParameter(request,"limit", "0") %>" />
-          <input type="hidden" name="paramFormID"         value="<%= getDefaultedRequestParameter(request,"formID", "") %>" />
-          <input type="hidden" name="paramIsClosed"       value="<%= getDefaultedRequestParameter(request,"isClosed", "false") %>" />
-          <input type="hidden" name="paramConfIndicatorID" value="<%= getDefaultedRequestParameter(request,"confIndicatorID", "") %>" />
-          <input type="hidden" name="paramCollection"      value="<%= getDefaultedRequestParameter(request,"collection", "-1") %>" />
-
-          <%-- XXX get this from dspace config if available..?? --%>
-          <input type="hidden" name="paramNonAuthority"   value="<%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".nonauthority") %>" />
-
-          <input name="paramFail" type="hidden" value="<%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.fail") %>" />
-          <input name="contextPath" type="hidden" value="<%= request.getContextPath() %>" />
-        </div>
-      </li>
-      <li id="aspect_general_ChoiceLookupTransformer_item_textFields" class="ds-form-item choices-lookup"> 
-        <div class="ds-form-content">
-
-          <% if (isName) { %>
-          <%-- XXX get this from dspace config if available..?? --%>
-            <% String help1 = LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".help.last"); %>
-            <% String help2 = LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".help.first"); %>
-            <label class="ds-composite-component">
-              <input class="ds-text-field choices-lookup" name="text1" type="text" value=""
-                  title="<%= help1 %>" />
-              <br/><%= help1 %>
-            </label>
-            <label class="ds-composite-component last">
-              <input class="ds-text-field choices-lookup" name="text2" type="text" value=""
-                  title="<%= help2 %>" />
-              <br/><%= help2 %>
-            </label>
-          <% } else { %>
-          <%-- XXX get this from dspace config if available..?? --%>
-            <% String help = LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.field."+mdfield+".help"); %>
-            <label class="ds-composite-component">
-              <input class="ds-text-field choices-lookup" name="text1" type="text" value=""
-                  title="<%= help %>" />
-              <br/><%= help %>
-            </label>
-          <% } %>
-          <div class="spacer"> </div>
-        </div>
-      </li>
-      <li class="ds-form-item last choices-lookup"> 
-        <div class="ds-form-content">
-          <input name="accept"  onClick="javascript:DSpaceChoicesAcceptOnClick();" type="button" class="ds-button-field choices-lookup"
-                value="<%= LocaleSupport.getLocalizedMessage(pageContext, isRepeating ? "jsp.tools.lookup.add":"jsp.tools.lookup.accept") %>"/>
-          <input name="more"  onClick="javascript:DSpaceChoicesMoreOnClick();" type="button"   class="ds-button-field choices-lookup" disabled="disabled"
-                value="<%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.more") %>"/>
-          <input name="cancel"  onClick="javascript:DSpaceChoicesCancelOnClick();" type="button" class="ds-button-field choices-lookup"
-                value="<%= LocaleSupport.getLocalizedMessage(pageContext, "jsp.tools.lookup.cancel") %>"/>
-        </div>
-      </li>
-    </ol>
-  </fieldset>
-</form>
 <script type="text/javascript">
         var form = document.getElementById('aspect_general_ChoiceLookupTransformer_div_lookup');
         DSpaceChoicesSetup(form);

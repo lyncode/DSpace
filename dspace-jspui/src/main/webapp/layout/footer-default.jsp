@@ -20,6 +20,7 @@
 <%@ page import="org.dspace.core.ConfigurationManager" %>
 
 <%
+	String navbar = (String) request.getAttribute("dspace.layout.navbar");
     String sidebar = (String) request.getAttribute("dspace.layout.sidebar");
 	boolean feedEnabled = ConfigurationManager.getBooleanProperty("webui.feed.enable");
 	String feedData = "NONE";
@@ -38,6 +39,9 @@
 
 			</div>
 			</div>
+			<% if (navbar.contains("admin")) { %>
+			</div></div>
+			<% } %>
         </div> <!-- End Container -->
         
         <footer class="container">

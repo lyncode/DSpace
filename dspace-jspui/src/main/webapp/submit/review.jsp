@@ -52,28 +52,32 @@
 	Iterator reviewIterator = reviewJSPs.keySet().iterator();
 %>
           
-<dspace:layout locbar="off" navbar="off" titlekey="jsp.submit.review.title" nocache="true">
-
-    <form action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
-   
-        <jsp:include page="/submit/progressbar.jsp" />
-
-        <h1><fmt:message key="jsp.submit.review.heading"/></h1>
-
-        <p><fmt:message key="jsp.submit.review.info1"/></p>
-
-        <div><fmt:message key="jsp.submit.review.info2"/>
-        &nbsp;&nbsp;<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#verify\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></div>
-
-        <p><fmt:message key="jsp.submit.review.info3"/></p>
-
-        <p><fmt:message key="jsp.submit.review.info4"/></p>
+<dspace:layout locbar="off" titlekey="jsp.submit.review.title" nocache="true">
+	<form class="margin-top" action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
+               
+		<div class="row margin-top-2">
+			<div class="col-lg-12">
+	        	<jsp:include page="/submit/progressbar.jsp" />
+			</div>
+		</div>
+		
+		<%= SubmissionController.getSubmissionParameters(context, request) %>
+        <div class="panel panel-default margin-top-2">
+			<div class="panel-heading">
+				<h3><fmt:message key="jsp.submit.review.heading"/></h3>
+       			<p><fmt:message key="jsp.submit.review.info1"/></p>
+       			<p><fmt:message key="jsp.submit.review.info2"/>
+        		<p><dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#verify\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></p>
+       			<p><fmt:message key="jsp.submit.review.info3"/></p>
+        		<p><fmt:message key="jsp.submit.review.info4"/></p>
+        	</div>
+        	<div class="panel-body">
 
         <table align="center" class="miscTable" width="80%">
 <%
 		//loop through the list of review JSPs
 		while(reviewIterator.hasNext())
-     {
+     	{
             //remember, the keys of the reviewJSPs hashmap is in the
             //format: stepNumber.pageNumber
             String stepAndPage = (String) reviewIterator.next();
@@ -87,38 +91,27 @@
 				<jsp:include page="<%=reviewJSP%>">
 					<jsp:param name="submission.jump" value="<%=stepAndPage%>" />	
 				</jsp:include>
-                                        </td>
-                                    </tr>
+				</td>
+			</tr>
 <%
-    }
+    	}
 
 %>
                 </table>
-                                    
-        <%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
-        <%= SubmissionController.getSubmissionParameters(context, request) %>
-
-        <p>&nbsp;</p>
-    
-        <center>
-            <table border="0" width="80%">
-                <tr>
-                    <td width="100%">&nbsp;</td>
-                    <td>
-                        <input type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>" value="<fmt:message key="jsp.submit.review.button.previous"/>" />
-                    </td>
-                    <td>
-                        <input type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>" value="<fmt:message key="jsp.submit.review.button.next"/>" />
-                    </td>
-                    <td>&nbsp;&nbsp;&nbsp;</td>
-
-                    <td align="right">
-                        <input type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>" value="<fmt:message key="jsp.submit.review.button.cancelsave"/>" />
-                    </td>
-                </tr>
-            </table>
-        </center>
-
-    </form>
+			</div>
+			<div class="panel-footer">
+				<div class="pull-right">
+				<%  //if not first step, show "Previous" button
+					if(!SubmissionController.isFirstStep(request, subInfo))
+					{ %>
+                        <button class="btn btn-default" type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>"><fmt:message key="jsp.submit.general.previous"/></button>
+				<%  } %>
+					<button class="btn btn-primary" type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>"><fmt:message key="jsp.submit.general.next"/></button>
+					<button class="btn btn-default" type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>"><fmt:message key="jsp.submit.general.cancel-or-save.button"/></button>
+				</div>	
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</form>
 
 </dspace:layout>

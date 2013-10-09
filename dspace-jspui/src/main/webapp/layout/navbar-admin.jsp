@@ -194,13 +194,4 @@
          <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.site-admin\")%>"><fmt:message key="jsp.layout.navbar-admin.help"/></dspace:popup>
      </td>
  </tr>
-
- <tr class="navigationBarItem">
-     <td>
-         <img alt="" src="<%= request.getContextPath() %>/image/arrow.gif" width="16" height="16"/>
-     </td>
-     <td nowrap="nowrap" class="navigationBarItem">
-         <a href="<%= request.getContextPath() %>/logout"><fmt:message key="jsp.layout.navbar-admin.logout"/></a>
-     </td>
- </tr>
 </table>

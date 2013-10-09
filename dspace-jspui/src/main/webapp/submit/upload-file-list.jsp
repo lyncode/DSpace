@@ -50,32 +50,39 @@
     boolean allowFileEditing = !subInfo.isInWorkflow() || ConfigurationManager.getBooleanProperty("workflow", "reviewer.file-edit");
 %>
 
-<dspace:layout locbar="off" navbar="off" titlekey="jsp.submit.upload-file-list.title">
-
-    <form action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
-
-        <jsp:include page="/submit/progressbar.jsp"/>
-
-<%--        <h1>Submit: <%= (justUploaded ? "File Uploaded Successfully" : "Uploaded Files") %></h1> --%>
-    
+<dspace:layout locbar="off" titlekey="jsp.submit.upload-file-list.title">
+	<form class="margin-top" action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
+               
+		<div class="row margin-top-2">
+			<div class="col-lg-12">
+	        	<jsp:include page="/submit/progressbar.jsp" />
+			</div>
+		</div>
+		
+		
+		<%= SubmissionController.getSubmissionParameters(context, request) %>
+        <div class="panel panel-default margin-top-2">
+			<div class="panel-heading">
 <%
     if (justUploaded)
     {
 %>
-		<h1><fmt:message key="jsp.submit.upload-file-list.heading1"/></h1>
-        <p><fmt:message key="jsp.submit.upload-file-list.info1"/></p>
+				<h3><fmt:message key="jsp.submit.upload-file-list.heading1"/></h3>
+		        <p><fmt:message key="jsp.submit.upload-file-list.info1"/></p>
 <%
     }
     else
     {
 %>
-	    <h1><fmt:message key="jsp.submit.upload-file-list.heading2"/></h1>
+	    		<h3><fmt:message key="jsp.submit.upload-file-list.heading2"/></h3>
 <%
     }
-%>
-        <div><fmt:message key="jsp.submit.upload-file-list.info2"/>&nbsp;&nbsp;&nbsp;<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#uploadedfile\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></div>
+%>			
+				<p><fmt:message key="jsp.submit.upload-file-list.info2"/>&nbsp;&nbsp;&nbsp;<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#uploadedfile\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></p>
+			</div>
+			<div class="panel-body">
         
-        <table class="miscTable" align="center" summary="Table dispalying your submitted files">
+        <table class="table table-striped" align="center" summary="Table dispalying your submitted files">
             <tr>
 				<th id="t1" class="oddRowEvenCol"><fmt:message key="jsp.submit.upload-file-list.tableheading1"/></th>
                 <th id="t2" class="oddRowOddCol"><fmt:message key="jsp.submit.upload-file-list.tableheading2"/></th>
@@ -147,11 +154,11 @@
                     <%= (bitstreams[i].getDescription() == null || bitstreams[i].getDescription().equals("")
                         ? LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.upload-file-list.empty1")
                         : bitstreams[i].getDescription()) %>
-                    <input type="submit" name="submit_describe_<%= bitstreams[i].getID() %>" value="<fmt:message key="jsp.submit.upload-file-list.button1"/>" />
+                    <button class="btn btn-default btn-xs" type="submit" name="submit_describe_<%= bitstreams[i].getID() %>"><fmt:message key="jsp.submit.upload-file-list.button1"/></button>
                 </td>
                 <td headers="t5" class="<%= row %>RowEvenCol">
                     <%= description %> <dspace:popup page="<%= supportLevelLink %>">(<%= supportLevel %>)</dspace:popup>
-                    <input type="submit" name="submit_format_<%= bitstreams[i].getID() %>" value="<fmt:message key="jsp.submit.upload-file-list.button1"/>" />
+                    <button class="btn btn-default btn-xs" type="submit" name="submit_format_<%= bitstreams[i].getID() %>"><fmt:message key="jsp.submit.upload-file-list.button1"/></button>
                 </td>
 <%
         // Checksum
@@ -171,7 +178,7 @@
             String column = (showChecksums ? "Even" : "Odd");
 %>
                 <td headers="t7" class="<%= row %>Row<%= column %>Col">
-                    <input type="submit" name="submit_remove_<%= bitstreams[i].getID() %>" value="<fmt:message key="jsp.submit.upload-file-list.button2"/>" />
+                    <button class="btn btn-danger btn-xs" type="submit" name="submit_remove_<%= bitstreams[i].getID() %>"><fmt:message key="jsp.submit.upload-file-list.button2"/></button>
                 </td>
 <%
         }
@@ -185,7 +192,16 @@
 
 <%-- HACK:  Need a space - is there a nicer way to do this than <br> or a --%>
 <%--        blank <p>? --%>
-        <br />
+<%
+    // Don't allow files to be added in workflow mode
+    if (allowFileEditing)
+    {
+%>
+            <center><button class="btn btn-primary" type="submit" name="submit_more"><fmt:message key="jsp.submit.upload-file-list.button4"/></button></center>
+<%
+    }
+%>
+
 
 <%-- Show information about how to verify correct upload, but not in workflow
      mode! --%>
@@ -193,7 +209,7 @@
     if (allowFileEditing)
     {
 %>
-        <p class="uploadHelp"><fmt:message key="jsp.submit.upload-file-list.info3"/></p>
+        <p class="margin-top-2 uploadHelp"><fmt:message key="jsp.submit.upload-file-list.info3"/></p>
         <ul class="uploadHelp">
             <li class="uploadHelp"><fmt:message key="jsp.submit.upload-file-list.info4"/></li>
 <%
@@ -202,58 +218,42 @@
 %>
             <li class="uploadHelp"><fmt:message key="jsp.submit.upload-file-list.info5"/>
             <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#checksum\"%>"><fmt:message key="jsp.submit.upload-file-list.help1"/></dspace:popup></li>
+            
+        </ul>
 <%
         }
         else
         {
 %>
             <li class="uploadHelp"><fmt:message key="jsp.submit.upload-file-list.info6"/>
-            <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#checksum\"%>"><fmt:message key="jsp.submit.upload-file-list.help2"/></dspace:popup> <input type="submit" name="submit_show_checksums" value="<fmt:message key="jsp.submit.upload-file-list.button3"/>" /></li>
+            <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#checksum\"%>"><fmt:message key="jsp.submit.upload-file-list.help2"/></dspace:popup> 
+            </li>
+        </ul>
+            
+            <center>
+            <button class="btn btn-info" type="submit" name="submit_show_checksums"><fmt:message key="jsp.submit.upload-file-list.button3"/></button>
+            </center>
 <%
         }
 %>
-        </ul>
         <br />
 <%
     }
 %>    
 
-        <%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
-        <%= SubmissionController.getSubmissionParameters(context, request) %>
-
-<%-- HACK: Center used to align table; CSS and align="center" ignored by some browsers --%>
-        <center>
-<%
-    // Don't allow files to be added in workflow mode
-    if (allowFileEditing)
-    {
-%>
-            <p><input type="submit" name="submit_more" value="<fmt:message key="jsp.submit.upload-file-list.button4"/>" /></p>
-<%
-    }
-%>
-            <table border="0" width="80%">
-                <tr>
-                    <td width="100%">&nbsp;</td>
+			</div>
+			<div class="panel-footer">
+				<div class="pull-right">
 				<%  //if not first step, show "Previous" button
 					if(!SubmissionController.isFirstStep(request, subInfo))
 					{ %>
-                    <td>
-                        <%-- <input type="submit" name="submit_prev" value="&lt; Previous"> --%>
-						<input type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>" value="<fmt:message key="jsp.submit.upload-file-list.button5"/>" />
-                    </td>
+                        <button class="btn btn-default" type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>"><fmt:message key="jsp.submit.general.previous"/></button>
 				<%  } %>
-                    <td>
-                        <input type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>" value="<fmt:message key="jsp.submit.upload-file-list.button6"/>" />
-                    </td>
-                    <td>&nbsp;&nbsp;&nbsp;</td>
-                    <td align="right">
-                        <input type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>" value="<fmt:message key="jsp.submit.upload-file-list.button7"/>" />
-                    </td>
-                </tr>
-            </table>
-        </center>
-
+					<button class="btn btn-primary" type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>"><fmt:message key="jsp.submit.general.next"/></button>
+					<button class="btn btn-default" type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>"><fmt:message key="jsp.submit.general.cancel-or-save.button"/></button>
+				</div>	
+				<div class="clearfix"></div>
+			</div>
+		</div>
     </form>
-
 </dspace:layout>

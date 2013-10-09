@@ -22,6 +22,7 @@
 <%@ page import="org.dspace.core.ConfigurationManager" %>
 <%@ page import="javax.servlet.jsp.jstl.core.*" %>
 <%@ page import="javax.servlet.jsp.jstl.fmt.*" %>
+<%@ page import="org.dspace.app.util.Util" %>
 
 <%
     String title = (String) request.getAttribute("dspace.layout.title");
@@ -33,17 +34,30 @@
     String feedRef = (String)request.getAttribute("dspace.layout.feedref");
     List parts = (List)request.getAttribute("dspace.layout.linkparts");
     String extraHeadData = (String)request.getAttribute("dspace.layout.head");
+
+    boolean osLink = ConfigurationManager.getBooleanProperty("websvc.opensearch.autolink");
+    String osCtx = ConfigurationManager.getProperty("websvc.opensearch.svccontext");
+    String osName = ConfigurationManager.getProperty("websvc.opensearch.shortname");
+    String extraHeadDataLast = (String)request.getAttribute("dspace.layout.head.last");
+    String dsVersion = Util.getSourceVersion();
+    String generator = dsVersion == null ? "DSpace" : "DSpace "+dsVersion;
+    String analyticsKey = ConfigurationManager.getProperty("jspui.google.analytics.key");
+	String sidebar = (String) request.getAttribute("dspace.layout.sidebar");
 %>
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
         <title><%= siteName %>: <%= title %></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="Generator" content="DSpace" />
-        <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css" type="text/css" />
-        <link rel="stylesheet" href="<%= request.getContextPath() %>/print.css" media="print" type="text/css" />
-        <link rel="shortcut icon" href="<%= request.getContextPath() %>/favicon.ico" type="image/x-icon"/>
+        <meta name="Generator" content="<%= generator %>" />
+        
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/static/readable/bootstrap.css" type="text/css" />
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/static/readable/bootwatch.min.css" type="text/css" />
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/static/font-awesome/css/font-awesome.css" type="text/css" />
+        
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/style/main.css" type="text/css" />
 <%
     if (extraHeadData != null)
         { %>
@@ -52,6 +66,10 @@
         }
 %>
 
+	<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/jquery/jquery-2.0.3.min.js'></script>
+	<script type='text/javascript' src='<%= request.getContextPath() %>/static/bootstrap/js/bootstrap.min.js'></script>
+	<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/bootswatch.js'></script>
+	
     <script type="text/javascript" src="<%= request.getContextPath() %>/utils.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/prototype.js"> </script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/effects.js"> </script>
@@ -62,7 +80,7 @@
 
     <%-- HACK: leftmargin, topmargin: for non-CSS compliant Microsoft IE browser --%>
     <%-- HACK: marginwidth, marginheight: for non-CSS compliant Netscape browser --%>
-    <body>
+    <body style="padding-top: 0px;">
 
         <%-- Localization --%>
 <%--  <c:if test="${param.locale != null}">--%>

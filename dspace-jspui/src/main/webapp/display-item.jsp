@@ -90,41 +90,51 @@
 %>
 	<div class="row">
 		<div class="col-lg-12">
-			<div class="alert alert-info">
 				<div class="row">
 <%
 	int cols = 12;
-	if (admin_button) cols = 6;
+	if (admin_button) cols = 9;
 %>
 					<div class="col-lg-<%=cols%>">
-                		<fmt:message key="jsp.display-item.identifier"/>
-                		<code class="text-danger"><%= HandleManager.getCanonicalForm(handle) %></code>
+						<div class="alert alert-info">
+                			<fmt:message key="jsp.display-item.identifier"/>
+                			<code class="text-danger"><%= HandleManager.getCanonicalForm(handle) %></code>
+                		</div>
 					</div>
 <% if (admin_button) { %>
-					<div class="col-lg-6">
-						<form method="post" action="<%= request.getContextPath() %>/mydspace">
+					<div class="col-lg-3">
+						<form name="exportArchive" method="post" action="<%= request.getContextPath() %>/mydspace">
 		                    <input type="hidden" name="item_id" value="<%= item.getID() %>" />
 		                    <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_EXPORT_ARCHIVE %>" />
-		                    <button class="btn" type="submit" name="submit"><fmt:message key="jsp.mydspace.request.export.item"/></button>
 		                </form>
-		                <form method="post" action="<%= request.getContextPath() %>/mydspace">
+		                <form name="migrateArchive" method="post" action="<%= request.getContextPath() %>/mydspace">
 		                    <input type="hidden" name="item_id" value="<%= item.getID() %>" />
 		                    <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_MIGRATE_ARCHIVE %>" />
-		                    <button class="btn" type="submit" name="submit"><fmt:message key="jsp.mydspace.request.export.migrateitem"/></button>
 		                </form>
-		                <form method="post" action="<%= request.getContextPath() %>/dspace-admin/metadataexport">
+		                <form name="metadataExport" method="post" action="<%= request.getContextPath() %>/dspace-admin/metadataexport">
 		                    <input type="hidden" name="handle" value="<%= item.getHandle() %>" />
-		                    <button class="btn" type="submit" name="submit"><fmt:message key="jsp.general.metadataexport.button"/></button>
 		                </form>
-		                <form method="get" action="<%= request.getContextPath() %>/tools/edit-item">
+		                <form name="editItem" method="get" action="<%= request.getContextPath() %>/tools/edit-item">
 		                    <input type="hidden" name="item_id" value="<%= item.getID() %>" />
 		                    <%--<input type="submit" name="submit" value="Edit...">--%>
-		                    <button class="btn btn-primary" type="submit" name="submit"><fmt:message key="jsp.general.edit.button"/></button>
 		                </form>
+		                <ul class="nav nav-pills nav-stacked">
+		                	<li>
+		                    	<a href="#" onclick="document.editItem.submit();"><fmt:message key="jsp.general.edit.button"/></a>
+		                	</li>
+		                	<li>
+		                		<a href="#" onclick="document.exportArchive.submit();"><fmt:message key="jsp.mydspace.request.export.item"/></a>
+		                	</li>
+		                	<li>
+		                		<a href="#" onclick="document.migrateArchive.submit();"><fmt:message key="jsp.mydspace.request.export.migrateitem"/></a>
+		                	</li>
+		                	<li>
+		                    	<a href="#" onclick="document.metadataExport.submit();"><fmt:message key="jsp.general.metadataexport.button"/></a>
+		                	</li>
+		                </ul>
 					</div>
 <% } %>
 				</div>
-			</div>
 		</div>
 	</div>
 <%
@@ -146,25 +156,25 @@
 <%
     if (workspace_id != null) {
 %>
-			<li>
+			<center>
 			    <form class="text-center" method="post" action="<%= request.getContextPath() %>/view-workspaceitem">
 			        <input type="hidden" name="workspace_id" value="<%= workspace_id.intValue() %>" />
 			        <button class="btn btn-primary" type="submit" name="submit_simple">
 			        	<fmt:message key="jsp.display-item.text1"/>
 			        </button>
 			    </form>
-			</li>
+			</center>
 <%
     } else {
 %>
-			<li>
+			<center>
 			    <form class="text-center" method="get" action="<%=locationLink %>">
 			        <input type="hidden" name="mode" value="simple"/>
 			        <button class="btn btn-primary" type="submit" name="submit_simple">
 			        	<fmt:message key="jsp.display-item.text1"/>
 			        </button>
 			    </form>
-	    	</li>
+	    	</center>
 <%
     }
 %>
@@ -177,43 +187,42 @@
 
 <div class="row">
 	<div class="col-lg-12">
-		<ul class="nav nav-pills">
 <%
         if (workspace_id != null)
         {
 %>
-			<li>
+			<center>
 			    <form method="post" action="<%= request.getContextPath() %>/view-workspaceitem">
 			        <input type="hidden" name="workspace_id" value="<%= workspace_id.intValue() %>" />
 			        <button class="btn btn-primary" type="submit" name="submit_full">
 			        	<fmt:message key="jsp.display-item.text2"/>
 			        </button>
 			    </form>
-    		</li>
+    		</center>
 <%
         }
         else
         {
 %>
-			<li>
+			<center>
 			    <form method="get" action="<%=locationLink %>">
 			        <input type="hidden" name="mode" value="full"/>
 			        <button class="btn btn-primary" type="submit" name="submit_simple">
 			        	<fmt:message key="jsp.display-item.text2"/>
 			        </button>
 			    </form>
-    		</li>
+    		</center>
 <%
         }
 
         if (suggestLink)
         {
 %>
-			<li>
+			<center>
     			<a class="btn btn-primary" href="<%= request.getContextPath() %>/suggest?handle=<%= handle %>" target="new_window">
        				<fmt:message key="jsp.display-item.suggest"/>
        			</a>
-			</li>
+			</center>
 <%
         }
 %>

@@ -41,22 +41,28 @@
 %>
 
 <dspace:layout locbar="off"
-               navbar="off"
                titlekey="jsp.submit.show-license.title"
                nocache="true">
-
-    <form action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
-
-        <jsp:include page="/submit/progressbar.jsp"/>
-
-	<div><fmt:message key="jsp.submit.show-license.info1"/>
-        &nbsp;&nbsp;<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") +\"#license\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></div>
-
+	<form class="margin-top" action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
+               
+		<div class="row margin-top-2">
+			<div class="col-lg-12">
+	        	<jsp:include page="/submit/progressbar.jsp" />
+			</div>
+		</div>
+		
+		<%= SubmissionController.getSubmissionParameters(context, request) %>
+        <div class="panel panel-default margin-top-2">
+			<div class="panel-heading">
+				<p><fmt:message key="jsp.submit.show-license.info1"/></p>
+				<p><dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") +\"#license\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></p>
+				<p><fmt:message key="jsp.submit.show-license.info2"/></p>
+			</div>
+			<div class="panel-body">
         <%-- <p><strong>Not granting the license will not delete your submission.</strong>
         Your item will remain in your "My DSpace" page.  You can then either remove
         the submission from the system, or agree to the license later once any
         queries you might have are resolved.</p> --%>
-		<p><fmt:message key="jsp.submit.show-license.info2"/></p>
 
         <table class="miscTable" align="center">
             <tr>
@@ -65,13 +71,14 @@
                 </td>
             </tr>
         </table>
-
-        <%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
-        <%= SubmissionController.getSubmissionParameters(context, request) %>
-
-        <center>
-	    <p><input type="submit" name="submit_grant" value="<fmt:message key="jsp.submit.show-license.grant.button"/>" /></p>
-            <p><input type="submit" name="submit_reject" value="<fmt:message key="jsp.submit.show-license.notgrant.button"/>" /></p>          
-        </center>
+			</div>
+			<div class="panel-footer">
+				<div class="pull-right">
+					<button class="btn btn-success" type="submit" name="submit_grant"><fmt:message key="jsp.submit.show-license.grant.button"/></button>
+					<button class="btn btn-danger" type="submit" name="submit_reject"><fmt:message key="jsp.submit.show-license.notgrant.button"/></button>
+				</div>	
+				<div class="clearfix"></div>
+			</div>
+		</div>
     </form>
 </dspace:layout>

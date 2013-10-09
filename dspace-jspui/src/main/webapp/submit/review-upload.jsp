@@ -108,16 +108,14 @@
     if(!subInfo.isInWorkflow())
     {
 %>
-                                    <input type="submit" name="submit_jump_<%=stepJump%>"
-                                     value="<%= (subInfo.getSubmissionItem().hasMultipleFiles() ? LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.button.upload1") : LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.button.upload2")) %>" />
+                                    <button class="btn btn-success" type="submit" name="submit_jump_<%=stepJump%>"><%= (subInfo.getSubmissionItem().hasMultipleFiles() ? LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.button.upload1") : LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.review.button.upload2")) %></button>
 <%
     }
     else
     {
 %>
 
-                                    <input type="submit" name="submit_jump_<%=stepJump%>"
-                                     value="<fmt:message key="jsp.submit.review.button.edit"/>" />
+                                    <button class="btn btn-success" type="submit" name="submit_jump_<%=stepJump%>"><fmt:message key="jsp.submit.review.button.edit"/></button>
 <%
     }
 %>

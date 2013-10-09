@@ -42,111 +42,86 @@
 
 
 <dspace:layout locbar="off"
-               navbar="off"
                titlekey="jsp.submit.choose-file.title"
                nocache="true">
-
-    <form method="post" action="<%= request.getContextPath() %>/submit" enctype="multipart/form-data" onkeydown="return disableEnterKey(event);">
+	<form class="margin-top" action="<%= request.getContextPath() %>/submit"  enctype="multipart/form-data" method="post" onkeydown="return disableEnterKey(event);">
+               
+		<div class="row margin-top-2">
+			<div class="col-lg-12">
+	        	<jsp:include page="/submit/progressbar.jsp" />
+			</div>
+		</div>
 		
-		<jsp:include page="/submit/progressbar.jsp"/>
-		<%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
-        <%= SubmissionController.getSubmissionParameters(context, request) %>
-
-        <%-- <h1>Submit: Upload a File</h1> --%>
-		<h1><fmt:message key="jsp.submit.choose-file.heading"/></h1>
+		
+		<%= SubmissionController.getSubmissionParameters(context, request) %>
+        <div class="panel panel-default margin-top-2">
+			<div class="panel-heading">
+				<h3><fmt:message key="jsp.submit.choose-file.heading"/></h3>
     
-        <%-- <p>Please enter the name of
-        <%= (si.submission.hasMultipleFiles() ? "one of the files" : "the file" ) %> on your
-        local hard drive corresponding to your item.  If you click "Browse...", a
-        new window will appear in which you can locate and select the file on your
-        local hard drive. <object><dspace:popup page="/help/index.html#upload">(More Help...)</dspace:popup></object></p> --%>
+		        <%-- <p>Please enter the name of
+		        <%= (si.submission.hasMultipleFiles() ? "one of the files" : "the file" ) %> on your
+		        local hard drive corresponding to your item.  If you click "Browse...", a
+		        new window will appear in which you can locate and select the file on your
+		        local hard drive. <object><dspace:popup page="/help/index.html#upload">(More Help...)</dspace:popup></object></p> --%>
 
-		<p><fmt:message key="jsp.submit.choose-file.info1"/>
-			<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#upload\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></p>
+				<p><fmt:message key="jsp.submit.choose-file.info1"/>
+					<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#upload\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></p>
         
-        <%-- FIXME: Collection-specific stuff should go here? --%>
-        <%-- <p class="submitFormHelp">Please also note that the DSpace system is
-        able to preserve the content of certain types of files better than other
-        types.
-        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.formats\")%>">Information about file types</dspace:popup> and levels of
-        support for each are available.</p> --%>
-        
-		<div class="submitFormHelp"><fmt:message key="jsp.submit.choose-file.info6"/>
-        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.formats\")%>"><fmt:message key="jsp.submit.choose-file.info7"/></dspace:popup>
-        </div>
-    
-        <table border="0" align="center">
-            <tr>
-                <td class="submitFormLabel">
-                    <%-- Document File: --%>
-					<label for="tfile"><fmt:message key="jsp.submit.choose-file.document"/></label>
-                </td>
-                <td>
-                    <input type="file" size="40" name="file" id="tfile" />
-                </td>
-            </tr>
+		        <%-- FIXME: Collection-specific stuff should go here? --%>
+		        <%-- <p class="submitFormHelp">Please also note that the DSpace system is
+		        able to preserve the content of certain types of files better than other
+		        types.
+		        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.formats\")%>">Information about file types</dspace:popup> and levels of
+		        support for each are available.</p> --%>
+		        
+				<p><fmt:message key="jsp.submit.choose-file.info6"/>
+		        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.formats\")%>"><fmt:message key="jsp.submit.choose-file.info7"/></dspace:popup>
+		        </p>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label><fmt:message key="jsp.submit.choose-file.document"/></label>
+							<input type="file" class="form-control" size="40" name="file" id="tfile" />
+						</div>
 <%
     if (subInfo.getSubmissionItem().hasMultipleFiles())
     {
 %>
-            <tr>
-                <td colspan="2">&nbsp;</td>
-            </tr>
-            <tr>
-                <td class="submitFormHelp" colspan="2">
-                    <%-- Please give a brief description of the contents of this file, for
-                    example "Main article", or "Experiment data readings." --%>
-					<fmt:message key="jsp.submit.choose-file.info9"/>
-                </td>
-            </tr>
-            <tr>
-                <%-- <td class="submitFormLabel">File Description:</td> --%>
-				<td class="submitFormLabel"><label for="tdescription"><fmt:message key="jsp.submit.choose-file.filedescr"/></label></td>
-                <td><input type="text" name="description" id="tdescription" size="40"/></td>
-            </tr>
+						<div class="form-group">
+							<p><fmt:message key="jsp.submit.choose-file.info9"/></p>
+							<label><fmt:message key="jsp.submit.choose-file.filedescr"/></label></label>
+							<input type="text" name="description" id="tdescription" class="form-control"/>
+						</div>
 <%
     }
 %>
-        </table>
-        
-		<%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
-        <%= SubmissionController.getSubmissionParameters(context, request) %>
-    
-        <p>&nbsp;</p>
-
-        <center>
-            <table border="0" width="80%">
-                <tr>
-                    <td width="100%">&nbsp;</td>
-               	<%  //if not first step, show "Previous" button
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer">
+				<div class="pull-right">
+				<%  //if not first step, show "Previous" button
 					if(!SubmissionController.isFirstStep(request, subInfo))
 					{ %>
-                    <td>
-                        <input type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>" value="<fmt:message key="jsp.submit.general.previous"/>" />
-                    </td>
+                        <button class="btn btn-default" type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>"><fmt:message key="jsp.submit.general.previous"/></button>
 				<%  } %>
-                    <td>
-                        <input type="submit" name="<%=UploadStep.SUBMIT_UPLOAD_BUTTON%>" value="<fmt:message key="jsp.submit.general.next"/>" />
-                    </td> 
-                    <%
+					<button class="btn btn-primary" type="submit" name="<%=UploadStep.SUBMIT_UPLOAD_BUTTON%>"><fmt:message key="jsp.submit.general.next"/></button>
+					<%
                         //if upload is set to optional, or user returned to this page after pressing "Add Another File" button
                     	if (!fileRequired || UIUtil.getSubmitButton(request, "").equals(UploadStep.SUBMIT_MORE_BUTTON))
                         {
                     %>
-                        	<td>
-                                <input type="submit" name="<%=UploadStep.SUBMIT_SKIP_BUTTON%>" value="<fmt:message key="jsp.submit.choose-file.skip"/>" />
-                            </td>
+                    <button class="btn btn-default" type="submit" name="<%=UploadStep.SUBMIT_SKIP_BUTTON%>"><fmt:message key="jsp.submit.choose-file.skip"/></button>
                     <%
                         }
                     %>   
-                              
-                    <td>&nbsp;&nbsp;&nbsp;</td>
-                    <td align="right">
-                        <input type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>" value="<fmt:message key="jsp.submit.general.cancel-or-save.button"/>" />
-                    </td>
-                </tr>
-            </table>
-        </center>  
+					<button class="btn btn-default" type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>"><fmt:message key="jsp.submit.general.cancel-or-save.button"/></button>
+				</div>	
+				<div class="clearfix"></div>
+			</div>
+		</div>
     </form>
 
 </dspace:layout>

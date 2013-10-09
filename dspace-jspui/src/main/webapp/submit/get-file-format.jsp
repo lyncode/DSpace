@@ -53,51 +53,34 @@
     Item item = subInfo.getSubmissionItem().getItem();
 %>
 
-<dspace:layout locbar="off" navbar="off" titlekey="jsp.submit.get-file-format.title" nocache="true">
+<dspace:layout locbar="off" titlekey="jsp.submit.get-file-format.title" nocache="true">
 
-    <form action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
-
-        <jsp:include page="/submit/progressbar.jsp"/>
-
-        <%-- <h1>Submit: Select File Format</h1> --%>
-		<h1><fmt:message key="jsp.submit.get-file-format.heading"/></h1>
-
-        <%-- <p>Uploaded file: <code><%= si.bitstream.getName() %></code> (<%= si.bitstream.getSize() %> bytes)</p> --%>
-		<p><fmt:message key="jsp.submit.get-file-format.info1">
-            <fmt:param><%= subInfo.getBitstream().getName() %></fmt:param>
-            <fmt:param><%= String.valueOf(subInfo.getBitstream().getSize()) %></fmt:param>
-        </fmt:message></p>
-
+    <form class="margin-top" action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
+               
+		<div class="row margin-top-2">
+			<div class="col-lg-12">
+	        	<jsp:include page="/submit/progressbar.jsp" />
+			</div>
+		</div>
+		
+        <div class="panel panel-default margin-top-2">
+			<div class="panel-heading">
+				<h3><fmt:message key="jsp.submit.get-file-format.heading"/></h3>
+				<p><fmt:message key="jsp.submit.get-file-format.info1">
+		            <fmt:param><%= subInfo.getBitstream().getName() %></fmt:param>
+		            <fmt:param><%= String.valueOf(subInfo.getBitstream().getSize()) %></fmt:param>
+		        </fmt:message></p>
 <%
     if (guess == null)
     {
 %>
-        <%-- <p>DSpace could not identify the format of this file.</p> --%>
-		<p><fmt:message key="jsp.submit.get-file-format.info2"/></p>
-<%
-    }
-    else
-    {
-%>
-        <%-- <p>DSpace recognized the file format as <%= guess.getShortDescription() %>.
-        <strong>Please be sure before you change this!</strong></p> --%>
-		<p><fmt:message key="jsp.submit.get-file-format.info3">
-            <fmt:param><%= guess.getShortDescription() %></fmt:param>
-        </fmt:message></p>   
-        <input type="hidden" name="format" value="<%= guess.getID() %>" />
-
-        <%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
-        <%= SubmissionController.getSubmissionParameters(context, request) %>
-
-        <%-- <p align="center"><input type="submit" name="submit" value="Choose automatically-recognized type"></p> --%>
-		<p align="center"><input type="submit" name="submit" value="<fmt:message key="jsp.submit.get-file-format.choose.button"/>" /></p>
-    </form>
-
-<%-- Option list put in a separate form --%>
-    <form action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
+		        <%-- <p>DSpace could not identify the format of this file.</p> --%>
+				<p><fmt:message key="jsp.submit.get-file-format.info2"/></p>
 <%
     }
 %>
+			</div>
+			<div class="panel-body">
 
         <%-- <p>Select the format of the file from the list below, for example "Adobe
         PDF" or "Microsoft Word", <strong>OR</strong> if the format is not in the list, please describe
@@ -108,7 +91,7 @@
         <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#formats\" %>"><fmt:message key="jsp.morehelp"/></dspace:popup></div>
     
         <center>
-            <select name="format" size="8">
+            <select name="format" class="form-control" size="8">
                 <option value="-1" <%= subInfo.getBitstream().getFormat().getShortDescription().equals("Unknown") ? "selected=\"selected\"" : "" %>>
                     <%-- Format Not in List --%>
 					<fmt:message key="jsp.submit.get-file-format.info6"/>
@@ -144,11 +127,9 @@
 
         <table border="0" align="center">
             <tr>
-                <td class="submitFormLabel">
+                <td class="form-group">
                     <%-- File Format: --%>
 					<label for="tformat_description"><fmt:message key="jsp.submit.get-file-format.format"/></label>
-                </td>
-                <td>
 <%
     String desc = subInfo.getBitstream().getUserFormatDescription();
     if (desc == null)
@@ -156,7 +137,7 @@
         desc = "";
     }
 %>
-                   <input type="text" name="format_description" id="tformat_description" size="40" value="<%= desc %>" />
+                   <input type="text" name="format_description" id="tformat_description" class="form-control" value="<%= desc %>" />
                 </td>
             </tr>
         </table>
@@ -164,7 +145,33 @@
         <%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
         <%= SubmissionController.getSubmissionParameters(context, request) %>
 
-        <%-- <center><p><input type="submit" name="submit" value="Set File Format"></p></center> --%>
-		<center><p><input type="submit" name="submit" value="<fmt:message key="jsp.submit.general.submit"/>" /></p></center>
+			</div>
+			<div class="panel-footer">
+				<center><button type="submit" class="btn btn-primary" name="submit"><fmt:message key="jsp.submit.general.submit"/></button></center>
+			</div>
+		</div>
     </form>
+    
+<%
+		if (guess != null) {
+%>
+		<div class="alert alert-info">
+			<form action="<%= request.getContextPath() %>/submit" method="post" onkeydown="return disableEnterKey(event);">
+		        <%-- <p>DSpace recognized the file format as <%= guess.getShortDescription() %>.
+		        <strong>Please be sure before you change this!</strong></p> --%>
+				<p><fmt:message key="jsp.submit.get-file-format.info3">
+		            <fmt:param><%= guess.getShortDescription() %></fmt:param>
+		        </fmt:message></p>   
+		        <input type="hidden" name="format" value="<%= guess.getID() %>" />
+
+		        <%-- Hidden fields needed for SubmissionController servlet to know which step is next--%>
+		        <%= SubmissionController.getSubmissionParameters(context, request) %>
+
+		        <%-- <p align="center"><input type="submit" name="submit" value="Choose automatically-recognized type"></p> --%>
+				<p align="center"><button class="btn btn-primary" type="submit" name="submit"><fmt:message key="jsp.submit.get-file-format.choose.button"/></button></p>
+    		</form>
+    	</div>
+<%
+   		}
+%>
 </dspace:layout>
