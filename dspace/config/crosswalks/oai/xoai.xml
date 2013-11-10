@@ -10,11 +10,11 @@
 	Developed by DSpace @ Lyncode <dspace@lyncode.com>
  -->
 <Configuration indentation="false" maxListIdentifiersSize="100" maxListRecordsSize="100"
-	maxListSetsSize="100" stylesheet="static/style.xsl" 
+	maxListSetsSize="100" stylesheet="static/style.xsl"
 	xmlns="http://www.lyncode.com/XOAIConfiguration">
 
 	<Contexts>
-		<Context baseurl="request">
+		<Context baseurl="request" name="Default Context">
 			<Format refid="oaidc" />
 			<Format refid="mets" />
 			<Format refid="xoai" />
@@ -27,6 +27,9 @@
 			<Format refid="qdc" />
 			<Format refid="marc" />
 			<Format refid="uketd_dc" />
+            <Description>
+                This is the default context of the DSpace data provider.
+            </Description>
 		</Context> 
 		
 		<!--
@@ -36,7 +39,7 @@
 			
 			Page 57 - 58
 		 -->
-		<Context baseurl="driver">
+		<Context baseurl="driver" name="Driver Context">
 			<!-- Date format, field prefixes, etc are ensured by the transformer -->
 			<Transformer refid="driverTransformer"/>
 			<!-- Title : Mandatory -->
@@ -55,6 +58,9 @@
 			<Format refid="oaidc"/>
 			<Format refid="mets" />
 			<Format refid="didl" />
+            <Description>
+                This contexts complains with Driver rules.
+            </Description>
 		</Context>
 		
 		<!-- 
@@ -66,7 +72,7 @@
 			
 			- Predefined DSpace fields don't allow to set this up with a default.
 		 -->
-		<Context baseurl="openaire">
+		<Context baseurl="openaire" name="OpenAIRE Context">
 			<!-- Date format, field prefixes, etc are ensured by the transformer -->
 			<Transformer refid="openaireTransformer" />
 			<!-- Title : Mandatory -->
@@ -82,6 +88,9 @@
 			<!-- Metadata Formats -->
 			<Format refid="oaidc" />
 			<Format refid="mets" />
+            <Description>
+                This contexts complains with OpenAIRE rules.
+            </Description>
 		</Context>
 	</Contexts>
 	

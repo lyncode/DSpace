@@ -7,15 +7,9 @@
  */
 package org.dspace.xoai.data;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.lyncode.xoai.dataprovider.core.DeleteMethod;
+import com.lyncode.xoai.dataprovider.core.Granularity;
+import com.lyncode.xoai.dataprovider.data.AbstractIdentify;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -27,9 +21,13 @@ import org.dspace.xoai.exceptions.InvalidMetadataFieldException;
 import org.dspace.xoai.util.DateUtils;
 import org.dspace.xoai.util.MetadataFieldManager;
 
-import com.lyncode.xoai.dataprovider.core.DeleteMethod;
-import com.lyncode.xoai.dataprovider.core.Granularity;
-import com.lyncode.xoai.dataprovider.data.AbstractIdentify;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -118,7 +116,7 @@ public class DSpaceIdentify extends AbstractIdentify
                 String str = iterator.next().getStringColumn("value");
                 try
                 {
-                    Date d = DateUtils.parseDate(str);
+                    Date d = DateUtils.parse(str);
                     if (d != null)
                         return d;
                 }

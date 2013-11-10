@@ -7,14 +7,22 @@
  */
 package org.dspace.xoai.data;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
+import com.lyncode.xoai.dataprovider.core.ListItemIdentifiersResult;
+import com.lyncode.xoai.dataprovider.core.ListItemsResults;
+import com.lyncode.xoai.dataprovider.data.AbstractItem;
+import com.lyncode.xoai.dataprovider.data.AbstractItemIdentifier;
+import com.lyncode.xoai.dataprovider.exceptions.IdDoesNotExistException;
+import com.lyncode.xoai.dataprovider.filter.FilterScope;
+import com.lyncode.xoai.dataprovider.filter.ScopedFilter;
+import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.AndCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.NotCondition;
+import com.lyncode.xoai.dataprovider.filter.conditions.OrCondition;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.dspace.xoai.filter.DSpaceFilter;
@@ -23,17 +31,9 @@ import org.dspace.xoai.solr.DSpaceSolrSearch;
 import org.dspace.xoai.solr.exceptions.DSpaceSolrException;
 import org.dspace.xoai.solr.exceptions.SolrSearchEmptyException;
 
-import com.lyncode.xoai.dataprovider.core.ListItemIdentifiersResult;
-import com.lyncode.xoai.dataprovider.core.ListItemsResults;
-import com.lyncode.xoai.dataprovider.data.AbstractItem;
-import com.lyncode.xoai.dataprovider.data.AbstractItemIdentifier;
-import com.lyncode.xoai.dataprovider.exceptions.IdDoesNotExistException;
-import com.lyncode.xoai.dataprovider.filter.ScopedFilter;
-import com.lyncode.xoai.dataprovider.filter.FilterScope;
-import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
-import com.lyncode.xoai.dataprovider.filter.conditions.AndCondition;
-import com.lyncode.xoai.dataprovider.filter.conditions.NotCondition;
-import com.lyncode.xoai.dataprovider.filter.conditions.OrCondition;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -42,9 +42,11 @@ import com.lyncode.xoai.dataprovider.filter.conditions.OrCondition;
 public class DSpaceItemSolrRepository extends DSpaceItemRepository
 {
     private static Logger log = LogManager.getLogger(DSpaceItemSolrRepository.class);
+    private SolrServer server;
 
-    public DSpaceItemSolrRepository()
+    public DSpaceItemSolrRepository(SolrServer server)
     {
+        this.server = server;
     }
 
     @Override
@@ -57,7 +59,7 @@ public class DSpaceItemSolrRepository extends DSpaceItemRepository
             try
             {
                 SolrQuery params = new SolrQuery("item.handle:" + parts[2]);
-                return new DSpaceSolrItem(DSpaceSolrSearch.querySingle(params));
+                return new DSpaceSolrItem(DSpaceSolrSearch.querySingle(server, params));
             }
             catch (SolrSearchEmptyException ex)
             {
@@ -131,7 +133,7 @@ public class DSpaceItemSolrRepository extends DSpaceItemRepository
         {
             SolrQuery params = new SolrQuery(where).setRows(length).setStart(
                     offset);
-            SolrDocumentList docs = DSpaceSolrSearch.query(params);
+            SolrDocumentList docs = DSpaceSolrSearch.query(server, params);
             for (SolrDocument doc : docs)
             {
                 list.add(new DSpaceSolrItem(doc));
@@ -155,7 +157,7 @@ public class DSpaceItemSolrRepository extends DSpaceItemRepository
             SolrQuery params = new SolrQuery(where).setRows(length).setStart(
                     offset);
             boolean hasMore = false;
-            SolrDocumentList docs = DSpaceSolrSearch.query(params);
+            SolrDocumentList docs = DSpaceSolrSearch.query(server, params);
             hasMore = (offset + length) < docs.getNumFound();
             for (SolrDocument doc : docs)
             {

@@ -1,14 +1,13 @@
 package org.dspace.xoai.data;
 
-import java.util.Date;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import com.lyncode.xoai.dataprovider.core.ResumptionToken;
 import com.lyncode.xoai.dataprovider.data.AbstractResumptionTokenFormat;
 import com.lyncode.xoai.dataprovider.exceptions.BadResumptionToken;
-import com.lyncode.xoai.util.DateUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.dspace.xoai.util.DateUtils;
+
+import java.util.Date;
 
 
 public class DSpaceResumptionTokenFormat extends AbstractResumptionTokenFormat {
@@ -16,13 +15,8 @@ public class DSpaceResumptionTokenFormat extends AbstractResumptionTokenFormat {
             .getLogger(DSpaceResumptionTokenFormat.class);
 
     public DSpaceResumptionTokenFormat() {
-
         // TODO Auto-generated constructor stub
     }
-
-
-
-
 
     @Override
     public ResumptionToken parse(String resumptionToken) throws BadResumptionToken {
@@ -49,7 +43,7 @@ public class DSpaceResumptionTokenFormat extends AbstractResumptionTokenFormat {
     public String format(ResumptionToken resumptionToken) {
         String result = "";
         if (resumptionToken.hasMetadataPrefix())
-            result += resumptionToken.getMetadatePrefix();
+            result += resumptionToken.getMetadataPrefix();
         result += "/";
         if (resumptionToken.hasFrom())
             result += DateUtils.format(resumptionToken.getFrom());
