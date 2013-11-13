@@ -4,15 +4,16 @@ import org.junit.Test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ShowListOfContextsAvailableTest extends AbstractDSpaceTest {
-
+public class OAIContextTest extends AbstractDSpaceTest {
     public static final String ROOT_URL = "/";
 
     @Test
     public void requestToRootShouldGiveListOfContextsWithBadRequestError() throws Exception {
-        theMvc().perform(get(ROOT_URL))
+        againstTheDataProvider().perform(get(ROOT_URL))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(model().attributeExists("contexts"));
@@ -20,9 +21,9 @@ public class ShowListOfContextsAvailableTest extends AbstractDSpaceTest {
 
     @Test
     public void requestForUnknownContextShouldGiveListOfContextsWithBadRequestError() throws Exception {
-        theMvc().perform(get("/unexistentContext"))
+        againstTheDataProvider().perform(get("/unexistentContext"))
                 .andDo(print())
-                .andExpect(redirectedUrl(ROOT_URL))
-                .andExpect(status().isMovedTemporarily());
+                .andExpect(status().isBadRequest())
+                .andExpect(model().attributeExists("contexts"));
     }
 }

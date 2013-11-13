@@ -16,16 +16,17 @@ import com.lyncode.xoai.dataprovider.exceptions.WritingXmlException;
 import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
 import org.apache.log4j.Logger;
 import org.dspace.core.Context;
-import org.dspace.xoai.data.DSpaceIdentify;
 import org.dspace.xoai.data.DSpaceResumptionTokenFormat;
 import org.dspace.xoai.data.DSpaceSetRepository;
 import org.dspace.xoai.filter.DSpaceFilter;
 import org.dspace.xoai.services.api.cache.XOAICacheService;
-import org.dspace.xoai.services.api.config.XOAIItemRepositoryResolver;
+import org.dspace.xoai.services.api.config.ItemRepositoryResolver;
 import org.dspace.xoai.services.api.config.XOAIManagerResolver;
 import org.dspace.xoai.services.api.config.XOAIManagerResolverException;
 import org.dspace.xoai.services.api.context.ContextService;
 import org.dspace.xoai.services.api.context.ContextServiceException;
+import org.dspace.xoai.services.api.xoai.IdentifyResolver;
+import org.dspace.xoai.services.api.xoai.SetRepositoryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,7 +60,9 @@ public class DSpaceOAIDataProvider
     @Autowired XOAICacheService cacheService;
     @Autowired ContextService contextService;
     @Autowired XOAIManagerResolver xoaiManagerResolver;
-    @Autowired XOAIItemRepositoryResolver itemRepositoryResolver;
+    @Autowired ItemRepositoryResolver itemRepositoryResolver;
+    @Autowired IdentifyResolver identifyResolver;
+    @Autowired SetRepositoryResolver setRepositoryResolver;
 
     private DSpaceResumptionTokenFormat resumptionTokenFormat = new DSpaceResumptionTokenFormat();
 
@@ -90,8 +93,8 @@ public class DSpaceOAIDataProvider
                     ((DSpaceFilter) filter).initialize(context);
 
             OAIDataProvider dataProvider = new OAIDataProvider(manager, xoaiContext,
-                    new DSpaceIdentify(context, request),
-                    new DSpaceSetRepository(context),
+                    identifyResolver.getIdentify(request),
+                    setRepositoryResolver.getSetRepository(request),
                     itemRepositoryResolver.getItemRepository(request),
                     resumptionTokenFormat);
 

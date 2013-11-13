@@ -8,6 +8,37 @@ import java.util.Map;
 public class StubbedConfigurationService implements ConfigurationService {
     private Map<String, Object> values = new HashMap<String, Object>();
 
+
+    public StubbedConfigurationService hasBooleanProperty (String key, boolean value) {
+        values.put(key, value);
+        return this;
+    }
+
+    public StubbedConfigurationService hasBooleanProperty (String module, String key, boolean value) {
+        values.put(module + "." + key, value);
+        return this;
+    }
+
+    public StubbedConfigurationService hasProperty (String key, String value) {
+        values.put(key, value);
+        return this;
+    }
+
+    public StubbedConfigurationService withoutProperty (String key) {
+        values.remove(key);
+        return this;
+    }
+
+    public StubbedConfigurationService hasProperty (String module, String key, String value) {
+        values.put(module + "." + key, value);
+        return this;
+    }
+
+    @Override
+    public String getProperty(String key) {
+        return (String) values.get(key);
+    }
+
     @Override
     public String getProperty(String module, String key) {
         return (String) values.get(module + "." + key);

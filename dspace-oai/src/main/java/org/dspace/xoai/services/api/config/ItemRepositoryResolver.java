@@ -5,6 +5,6 @@ import org.dspace.xoai.services.api.context.ContextServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface XOAIItemRepositoryResolver {
+public interface ItemRepositoryResolver {
     AbstractItemRepository getItemRepository (HttpServletRequest request) throws ContextServiceException;
 }

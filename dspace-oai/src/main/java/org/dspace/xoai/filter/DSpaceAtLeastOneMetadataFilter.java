@@ -20,7 +20,8 @@ import org.dspace.core.Context;
 import org.dspace.xoai.data.DSpaceItem;
 import org.dspace.xoai.exceptions.InvalidMetadataFieldException;
 import org.dspace.xoai.filter.data.DSpaceMetadataFilterOperator;
-import org.dspace.xoai.util.MetadataFieldManager;
+import org.dspace.xoai.services.api.database.FieldResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 
@@ -28,41 +29,35 @@ import org.dspace.xoai.util.MetadataFieldManager;
  */
 public class DSpaceAtLeastOneMetadataFilter extends DSpaceFilter
 {
-    private static Logger log = LogManager
-            .getLogger(DSpaceAtLeastOneMetadataFilter.class);
+    private static Logger log = LogManager.getLogger(DSpaceAtLeastOneMetadataFilter.class);
 
-    private String _field;
+    private String field;
+    private DSpaceMetadataFilterOperator operator = DSpaceMetadataFilterOperator.UNDEF;
+    private List<String> values;
 
-    private DSpaceMetadataFilterOperator _operator = DSpaceMetadataFilterOperator.UNDEF;
-
-    private List<String> _values;
+    @Autowired
+    FieldResolver fieldResolver;
 
     private String getField()
     {
-        if (_field == null)
-        {
-            _field = super.getParameter("field");
-        }
-        return _field;
+        if (field == null)
+            field = super.getParameter("field");
+        return field;
     }
 
     private List<String> getValues()
     {
-        if (_values == null)
-        {
-            _values = super.getParameters("value");
-        }
-        return _values;
+        if (values == null)
+            values = super.getParameters("value");
+        return values;
     }
 
     private DSpaceMetadataFilterOperator getOperator()
     {
-        if (_operator == DSpaceMetadataFilterOperator.UNDEF)
-        {
-            _operator = DSpaceMetadataFilterOperator.valueOf(super
+        if (operator == DSpaceMetadataFilterOperator.UNDEF)
+            operator = DSpaceMetadataFilterOperator.valueOf(super
                     .getParameter("operator").toUpperCase());
-        }
-        return _operator;
+        return operator;
     }
 
     @Override
@@ -72,8 +67,7 @@ public class DSpaceAtLeastOneMetadataFilter extends DSpaceFilter
         {
             try
             {
-                int id = MetadataFieldManager.getFieldID(context,
-                        this.getField());
+                int id = fieldResolver.getFieldID(context, this.getField());
                 return this.getWhere(id, this.getValues());
             }
             catch (InvalidMetadataFieldException ex)

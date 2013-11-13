@@ -13,13 +13,11 @@ import com.lyncode.xoai.dataprovider.data.AbstractIdentify;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
-import org.dspace.storage.rdbms.DatabaseManager;
-import org.dspace.storage.rdbms.TableRowIterator;
 import org.dspace.xoai.exceptions.InvalidMetadataFieldException;
-import org.dspace.xoai.util.DateUtils;
-import org.dspace.xoai.util.MetadataFieldManager;
+import org.dspace.xoai.services.api.config.ConfigurationService;
+import org.dspace.xoai.services.api.database.EarliestDateResolver;
+import org.dspace.xoai.services.api.database.FieldResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -38,48 +36,50 @@ public class DSpaceIdentify extends AbstractIdentify
 {
     private static Logger log = LogManager.getLogger(DSpaceIdentify.class);
 
-    private static List<String> _emails = null;
+    private List<String> emails = null;
+    private String name = null;
+    private String baseUrl = null;
+    private Context context;
+    private HttpServletRequest request;
+    private EarliestDateResolver dateResolver;
+    private FieldResolver fieldResolver;
+    private ConfigurationService configurationService;
 
-    private static String _name = null;
-
-    private static String _baseUrl = null;
-
-    private Context _context;
-
-    private HttpServletRequest _request;
-
-    public DSpaceIdentify(Context context, HttpServletRequest request)
+    public DSpaceIdentify(EarliestDateResolver dateResolver, FieldResolver fieldResolver, ConfigurationService configurationService, Context context, HttpServletRequest request)
     {
-        _context = context;
-        _request = request;
+        this.dateResolver = dateResolver;
+        this.fieldResolver = fieldResolver;
+        this.configurationService = configurationService;
+        this.context = context;
+        this.request = request;
     }
 
     @Override
     public List<String> getAdminEmails()
     {
-        if (_emails == null)
+        if (emails == null)
         {
-            _emails = new ArrayList<String>();
-            String result = ConfigurationManager.getProperty("mail.admin");
+            emails = new ArrayList<String>();
+            String result = configurationService.getProperty("mail.admin");
             if (result == null)
             {
                 log.warn("{ OAI 2.0 :: DSpace } Not able to retrieve the mail.admin property from the configuration file");
             }
             else
-                _emails.add(result);
+                emails.add(result);
         }
-        return _emails;
+        return emails;
     }
 
     @Override
     public String getBaseUrl()
     {
-        if (_baseUrl == null)
+        if (baseUrl == null)
         {
-            _baseUrl = _request.getRequestURL().toString()
-                    .replace(_request.getPathInfo(), "");
+            baseUrl = request.getRequestURL().toString()
+                    .replace(request.getPathInfo(), "");
         }
-        return _baseUrl + _request.getPathInfo();
+        return baseUrl + request.getPathInfo();
     }
 
     @Override
@@ -94,37 +94,7 @@ public class DSpaceIdentify extends AbstractIdentify
         // Look at the database!
         try
         {
-            String query = "SELECT MIN(text_value) as value FROM metadatavalue WHERE metadata_field_id = ?";
-            String db = ConfigurationManager.getProperty("db.name");
-            boolean postgres = true;
-            // Assuming Postgres as default
-            if ("oracle".equals(db))
-                postgres = false;
-            
-            if (!postgres) {
-            	query = "SELECT MIN(TO_CHAR(text_value)) as value FROM metadatavalue WHERE metadata_field_id = ?";
-            }
-        	
-            TableRowIterator iterator = DatabaseManager
-                    .query(_context,
-                            query,
-                            MetadataFieldManager.getFieldID(_context,
-                                    "dc.date.available"));
-
-            if (iterator.hasNext())
-            {
-                String str = iterator.next().getStringColumn("value");
-                try
-                {
-                    Date d = DateUtils.parse(str);
-                    if (d != null)
-                        return d;
-                }
-                catch (Exception e)
-                {
-                    log.error(e.getMessage(), e);
-                }
-            }
+            return dateResolver.getEarliestDate(context);
         }
         catch (SQLException e)
         {
@@ -146,29 +116,29 @@ public class DSpaceIdentify extends AbstractIdentify
     @Override
     public String getRepositoryName()
     {
-        if (_name == null)
+        if (name == null)
         {
-            _name = ConfigurationManager.getProperty("dspace.name");
-            if (_name == null)
+            name = configurationService.getProperty("dspace.name");
+            if (name == null)
             {
                 log.warn("{ OAI 2.0 :: DSpace } Not able to retrieve the dspace.name property from the configuration file");
-                _name = "OAI Repository";
+                name = "OAI Repository";
             }
         }
-        return _name;
+        return name;
     }
 
 	@Override
 	public List<String> getDescription() {
 		List<String> result = new ArrayList<String>();
-		String descriptionFile = ConfigurationManager.getProperty("oai", "description.file");
+		String descriptionFile = configurationService.getProperty("oai", "description.file");
 		if (descriptionFile == null) {
 			// Try indexed
 			boolean stop = false;
 			List<String> descriptionFiles = new ArrayList<String>();
 			for (int i=0;!stop;i++) {
-				String tmp = ConfigurationManager.getProperty("oai", "description.file."+i);
-				if (tmp == null && i!=0) stop = true;
+				String tmp = configurationService.getProperty("oai", "description.file."+i);
+				if (tmp == null) stop = true;
 				else descriptionFiles.add(tmp);
 			}
 			

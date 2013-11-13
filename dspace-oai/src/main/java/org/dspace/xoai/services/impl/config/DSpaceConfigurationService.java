@@ -5,6 +5,11 @@ import org.dspace.xoai.services.api.config.ConfigurationService;
 
 public class DSpaceConfigurationService implements ConfigurationService {
     @Override
+    public String getProperty(String key) {
+        return ConfigurationManager.getProperty(key);
+    }
+
+    @Override
     public String getProperty(String module, String key)  {
         return ConfigurationManager.getProperty(module, key);
     }

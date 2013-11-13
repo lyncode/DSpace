@@ -16,10 +16,8 @@ import org.apache.log4j.Logger;
 import org.dspace.core.Context;
 import org.dspace.xoai.data.DSpaceItem;
 import org.dspace.xoai.exceptions.InvalidMetadataFieldException;
-import org.dspace.xoai.filter.DSpaceFilter;
-import org.dspace.xoai.filter.DatabaseFilterResult;
-import org.dspace.xoai.filter.SolrFilterResult;
-import org.dspace.xoai.util.MetadataFieldManager;
+import org.dspace.xoai.services.api.database.FieldResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This filter allows one to retrieve (from the data source) those items 
@@ -36,20 +34,22 @@ public class DSpaceMetadataExistsFilter extends DSpaceFilter
     private static Logger log = LogManager
             .getLogger(DSpaceMetadataExistsFilter.class);
 
-    private List<String> _fields;
+    @Autowired
+    FieldResolver fieldResolver;
+    private List<String> fields;
 
     private List<String> getFields()
     {
-        if (this._fields == null)
+        if (this.fields == null)
         {
-            this._fields = super.getParameters("fields");
+            this.fields = super.getParameters("fields");
 
             //backwards compatibility check for field parameter
-            if (this._fields.isEmpty())
-                this._fields = super.getParameters("field");
+            if (this.fields.isEmpty())
+                this.fields = super.getParameters("field");
 
         }
-        return _fields;
+        return fields;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DSpaceMetadataExistsFilter extends DSpaceFilter
         	where.append("(");
         	for (int i = 0; i < fields.size(); i++) {
         		where.append("EXISTS (SELECT tmp.* FROM metadatavalue tmp WHERE tmp.item_id=i.item_id AND tmp.metadata_field_id=?)");
-        		args.add(MetadataFieldManager.getFieldID(context, fields.get(i)));
+        		args.add(fieldResolver.getFieldID(context, fields.get(i)));
         		
         		if (i < fields.size() -1 )
 					where.append(" OR ") ;

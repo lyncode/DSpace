@@ -4,7 +4,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.dspace.xoai.services.api.config.ConfigurationService;
 import org.dspace.xoai.services.api.solr.SolrServerResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +25,8 @@ public class DSpaceSolrServerResolver implements SolrServerResolver {
         {
             try
             {
-                server = new CommonsHttpSolrServer(configurationService.getProperty("oai", "solr.url"));
+                server = new HttpSolrServer(configurationService.getProperty("oai", "solr.url"));
                 log.debug("Solr Server Initialized");
-            }
-            catch (MalformedURLException e)
-            {
-                throw new SolrServerException(e);
             }
             catch (Exception e)
             {

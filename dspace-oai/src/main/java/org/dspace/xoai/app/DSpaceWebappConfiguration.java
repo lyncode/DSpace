@@ -1,8 +1,8 @@
 package org.dspace.xoai.app;
 
 import com.lyncode.jtwig.mvc.JtwigViewResolver;
-import org.dspace.xoai.services.api.config.XOAIItemRepositoryResolver;
-import org.dspace.xoai.services.impl.config.DSpaceXOAIItemRepositoryResolver;
+import org.dspace.xoai.services.api.config.ItemRepositoryResolver;
+import org.dspace.xoai.services.impl.config.DSpaceItemRepositoryResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -47,8 +47,8 @@ public class DSpaceWebappConfiguration extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
     @Bean
-    public XOAIItemRepositoryResolver xoaiItemRepositoryResolver() {
-        return new DSpaceXOAIItemRepositoryResolver();
+    public ItemRepositoryResolver xoaiItemRepositoryResolver() {
+        return new DSpaceItemRepositoryResolver();
     }
 
 }
