@@ -1,8 +1,8 @@
 package org.dspace.xoai.app;
 
 import com.lyncode.jtwig.mvc.JtwigViewResolver;
-import org.dspace.xoai.services.api.config.ItemRepositoryResolver;
-import org.dspace.xoai.services.impl.config.DSpaceItemRepositoryResolver;
+import org.dspace.xoai.services.api.xoai.ItemRepositoryResolver;
+import org.dspace.xoai.services.impl.xoai.DSpaceItemRepositoryResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

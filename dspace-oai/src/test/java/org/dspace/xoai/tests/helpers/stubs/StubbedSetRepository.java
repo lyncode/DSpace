@@ -3,8 +3,7 @@ package org.dspace.xoai.tests.helpers.stubs;
 
 import com.lyncode.xoai.dataprovider.core.ListSetsResult;
 import com.lyncode.xoai.dataprovider.core.Set;
-import com.lyncode.xoai.dataprovider.data.AbstractSetRepository;
-import org.apache.commons.lang.RandomStringUtils;
+import com.lyncode.xoai.dataprovider.services.api.SetRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 import static java.lang.Math.min;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 
-public class StubbedSetRepository extends AbstractSetRepository {
+public class StubbedSetRepository implements SetRepository {
     private List<Set> sets = new ArrayList<Set>();
     private boolean supports = false;
 
@@ -53,5 +52,9 @@ public class StubbedSetRepository extends AbstractSetRepository {
         for (int i=0;i<number;i++)
             this.sets.add(new Set(randomAlphabetic(10), randomAlphabetic(10)));
         return this;
+    }
+
+    public void clear() {
+        this.sets.clear();
     }
 }

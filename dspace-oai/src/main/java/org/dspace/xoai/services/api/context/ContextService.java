@@ -5,5 +5,5 @@ import org.dspace.core.Context;
 import javax.servlet.http.HttpServletRequest;
 
 public interface ContextService {
-    Context getContext(HttpServletRequest request) throws ContextServiceException;
+    Context getContext() throws ContextServiceException;
 }

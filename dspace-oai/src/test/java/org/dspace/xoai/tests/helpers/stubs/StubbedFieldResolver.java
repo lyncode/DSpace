@@ -13,6 +13,13 @@ public class StubbedFieldResolver implements FieldResolver {
 
     @Override
     public int getFieldID(Context context, String field) throws InvalidMetadataFieldException, SQLException {
-        return fieldsMap.get(field);
+        Integer integer = fieldsMap.get(field);
+        if (integer == null) return -1;
+        return integer;
+    }
+
+    public StubbedFieldResolver hasField(String field, int id) {
+        fieldsMap.put(field, id);
+        return this;
     }
 }

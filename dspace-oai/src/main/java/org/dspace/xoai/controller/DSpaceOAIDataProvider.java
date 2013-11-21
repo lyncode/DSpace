@@ -13,19 +13,16 @@ import com.lyncode.xoai.dataprovider.core.XOAIManager;
 import com.lyncode.xoai.dataprovider.exceptions.InvalidContextException;
 import com.lyncode.xoai.dataprovider.exceptions.OAIException;
 import com.lyncode.xoai.dataprovider.exceptions.WritingXmlException;
-import com.lyncode.xoai.dataprovider.filter.conditions.AbstractCondition;
 import org.apache.log4j.Logger;
 import org.dspace.core.Context;
-import org.dspace.xoai.data.DSpaceResumptionTokenFormat;
-import org.dspace.xoai.data.DSpaceSetRepository;
-import org.dspace.xoai.filter.DSpaceFilter;
+import org.dspace.xoai.services.impl.xoai.DSpaceResumptionTokenFormatter;
 import org.dspace.xoai.services.api.cache.XOAICacheService;
-import org.dspace.xoai.services.api.config.ItemRepositoryResolver;
 import org.dspace.xoai.services.api.config.XOAIManagerResolver;
 import org.dspace.xoai.services.api.config.XOAIManagerResolverException;
 import org.dspace.xoai.services.api.context.ContextService;
 import org.dspace.xoai.services.api.context.ContextServiceException;
 import org.dspace.xoai.services.api.xoai.IdentifyResolver;
+import org.dspace.xoai.services.api.xoai.ItemRepositoryResolver;
 import org.dspace.xoai.services.api.xoai.SetRepositoryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,7 +61,7 @@ public class DSpaceOAIDataProvider
     @Autowired IdentifyResolver identifyResolver;
     @Autowired SetRepositoryResolver setRepositoryResolver;
 
-    private DSpaceResumptionTokenFormat resumptionTokenFormat = new DSpaceResumptionTokenFormat();
+    private DSpaceResumptionTokenFormatter resumptionTokenFormat = new DSpaceResumptionTokenFormatter();
 
     @RequestMapping("/")
     public String indexAction (HttpServletResponse response, Model model) throws ServletException {
@@ -84,18 +81,14 @@ public class DSpaceOAIDataProvider
         Context context = null;
         try {
             request.setCharacterEncoding("UTF-8");
-            context = contextService.getContext(request);
+            context = contextService.getContext();
 
             XOAIManager manager = xoaiManagerResolver.getManager();
 
-            for (AbstractCondition filter : manager.getFilterManager().getConditions())
-                if (filter instanceof DSpaceFilter)
-                    ((DSpaceFilter) filter).initialize(context);
-
             OAIDataProvider dataProvider = new OAIDataProvider(manager, xoaiContext,
-                    identifyResolver.getIdentify(request),
-                    setRepositoryResolver.getSetRepository(request),
-                    itemRepositoryResolver.getItemRepository(request),
+                    identifyResolver.getIdentify(),
+                    setRepositoryResolver.getSetRepository(),
+                    itemRepositoryResolver.getItemRepository(),
                     resumptionTokenFormat);
 
             OutputStream out = response.getOutputStream();

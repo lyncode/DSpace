@@ -38,11 +38,11 @@ import org.dspace.xoai.services.api.cache.XOAILastCompilationCacheService;
 import org.dspace.xoai.services.api.config.ConfigurationService;
 import org.dspace.xoai.services.api.config.XOAIManagerResolver;
 import org.dspace.xoai.services.api.context.ContextService;
+import org.dspace.xoai.services.api.database.CollectionsService;
 import org.dspace.xoai.services.api.solr.SolrServerResolver;
 import org.dspace.xoai.solr.DSpaceSolrSearch;
 import org.dspace.xoai.solr.exceptions.DSpaceSolrException;
 import org.dspace.xoai.solr.exceptions.DSpaceSolrIndexerException;
-import org.dspace.xoai.util.XOAIDatabaseManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -85,6 +85,8 @@ public class XOAI {
     private XOAICacheService xoaiCacheService;
     @Autowired
     private XOAIItemCacheService xoaiItemCacheService;
+    @Autowired
+    private CollectionsService collectionsService;
 
 
     private static List<String> getFileFormats(Item item) {
@@ -166,9 +168,9 @@ public class XOAI {
                 .println("Incremental import. Searching for documents modified after: "
                         + last.toString());
 
-        String sqlQuery = "SELECT item_id FROM item WHERE in_archive=TRUE AND last_modified > ?";
-        if (DatabaseManager.isOracle()) {
-            sqlQuery = "SELECT item_id FROM item WHERE in_archive=1 AND last_modified > ?";
+        String sqlQuery = "SELECT item_id FROM item WHERE in_archive=TRUE AND discoverable=TRUE AND last_modified > ?";
+        if(DatabaseManager.isOracle()){
+                sqlQuery = "SELECT item_id FROM item WHERE in_archive=1 AND discoverable=1 AND last_modified > ?";
         }
 
         try {
@@ -186,9 +188,9 @@ public class XOAI {
         System.out.println("Full import");
         try {
 
-            String sqlQuery = "SELECT item_id FROM item WHERE in_archive=TRUE";
-            if (DatabaseManager.isOracle()) {
-                sqlQuery = "SELECT item_id FROM item WHERE in_archive=1";
+            String sqlQuery = "SELECT item_id FROM item WHERE in_archive=TRUE AND discoverable=TRUE";
+            if(DatabaseManager.isOracle()){
+                sqlQuery = "SELECT item_id FROM item WHERE in_archive=1 AND discoverable=1";
             }
 
             TableRowIterator iterator = DatabaseManager.query(context,
@@ -247,7 +249,7 @@ public class XOAI {
         for (Collection col : item.getCollections())
             doc.addField("item.collections",
                     "col_" + col.getHandle().replace("/", "_"));
-        for (Community com : XOAIDatabaseManager.flatParentCommunities(item))
+        for (Community com : collectionsService.flatParentCommunities(item))
             doc.addField("item.communities",
                     "com_" + com.getHandle().replace("/", "_"));
 

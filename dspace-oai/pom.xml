@@ -9,7 +9,7 @@
     <parent>
         <artifactId>dspace-parent</artifactId>
         <groupId>org.dspace</groupId>
-        <version>4.0-SNAPSHOT</version>
+        <version>4.0-rc2-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -17,9 +17,8 @@
         <!-- This is the path to the root [dspace-src] directory. -->
         <root.basedir>${basedir}/..</root.basedir>
         <spring.version>3.2.3.RELEASE</spring.version>
-        <xoai.version>3.1.1-SNAPSHOT</xoai.version>
+        <xoai.version>3.2.2</xoai.version>
         <jtwig.version>1.0.1</jtwig.version>
-        <solr.version>4.5.1</solr.version>
     </properties>
 
     <build>
@@ -115,12 +114,6 @@
         <dependency>
             <groupId>org.dspace</groupId>
             <artifactId>dspace-api</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.lucene</groupId>
-                    <artifactId>lucene-analyzers</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Solr (Datasource) -->
@@ -137,7 +130,7 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>${solr.version}</version>
+            <version>${lucene.version}</version>
         </dependency>
 
         <!-- Web API -->

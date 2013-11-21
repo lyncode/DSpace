@@ -13,6 +13,8 @@ import com.lyncode.xoai.dataprovider.services.impl.BaseDateProvider;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.dspace.core.Context;
 import org.dspace.xoai.data.DSpaceItem;
+import org.dspace.xoai.filter.results.DatabaseFilterResult;
+import org.dspace.xoai.filter.results.SolrFilterResult;
 
 import java.util.Date;
 
@@ -31,7 +33,7 @@ public class DateUntilFilter extends DSpaceFilter
     }
 
     @Override
-    public DatabaseFilterResult getWhere(Context context)
+    public DatabaseFilterResult buildDatabaseQuery(Context context)
     {
         return new DatabaseFilterResult("i.last_modified <= ?", new java.sql.Date(date.getTime()));
     }
@@ -45,7 +47,7 @@ public class DateUntilFilter extends DSpaceFilter
     }
 
     @Override
-    public SolrFilterResult getQuery()
+    public SolrFilterResult buildSolrQuery()
     {
         String format = dateProvider.format(date).replace("Z", ".999Z"); // Tweak to set the millisecon
         return new SolrFilterResult("item.lastmodified:[* TO "
