@@ -7,17 +7,9 @@
  */
 package org.dspace.app.webui.util;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
-import org.dspace.content.DCValue;
-import org.dspace.content.InProgressSubmission;
-import org.dspace.content.Item;
-import org.dspace.content.MetadataSchema;
-import org.dspace.content.WorkspaceItem;
+import org.dspace.content.*;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.utils.DSpace;
@@ -25,6 +17,10 @@ import org.dspace.versioning.Version;
 import org.dspace.versioning.VersionHistory;
 import org.dspace.versioning.VersioningService;
 import org.dspace.workflow.WorkflowItem;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Item level versioning feature utility method

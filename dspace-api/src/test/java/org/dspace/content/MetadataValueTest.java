@@ -7,16 +7,18 @@
  */
 package org.dspace.content;
 
+import org.apache.log4j.Logger;
+import org.dspace.AbstractUnitTest;
+import org.dspace.authorize.AuthorizeException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.List;
 
-import org.dspace.AbstractUnitTest;
-import org.apache.log4j.Logger;
-import org.dspace.authorize.AuthorizeException;
-import org.junit.*;
-import static org.junit.Assert.* ;
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Unit Tests for class MetadataValue

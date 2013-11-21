@@ -7,18 +7,16 @@
  */
 package org.dspace.app.webui.json;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.google.gson.Gson;
 import org.dspace.app.webui.util.FileUploadListener;
 import org.dspace.app.webui.util.FileUploadRequest;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.core.Context;
 
-import com.google.gson.Gson;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 public class UploadProgressJSON extends JSONRequest
 {

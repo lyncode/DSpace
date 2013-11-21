@@ -8,17 +8,11 @@
 
 package org.dspace.submit.lookup;
 
-import gr.ekt.bte.core.AbstractModifier;
-import gr.ekt.bte.core.MutableRecord;
-import gr.ekt.bte.core.Record;
-
-import gr.ekt.bte.core.StringValue;
-import gr.ekt.bte.core.Value;
+import gr.ekt.bte.core.*;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Andrea Bollini

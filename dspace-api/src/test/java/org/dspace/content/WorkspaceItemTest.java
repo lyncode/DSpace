@@ -7,19 +7,23 @@
  */
 package org.dspace.content;
 
-import org.dspace.core.Constants;
-import org.dspace.authorize.AuthorizeManager;
 import mockit.NonStrictExpectations;
-import java.io.IOException;
-import java.sql.SQLException;
+import org.apache.log4j.Logger;
+import org.dspace.AbstractUnitTest;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
+import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
-import org.dspace.AbstractUnitTest;
-import org.apache.log4j.Logger;
-import org.junit.*;
-import static org.junit.Assert.* ;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Unit Tests for class WorkspaceItem

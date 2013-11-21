@@ -10,16 +10,11 @@ package org.dspace.submit.util;
 import gr.ekt.bte.core.MutableRecord;
 import gr.ekt.bte.core.StringValue;
 import gr.ekt.bte.core.Value;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.dspace.submit.lookup.SubmissionLookupDataLoader;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * @author Andrea Bollini

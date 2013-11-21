@@ -7,27 +7,28 @@
  */
 package org.dspace.content;
 
-import java.util.Iterator;
+import mockit.NonStrictExpectations;
+import org.apache.log4j.Logger;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
+import org.dspace.authorize.ResourcePolicy;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
-import org.dspace.authorize.AuthorizeManager;
-import mockit.NonStrictExpectations;
-import java.io.FileInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import org.apache.log4j.Logger;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.authorize.ResourcePolicy;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Units tests for class Bundle

@@ -8,11 +8,11 @@
 package org.dspace.browse;
 
 import org.apache.log4j.Logger;
-import org.dspace.content.Community;
 import org.dspace.content.Collection;
-import org.dspace.core.Context;
+import org.dspace.content.Community;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Context;
 
 import java.sql.SQLException;
 

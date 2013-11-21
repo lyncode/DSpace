@@ -7,23 +7,13 @@
  */
 package org.dspace.submit.lookup;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import gr.ekt.bte.core.*;
+import gr.ekt.bte.dataloader.FileDataLoader;
+import gr.ekt.bte.exceptions.MalformedSourceException;
 import org.apache.log4j.Logger;
 import org.dspace.core.Context;
 
-import gr.ekt.bte.core.DataLoader;
-import gr.ekt.bte.core.DataLoadingSpec;
-import gr.ekt.bte.core.Record;
-import gr.ekt.bte.core.RecordSet;
-import gr.ekt.bte.core.StringValue;
-import gr.ekt.bte.dataloader.FileDataLoader;
-import gr.ekt.bte.exceptions.MalformedSourceException;
+import java.util.*;
 
 /**
  * @author Andrea Bollini

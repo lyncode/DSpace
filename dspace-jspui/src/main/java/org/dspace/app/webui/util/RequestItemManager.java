@@ -14,10 +14,6 @@
 
 package org.dspace.app.webui.util;
 
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.dspace.app.webui.servlet.RequestItemServlet;
 import org.dspace.authorize.AuthorizeManager;
@@ -29,6 +25,10 @@ import org.dspace.core.Context;
 import org.dspace.core.Utils;
 import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRow;
+
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 
 /**
  *

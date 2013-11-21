@@ -7,10 +7,10 @@
  */
 package org.dspace.app.sherpa.submit;
 
-import java.util.List;
-
 import org.dspace.content.Item;
 import org.dspace.core.Context;
+
+import java.util.List;
 
 public interface ISSNItemExtractor
 {

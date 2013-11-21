@@ -7,16 +7,15 @@
  */
 package org.dspace.app.webui.jsptag;
 
-import java.io.IOException;
+import org.apache.commons.lang.ArrayUtils;
+import org.dspace.eperson.Group;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.jstl.fmt.LocaleSupport;
 import javax.servlet.jsp.tagext.TagSupport;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.dspace.eperson.Group;
+import java.io.IOException;
 
 /**
  * <P>Tag for producing an e-person select widget in a form.  Somewhat

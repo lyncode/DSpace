@@ -7,10 +7,10 @@
  */
 package org.dspace.search;
 
-import java.io.Reader;
-
 import org.apache.lucene.analysis.util.CharTokenizer;
 import org.apache.lucene.util.Version;
+
+import java.io.Reader;
 
 /**
  * Customized Lucene Tokenizer, since the standard one rejects numbers from

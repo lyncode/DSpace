@@ -7,23 +7,19 @@
  */
 package org.dspace.browse;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.Context;
-import org.dspace.discovery.DiscoverFacetField;
-import org.dspace.discovery.DiscoverQuery;
-import org.dspace.discovery.DiscoverResult;
+import org.dspace.discovery.*;
 import org.dspace.discovery.DiscoverResult.FacetResult;
-import org.dspace.discovery.SearchService;
-import org.dspace.discovery.SearchServiceException;
 import org.dspace.discovery.configuration.DiscoveryConfigurationParameters;
 import org.dspace.utils.DSpace;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Discovery (Solr) driver implementing ItemCountDAO interface to look up item

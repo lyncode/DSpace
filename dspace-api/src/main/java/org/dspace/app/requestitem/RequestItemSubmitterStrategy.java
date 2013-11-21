@@ -7,11 +7,11 @@
  */
 package org.dspace.app.requestitem;
 
-import java.sql.SQLException;
-
 import org.dspace.content.Item;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
+
+import java.sql.SQLException;
 
 /**
  * Basic strategy that looks to the original submitter.

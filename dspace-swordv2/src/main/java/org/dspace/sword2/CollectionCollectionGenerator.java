@@ -8,14 +8,13 @@
 package org.dspace.sword2;
 
 import org.apache.abdera.i18n.iri.IRI;
+import org.apache.log4j.Logger;
 import org.dspace.content.Collection;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.ConfigurationManager;
-import org.apache.log4j.Logger;
 import org.dspace.core.Context;
 import org.swordapp.server.SwordCollection;
 
-import java.util.Map;
 import java.util.List;
 
 /**

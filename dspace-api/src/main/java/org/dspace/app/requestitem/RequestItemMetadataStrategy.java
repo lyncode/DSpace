@@ -7,13 +7,13 @@
  */
 package org.dspace.app.requestitem;
 
-import java.sql.SQLException;
-
 import org.apache.commons.lang.StringUtils;
 import org.dspace.content.DCValue;
 import org.dspace.content.Item;
 import org.dspace.core.Context;
 import org.dspace.core.I18nUtil;
+
+import java.sql.SQLException;
 
 /**
  * Try to look to an item metadata for the corresponding author name and email.

@@ -7,17 +7,6 @@
  */
 package org.dspace.app.webui.servlet.admin;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Locale;
-
-import javax.mail.MessagingException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.jstl.core.Config;
-
 import org.apache.log4j.Logger;
 import org.dspace.app.webui.servlet.DSpaceServlet;
 import org.dspace.app.webui.util.Authenticate;
@@ -34,6 +23,16 @@ import org.dspace.eperson.AccountManager;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.EPersonDeletionException;
 import org.dspace.eperson.Group;
+
+import javax.mail.MessagingException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.jstl.core.Config;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Locale;
 
 /**
  * Servlet for editing and creating e-people

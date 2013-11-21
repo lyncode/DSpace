@@ -7,15 +7,19 @@
  */
 package org.dspace.content;
 
-import org.dspace.authorize.AuthorizeManager;
 import mockit.NonStrictExpectations;
-import java.sql.SQLException;
-import org.dspace.AbstractUnitTest;
 import org.apache.log4j.Logger;
+import org.dspace.AbstractUnitTest;
 import org.dspace.authorize.AuthorizeException;
-import org.junit.*;
-import static org.junit.Assert.* ;
+import org.dspace.authorize.AuthorizeManager;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.sql.SQLException;
+
 import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Unit Tests for class MetadataFieldTest

@@ -23,11 +23,13 @@ import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
-import org.dspace.app.xmlui.wing.element.*;
+import org.dspace.app.xmlui.wing.element.Body;
+import org.dspace.app.xmlui.wing.element.Division;
+import org.dspace.app.xmlui.wing.element.Hidden;
+import org.dspace.app.xmlui.wing.element.Select;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.*;
 import org.dspace.content.Collection;
-import org.dspace.content.Item;
+import org.dspace.content.*;
 import org.dspace.core.Constants;
 import org.dspace.core.LogManager;
 import org.dspace.discovery.*;
@@ -42,7 +44,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.List;
 
 /**
  * This is an abstract search page. It is a collection of search methods that

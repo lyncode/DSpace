@@ -7,24 +7,14 @@
  */
 package org.dspace.submit.lookup;
 
+import gr.ekt.bte.core.*;
+import org.apache.commons.lang.StringUtils;
+import org.dspace.services.ConfigurationService;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import org.apache.commons.lang.StringUtils;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.services.ConfigurationService;
-
-import gr.ekt.bte.core.AbstractModifier;
-import gr.ekt.bte.core.MutableRecord;
-import gr.ekt.bte.core.Record;
-import gr.ekt.bte.core.StringValue;
-import gr.ekt.bte.core.Value;
+import java.util.*;
 
 /**
  * @author Andrea Bollini

@@ -7,14 +7,7 @@
  */
 package org.dspace.sword2;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-
 import org.apache.log4j.Logger;
-
-import org.dspace.content.Bitstream;
-import org.dspace.content.BitstreamFormat;
-import org.dspace.content.Bundle;
 import org.dspace.content.Collection;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
@@ -26,11 +19,12 @@ import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.core.PluginManager;
 import org.dspace.handle.HandleManager;
-
 import org.swordapp.server.Deposit;
 import org.swordapp.server.SwordAuthException;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.SwordServerException;
+
+import java.io.File;
 
 public class SwordMETSContentIngester extends AbstractSwordContentIngester
 {

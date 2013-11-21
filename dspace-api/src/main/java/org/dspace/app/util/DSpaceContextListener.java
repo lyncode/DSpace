@@ -7,13 +7,12 @@
  */
 package org.dspace.app.util;
 
+import org.apache.log4j.Logger;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.storage.rdbms.DatabaseManager;
-import org.apache.log4j.Logger;
 
-import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
-
+import javax.servlet.ServletContextListener;
 import java.beans.Introspector;
 import java.net.URL;
 import java.net.URLConnection;

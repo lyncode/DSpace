@@ -7,19 +7,18 @@
  */
 package org.dspace.app.webui.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.dspace.core.ConfigurationManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.dspace.core.ConfigurationManager;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Based on the com.oreilly.servlet.MultipartWrapper object, this is an HTTP

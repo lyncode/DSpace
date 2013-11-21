@@ -8,27 +8,11 @@
 
 package org.dspace.identifier.doi;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.Locale;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
+import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.Constants;
-import org.dspace.core.Context;
-import org.dspace.core.Email;
-import org.dspace.core.I18nUtil;
+import org.dspace.core.*;
 import org.dspace.handle.HandleManager;
 import org.dspace.identifier.DOI;
 import org.dspace.identifier.DOIIdentifierProvider;
@@ -37,6 +21,12 @@ import org.dspace.storage.rdbms.DatabaseManager;
 import org.dspace.storage.rdbms.TableRow;
 import org.dspace.storage.rdbms.TableRowIterator;
 import org.dspace.utils.DSpace;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.Locale;
 
 
 /**

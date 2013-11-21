@@ -8,20 +8,14 @@
 package org.dspace.submit.lookup;
 
 import gr.ekt.bte.core.Record;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.httpclient.HttpException;
 import org.dspace.core.Context;
 import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author Andrea Bollini

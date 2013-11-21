@@ -8,8 +8,9 @@
 
 package org.dspace.identifier.ezid;
 
-import java.net.URISyntaxException;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.net.URISyntaxException;
 
 /**
  * Create configured EZID requests.

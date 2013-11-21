@@ -7,17 +7,6 @@
  */
 package org.dspace.content.crosswalk;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Date;
-
-import java.text.SimpleDateFormat;
-import java.util.logging.Level;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
@@ -32,6 +21,13 @@ import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
 import org.jdom.Element;
 import org.jdom.Namespace;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.logging.Level;
 
 /**
  * METSRights Ingestion & Dissemination Crosswalk

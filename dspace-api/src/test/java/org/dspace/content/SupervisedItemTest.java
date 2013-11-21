@@ -7,16 +7,21 @@
  */
 package org.dspace.content;
 
-import org.dspace.eperson.Supervisor;
-import java.io.IOException;
-import java.sql.SQLException;
-import org.dspace.authorize.AuthorizeException;
+import org.apache.log4j.Logger;
 import org.dspace.AbstractUnitTest;
+import org.dspace.authorize.AuthorizeException;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
-import org.junit.*;
-import static org.hamcrest.CoreMatchers.*;
-import org.apache.log4j.Logger;
+import org.dspace.eperson.Supervisor;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 
 /**

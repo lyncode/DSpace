@@ -14,15 +14,7 @@ import org.dspace.content.DSpaceObject;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
-import org.swordapp.server.AuthCredentials;
-import org.swordapp.server.ServiceDocument;
-import org.swordapp.server.ServiceDocumentManager;
-import org.swordapp.server.SwordAuthException;
-import org.swordapp.server.SwordCollection;
-import org.swordapp.server.SwordConfiguration;
-import org.swordapp.server.SwordError;
-import org.swordapp.server.SwordServerException;
-import org.swordapp.server.SwordWorkspace;
+import org.swordapp.server.*;
 
 import java.util.List;
 

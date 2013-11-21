@@ -7,16 +7,15 @@
  */
 package org.dspace.app.webui.jsptag;
 
-import java.io.IOException;
+import org.apache.commons.lang.ArrayUtils;
+import org.dspace.eperson.EPerson;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.jstl.fmt.LocaleSupport;
 import javax.servlet.jsp.tagext.TagSupport;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.dspace.eperson.EPerson;
+import java.io.IOException;
 
 /**
  * <p>

@@ -7,31 +7,32 @@
  */
 package org.dspace.content;
 
+import mockit.NonStrictExpectations;
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.log4j.Logger;
+import org.dspace.app.util.AuthorizeUtil;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
+import org.dspace.authorize.ResourcePolicy;
+import org.dspace.core.Constants;
+import org.dspace.core.Context;
+import org.dspace.eperson.EPerson;
+import org.dspace.eperson.Group;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-
-import org.apache.commons.lang.time.DateUtils;
-import org.dspace.authorize.AuthorizeException;
-import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import org.dspace.core.Context;
-import org.dspace.eperson.EPerson;
-import org.dspace.eperson.Group;
-import org.junit.*;
-import static org.junit.Assert.* ;
+
 import static org.hamcrest.CoreMatchers.*;
-import mockit.*;
-import org.dspace.app.util.AuthorizeUtil;
-import org.dspace.authorize.AuthorizeManager;
-import org.dspace.authorize.ResourcePolicy;
-import org.dspace.content.authority.MetadataAuthorityManager;
-import org.dspace.core.Constants;
+import static org.junit.Assert.*;
 
 /**
  * Unit Tests for class Item

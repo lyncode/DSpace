@@ -7,19 +7,12 @@
  */
 package org.dspace.app.xmlui.aspect.submission.submit;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
-import org.dspace.app.xmlui.utils.UIException;
+import org.dspace.app.util.CollectionDropDown;
 import org.dspace.app.xmlui.aspect.submission.AbstractSubmissionStep;
+import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.Message;
 import org.dspace.app.xmlui.wing.WingException;
-import org.dspace.app.xmlui.wing.element.Body;
-import org.dspace.app.xmlui.wing.element.Button;
-import org.dspace.app.xmlui.wing.element.Division;
-import org.dspace.app.xmlui.wing.element.List;
-import org.dspace.app.xmlui.wing.element.PageMeta;
-import org.dspace.app.xmlui.wing.element.Select;
+import org.dspace.app.xmlui.wing.element.*;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
@@ -28,7 +21,8 @@ import org.dspace.core.Constants;
 import org.dspace.handle.HandleManager;
 import org.xml.sax.SAXException;
 
-import org.dspace.app.util.CollectionDropDown;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Allow the user to select a collection they wish to submit an item to, 

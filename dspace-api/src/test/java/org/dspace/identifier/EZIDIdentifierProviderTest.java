@@ -8,9 +8,6 @@
 
 package org.dspace.identifier;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.UUID;
 import org.dspace.AbstractUnitTest;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.*;
@@ -19,8 +16,10 @@ import org.dspace.kernel.ServiceManager;
 import org.dspace.services.ConfigurationService;
 import org.dspace.workflow.WorkflowItem;
 import org.dspace.workflow.WorkflowManager;
-import org.junit.*;
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  *

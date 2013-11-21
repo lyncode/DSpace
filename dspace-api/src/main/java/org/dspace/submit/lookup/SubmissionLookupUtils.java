@@ -9,18 +9,17 @@ package org.dspace.submit.lookup;
 
 import gr.ekt.bte.core.Record;
 import gr.ekt.bte.core.Value;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
 import org.dspace.content.DCValue;
 import org.dspace.content.Item;
 import org.dspace.content.MetadataSchema;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Andrea Bollini

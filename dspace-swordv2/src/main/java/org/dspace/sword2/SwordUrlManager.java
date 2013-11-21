@@ -8,20 +8,15 @@
 package org.dspace.sword2;
 
 import org.apache.abdera.i18n.iri.IRI;
-import org.dspace.content.Bitstream;
-import org.dspace.content.Bundle;
-import org.dspace.content.Collection;
-import org.dspace.content.Community;
-import org.dspace.content.DSpaceObject;
-import org.dspace.content.Item;
-import org.dspace.handle.HandleManager;
+import org.dspace.content.*;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
+import org.dspace.handle.HandleManager;
 import org.swordapp.server.SwordError;
 
-import java.sql.SQLException;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.SQLException;
 
 /**
  * @author Richard Jones

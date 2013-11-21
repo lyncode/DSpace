@@ -7,29 +7,27 @@
  */
 package org.dspace.app.webui.servlet;
 
-import java.io.*;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
+import org.apache.log4j.Logger;
+import org.dspace.app.itemimport.BTEBatchImportService;
+import org.dspace.app.itemimport.ItemImport;
+import org.dspace.app.webui.util.FileUploadRequest;
+import org.dspace.app.webui.util.JSPManager;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.Collection;
+import org.dspace.core.Context;
+import org.dspace.utils.DSpace;
+import org.elasticsearch.common.collect.Lists;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
-import org.apache.log4j.Logger;
-import org.dspace.app.webui.util.JSPManager;
-import org.dspace.app.webui.util.FileUploadRequest;
-import org.dspace.app.itemimport.BTEBatchImportService;
-import org.dspace.app.itemimport.ItemImport;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.Collection;
-import org.dspace.core.*;
-import org.dspace.utils.DSpace;
-import org.elasticsearch.common.collect.Lists;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Servlet to batch import metadata via the BTE

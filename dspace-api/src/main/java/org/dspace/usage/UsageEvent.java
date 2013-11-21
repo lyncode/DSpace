@@ -7,12 +7,12 @@
  */
 package org.dspace.usage;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.services.model.Event;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 

@@ -7,13 +7,14 @@
  */
 package org.dspace.app.util;
 
+import org.dspace.services.ConfigurationService;
+import org.dspace.utils.DSpace;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import org.dspace.services.ConfigurationService;
-import org.dspace.utils.DSpace;
 
 /**
  * Display information about this DSpace, its environment, and how it was built.

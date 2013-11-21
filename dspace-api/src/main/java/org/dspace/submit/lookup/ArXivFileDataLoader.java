@@ -8,18 +8,12 @@
 
 package org.dspace.submit.lookup;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import gr.ekt.bte.core.DataLoadingSpec;
+import gr.ekt.bte.core.Record;
+import gr.ekt.bte.core.RecordSet;
+import gr.ekt.bte.core.Value;
+import gr.ekt.bte.dataloader.FileDataLoader;
+import gr.ekt.bte.exceptions.MalformedSourceException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.app.util.XMLUtils;
@@ -27,12 +21,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import gr.ekt.bte.core.DataLoadingSpec;
-import gr.ekt.bte.core.Record;
-import gr.ekt.bte.core.RecordSet;
-import gr.ekt.bte.core.Value;
-import gr.ekt.bte.dataloader.FileDataLoader;
-import gr.ekt.bte.exceptions.MalformedSourceException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Andrea Bollini

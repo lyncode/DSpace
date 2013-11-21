@@ -7,9 +7,6 @@
  */
 package org.dspace.app.xmlui.aspect.discovery;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import org.dspace.app.xmlui.utils.HandleUtil;
 import org.dspace.app.xmlui.utils.UIException;
 import org.dspace.app.xmlui.wing.Message;
@@ -21,6 +18,9 @@ import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Community;
 import org.dspace.content.DSpaceObject;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Renders a list of recently submitted items for the community by using discovery

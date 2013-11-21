@@ -7,25 +7,24 @@
  */
 package org.dspace.app.webui.util;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.Locale;
+import org.apache.log4j.Logger;
+import org.dspace.authenticate.AuthenticationManager;
+import org.dspace.authenticate.AuthenticationMethod;
+import org.dspace.authorize.AuthorizeManager;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Context;
+import org.dspace.core.LogManager;
+import org.dspace.eperson.EPerson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
-
-import org.apache.log4j.Logger;
-import org.dspace.authenticate.AuthenticationManager;
-import org.dspace.authenticate.AuthenticationMethod;
-import org.dspace.authorize.AuthorizeManager;
-import org.dspace.core.Context;
-import org.dspace.core.LogManager;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.eperson.EPerson;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Methods for authenticating the user. This is DSpace platform code, as opposed

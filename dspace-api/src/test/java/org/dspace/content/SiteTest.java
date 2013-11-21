@@ -7,13 +7,18 @@
  */
 package org.dspace.content;
 
+import org.apache.log4j.Logger;
 import org.dspace.AbstractUnitTest;
 import org.dspace.core.ConfigurationManager;
-import java.sql.SQLException;
 import org.dspace.core.Constants;
-import org.junit.*;
-import static org.hamcrest.CoreMatchers.*;
-import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.sql.SQLException;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 
 /**

@@ -7,14 +7,19 @@
  */
 package org.dspace.content;
 
+import org.apache.log4j.Logger;
+import org.dspace.AbstractUnitTest;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import org.junit.*;
-import static org.junit.Assert.* ;
-import org.apache.log4j.Logger;
-import org.dspace.AbstractUnitTest;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Unit Test for class Thumbnail. The class is a bean (just getters and setters)

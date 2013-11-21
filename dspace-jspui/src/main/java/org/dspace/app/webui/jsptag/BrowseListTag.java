@@ -12,18 +12,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.app.webui.util.UIUtil;
 import org.dspace.browse.*;
-import org.dspace.content.Bitstream;
-import org.dspace.content.DCDate;
-import org.dspace.content.DCValue;
-import org.dspace.content.Item;
-import org.dspace.content.Thumbnail;
+import org.dspace.content.*;
+import org.dspace.content.authority.MetadataAuthorityManager;
 import org.dspace.content.service.ItemService;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.Utils;
-import org.dspace.storage.bitstore.BitstreamStorageManager;
 import org.dspace.sort.SortOption;
+import org.dspace.storage.bitstore.BitstreamStorageManager;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +35,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
-import org.dspace.content.authority.MetadataAuthorityManager;
 
 /**
  * Tag for display a list of items

@@ -7,27 +7,26 @@
  */
 package org.dspace.sword2;
 
-import org.dspace.core.Context;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.LogManager;
-import org.dspace.core.Constants;
+import org.apache.log4j.Logger;
 import org.dspace.authenticate.AuthenticationManager;
 import org.dspace.authenticate.AuthenticationMethod;
-import org.dspace.eperson.EPerson;
-import org.dspace.eperson.Group;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.*;
-import org.apache.log4j.Logger;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Constants;
+import org.dspace.core.Context;
+import org.dspace.core.LogManager;
+import org.dspace.eperson.EPerson;
+import org.dspace.eperson.Group;
 import org.swordapp.server.AuthCredentials;
-import org.swordapp.server.Deposit;
 import org.swordapp.server.SwordAuthException;
 import org.swordapp.server.SwordError;
 import org.swordapp.server.UriRegistry;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class offers a thin wrapper for the default DSpace

@@ -7,16 +7,12 @@
  */
 package org.dspace.app.xmlui.objectmanager;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.sql.SQLException;
-
 import org.apache.log4j.Logger;
 import org.dspace.app.xmlui.wing.AttributeMap;
 import org.dspace.app.xmlui.wing.WingException;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.browse.ItemCounter;
 import org.dspace.browse.ItemCountException;
+import org.dspace.browse.ItemCounter;
 import org.dspace.content.Bitstream;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
@@ -32,6 +28,10 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.SAXOutputter;
 import org.xml.sax.SAXException;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * This is an adapter which translates DSpace containers 

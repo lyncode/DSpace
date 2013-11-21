@@ -7,10 +7,10 @@
  */
 package org.dspace.app.requestitem;
 
-import java.sql.SQLException;
-
 import org.dspace.content.Item;
 import org.dspace.core.Context;
+
+import java.sql.SQLException;
 
 /**
  * Interface to abstract the strategy for select the author to contact for

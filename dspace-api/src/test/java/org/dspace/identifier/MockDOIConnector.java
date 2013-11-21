@@ -7,14 +7,15 @@
  */
 package org.dspace.identifier;
 
-import java.util.HashMap;
-import java.util.Map;
 import mockit.Mock;
 import mockit.MockUp;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.Context;
 import org.dspace.identifier.doi.DOIConnector;
 import org.dspace.identifier.doi.DOIIdentifierException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *

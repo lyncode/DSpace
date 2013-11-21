@@ -7,31 +7,26 @@
  */
 package org.dspace.submit.step;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.HashMap;
-
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
-
 import org.dspace.app.util.SubmissionInfo;
 import org.dspace.app.util.Util;
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.DCValue;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
-import org.dspace.license.CreativeCommons;
 import org.dspace.license.CCLookup;
+import org.dspace.license.CreativeCommons;
 import org.dspace.submit.AbstractProcessingStep;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * CCLicense step for DSpace Submission Process. 

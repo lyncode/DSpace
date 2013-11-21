@@ -7,18 +7,13 @@
  */
 package org.dspace.submit.lookup;
 
-import gr.ekt.bte.core.DataOutputSpec;
-import gr.ekt.bte.core.OutputGenerator;
-import gr.ekt.bte.core.Record;
-import gr.ekt.bte.core.RecordSet;
-import gr.ekt.bte.core.Value;
+import gr.ekt.bte.core.*;
+import org.dspace.submit.util.ItemSubmissionLookupDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.dspace.submit.util.ItemSubmissionLookupDTO;
 
 /**
  * @author Andrea Bollini

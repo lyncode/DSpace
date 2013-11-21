@@ -8,28 +8,16 @@
 package org.dspace.sword2;
 
 import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.Collection;
-import org.dspace.content.DCDate;
-import org.dspace.content.DCValue;
-import org.dspace.content.DSpaceObject;
-import org.dspace.content.Item;
-import org.dspace.content.WorkspaceItem;
+import org.dspace.content.*;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
-import org.swordapp.server.Deposit;
-import org.swordapp.server.SwordAuthException;
-import org.swordapp.server.SwordEntry;
-import org.swordapp.server.SwordError;
-import org.swordapp.server.SwordServerException;
+import org.swordapp.server.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 public class SimpleDCEntryIngester extends AbstractSimpleDC implements SwordEntryIngester
 {

@@ -20,7 +20,6 @@ import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.*;
 import org.dspace.content.Item;
 import org.dspace.core.ConfigurationManager;
-import org.dspace.workflow.WorkflowItem;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;

@@ -31,8 +31,8 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Locale;
 import java.sql.SQLException;
+import java.util.Locale;
 
 /**
  * This transform applies the basic navigational links that should be available

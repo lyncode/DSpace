@@ -7,26 +7,20 @@
  */
 package org.dspace.app.webui.servlet.admin;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.log4j.Logger;
+import org.dspace.app.webui.servlet.AbstractBrowserServlet;
+import org.dspace.app.webui.util.JSPManager;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.browse.BrowseException;
+import org.dspace.browse.BrowseIndex;
+import org.dspace.browse.BrowserScope;
+import org.dspace.core.Context;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.dspace.app.webui.util.JSPManager;
-import org.dspace.app.webui.util.UIUtil;
-import org.dspace.app.webui.servlet.AbstractBrowserServlet;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.browse.*;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.Context;
-import org.dspace.core.LogManager;
-import org.dspace.sort.SortOption;
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Servlet for browsing through private items:

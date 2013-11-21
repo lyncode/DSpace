@@ -7,16 +7,20 @@
  */
 package org.dspace.content;
 
-import java.sql.SQLException;
 import mockit.NonStrictExpectations;
 import org.apache.log4j.Logger;
-import org.dspace.core.Context;
-import org.junit.*;
-import static org.junit.Assert.* ;
-import static org.hamcrest.CoreMatchers.*;
 import org.dspace.AbstractUnitTest;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
+import org.dspace.core.Context;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.sql.SQLException;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 /**
  * This class tests BitstreamFormat. Due to it being tighly coupled with the

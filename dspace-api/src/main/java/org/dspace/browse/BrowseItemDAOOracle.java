@@ -7,12 +7,12 @@
  */
 package org.dspace.browse;
 
-import org.dspace.storage.rdbms.TableRowIterator;
-import org.dspace.storage.rdbms.DatabaseManager;
-import org.dspace.storage.rdbms.TableRow;
-import org.dspace.core.Context;
 import org.dspace.content.DCValue;
 import org.dspace.content.Item;
+import org.dspace.core.Context;
+import org.dspace.storage.rdbms.DatabaseManager;
+import org.dspace.storage.rdbms.TableRow;
+import org.dspace.storage.rdbms.TableRowIterator;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

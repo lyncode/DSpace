@@ -7,29 +7,23 @@
  */
 package org.dspace.submit.step;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.Enumeration;
+import org.apache.log4j.Logger;
+import org.dspace.app.util.SubmissionInfo;
+import org.dspace.app.util.Util;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.*;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Context;
+import org.dspace.curate.Curator;
+import org.dspace.submit.AbstractProcessingStep;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-
-import org.dspace.app.util.SubmissionInfo;
-import org.dspace.app.util.Util;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.Bitstream;
-import org.dspace.content.BitstreamFormat;
-import org.dspace.content.Bundle;
-import org.dspace.content.FormatIdentifier;
-import org.dspace.content.Item;
-import org.dspace.core.Context;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.curate.Curator;
-import org.dspace.submit.AbstractProcessingStep;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.Enumeration;
 
 /**
  * Upload step for DSpace. Processes the actual upload of files

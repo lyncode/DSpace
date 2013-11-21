@@ -7,24 +7,19 @@
  */
 package org.dspace.submit.step;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import org.dspace.app.util.SubmissionInfo;
+import org.dspace.app.util.Util;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.*;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Context;
+import org.dspace.submit.AbstractProcessingStep;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.dspace.app.util.SubmissionInfo;
-import org.dspace.app.util.Util;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.Bitstream;
-import org.dspace.content.Bundle;
-import org.dspace.content.DCValue;
-import org.dspace.content.Item;
-import org.dspace.content.WorkspaceItem;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.Context;
-import org.dspace.submit.AbstractProcessingStep;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Initial Submission servlet for DSpace. Handles the initial questions which

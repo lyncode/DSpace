@@ -7,10 +7,6 @@
  */
 package org.dspace.app.sherpa.submit;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.app.sherpa.SHERPAResponse;
@@ -18,6 +14,10 @@ import org.dspace.app.sherpa.SHERPAService;
 import org.dspace.content.Item;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
+
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class SHERPASubmitService
 {

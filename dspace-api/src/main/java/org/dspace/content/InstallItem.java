@@ -7,9 +7,6 @@
  */
 package org.dspace.content;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
@@ -18,6 +15,9 @@ import org.dspace.event.Event;
 import org.dspace.identifier.IdentifierException;
 import org.dspace.identifier.IdentifierService;
 import org.dspace.utils.DSpace;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Support to install an Item in the archive.

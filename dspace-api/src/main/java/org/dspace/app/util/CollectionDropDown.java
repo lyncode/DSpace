@@ -7,10 +7,11 @@
  */
 package org.dspace.app.util;
 
-import java.sql.SQLException;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.core.ConfigurationManager;
+
+import java.sql.SQLException;
 
 /**
  * Utility class for lists of collections.

@@ -7,6 +7,18 @@
  */
 package org.dspace.content.packager;
 
+import org.apache.log4j.Logger;
+import org.dspace.authorize.AuthorizeException;
+import org.dspace.content.*;
+import org.dspace.content.crosswalk.CrosswalkException;
+import org.dspace.content.crosswalk.MetadataValidationException;
+import org.dspace.core.ConfigurationManager;
+import org.dspace.core.Constants;
+import org.dspace.core.Context;
+import org.dspace.core.LogManager;
+import org.dspace.handle.HandleManager;
+import org.jdom.Element;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,26 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import org.apache.log4j.Logger;
-import org.dspace.authorize.AuthorizeException;
-import org.dspace.content.Bitstream;
-import org.dspace.content.BitstreamFormat;
-import org.dspace.content.Bundle;
-import org.dspace.content.Collection;
-import org.dspace.content.Community;
-import org.dspace.content.DSpaceObject;
-import org.dspace.content.FormatIdentifier;
-import org.dspace.content.Item;
-import org.dspace.content.WorkspaceItem;
-import org.dspace.content.crosswalk.CrosswalkException;
-import org.dspace.content.crosswalk.MetadataValidationException;
-import org.dspace.core.ConfigurationManager;
-import org.dspace.core.Constants;
-import org.dspace.core.Context;
-import org.dspace.core.LogManager;
-import org.dspace.handle.HandleManager;
-import org.jdom.Element;
 
 /**
  * Base class for package ingester of METS (Metadata Encoding & Transmission
