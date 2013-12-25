@@ -8,8 +8,10 @@
 package org.dspace.xoai.app;
 
 import com.lyncode.jtwig.mvc.JtwigViewResolver;
+import org.dspace.xoai.services.api.config.ConfigurationService;
 import org.dspace.xoai.services.api.xoai.ItemRepositoryResolver;
 import org.dspace.xoai.services.impl.xoai.DSpaceItemRepositoryResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +34,9 @@ public class DSpaceWebappConfiguration extends WebMvcConfigurerAdapter {
     private static final String TWIG_HTML_EXTENSION = ".twig.html";
     private static final String VIEWS_LOCATION = "/WEB-INF/views/";
 
+    @Autowired
+    private ConfigurationService configurationService;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**")
@@ -49,13 +54,13 @@ public class DSpaceWebappConfiguration extends WebMvcConfigurerAdapter {
         JtwigViewResolver viewResolver = new JtwigViewResolver();
         viewResolver.setPrefix(VIEWS_LOCATION);
         viewResolver.setSuffix(TWIG_HTML_EXTENSION);
-        viewResolver.setCached(false);
+        viewResolver.setCached(configurationService.getBooleanProperty("oai", "cache", true));
 
         return viewResolver;
     }
+
     @Bean
     public ItemRepositoryResolver xoaiItemRepositoryResolver() {
         return new DSpaceItemRepositoryResolver();
     }
-
 }
