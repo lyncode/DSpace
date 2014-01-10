@@ -15,6 +15,9 @@
 
 	<Contexts>
 		<Context baseurl="request" name="Default Context">
+            <!-- Restrict access to hidden items by default -->
+            <Filter ref="defaultFilter" />
+
 			<Format ref="oaidc" />
 			<Format ref="mets" />
 			<Format ref="xoai" />
@@ -176,6 +179,11 @@
 	
 
 	<Filters>
+        <Filter id="defaultFilter">
+            <Definition>
+                <Custom ref="bitstreamAccessCondition" />
+            </Definition>
+        </Filter>
         <Filter id="driverFilter">
             <Definition>
                 <And>
